@@ -1,1 +1,1384 @@
-{"Variables":{"DashboardVariables":[{"VariableName":"ClassIdx","EvaluateOnlyOnce":true,"OverrideWithParentDashboardVariableWhenAvailable":true,"ValueExpression":{"JSExt":0,"Interpreter":1,"Expression":"return 0;"},"EvaluateBeforeScreenRoles":false},{"VariableName":"PlayerNameTextColor","EvaluateOnlyOnce":true,"OverrideWithParentDashboardVariableWhenAvailable":true,"ValueExpression":{"JSExt":0,"Interpreter":1,"Expression":"return '#EBAE00';"},"EvaluateBeforeScreenRoles":false},{"VariableName":"ClassNameWidth","EvaluateOnlyOnce":false,"OverrideWithParentDashboardVariableWhenAvailable":true,"ValueExpression":{"JSExt":1,"Interpreter":1,"Expression":"const defaultWidth = 105;\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst textSize = isnull(getStandingsClassProp(classIdx, 'NameSize'), 0);\r\nif (textSize <= 0) return defaultWidth;\r\n\r\n// textSize is in pixel, convert to desired size in SimHub units\r\nreturn textSize * 0.54 + 4;"},"EvaluateBeforeScreenRoles":false},{"VariableName":"GapOffset","EvaluateOnlyOnce":false,"OverrideWithParentDashboardVariableWhenAvailable":true,"ValueExpression":{"JSExt":0,"Interpreter":1,"Expression":"const visible = isnull($prop('benofficial2.Standings.GapVisible'), true);\r\nif (visible) return 0;\r\n\r\nreturn -(35 + 2); // width + padding"},"EvaluateBeforeScreenRoles":false},{"VariableName":"BestOffset","EvaluateOnlyOnce":false,"OverrideWithParentDashboardVariableWhenAvailable":true,"ValueExpression":{"JSExt":0,"Interpreter":1,"Expression":"const visible = isnull($prop('benofficial2.Standings.BestVisible'), true);\r\nif (visible) return 0;\r\n\r\nreturn -(65 + 2); // width + padding"},"EvaluateBeforeScreenRoles":false},{"VariableName":"LastOffset","EvaluateOnlyOnce":false,"OverrideWithParentDashboardVariableWhenAvailable":true,"ValueExpression":{"JSExt":0,"Interpreter":1,"Expression":"const visible = isnull($prop('benofficial2.Standings.LastVisible'), true);\r\nif (visible) return 0;\r\n\r\nreturn -(65 + 2); // width + padding"},"EvaluateBeforeScreenRoles":false}]},"DashboardDebugManager":{"WindowPositionSettings":{"IsFullScreen":false,"Position":"2557,349,800,1300","TopMost":false,"AllowTransparency":false,"CloseOnMonitorLoss":false,"NoWindowActivate":false}},"Version":2,"Id":"4878b3e0-1f74-4941-923a-b43992c124e1","BaseHeight":529,"BaseWidth":486,"BackgroundColor":"#FF000000","Screens":[{"RenderingSkip":0,"Name":"Screen","InGameScreen":true,"IdleScreen":true,"PitScreen":false,"ScreenId":"d0c09673-2573-4ef9-91f8-fdc2155c625d","AllowOverlays":true,"IsForegroundLayer":false,"IsOverlayLayer":false,"OverlayTriggerExpression":{"Expression":""},"ScreenEnabledExpression":{"Expression":""},"OverlayMaxDuration":0,"OverlayMinDuration":0,"IsBackgroundLayer":false,"BackgroundColor":"#00FFFFFF","Items":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.Layer, SimHub.Plugins","Group":false,"Repetitions":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.Layer, SimHub.Plugins","Group":false,"Repetitions":24,"PrepareRepetitions":true,"RepeatTopOffset":20.0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins","ChildsPositioning":0,"ChildsPositioningAlignment":0,"GroupPadding":{},"ChildsMargin":{},"ChildAlignmentHorizontal":0,"ChildAlignmentVertical":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins","IsRectangleItem":true,"BackgroundColor":"#FF000000","Height":20.0,"Left":0.0,"Opacity":60.0,"Top":0.0,"Visible":true,"Width":486.0,"Name":"Background","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Opacity":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.BackgroundOpacity'), 60);"},"Mode":2},"Width":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 486 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins","ChildsPositioning":0,"ChildsPositioningAlignment":0,"GroupPadding":{},"ChildsMargin":{},"ChildAlignmentHorizontal":0,"ChildAlignmentVertical":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","TextPadding":{"PaddingBottom":1},"FontSize":10.0,"Text":"","TextColor":"#FFA9A9A9","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#FF000000","BorderStyle":{"BorderColor":"#FF000000","BorderTop":2,"BorderBottom":2,"BorderLeft":2,"BorderRight":2,"RadiusTopLeft":8,"RadiusTopRight":8,"RadiusBottomLeft":8,"RadiusBottomRight":8},"Height":18.0,"Left":0.0,"Top":1.5,"Visible":true,"Width":18.0,"Name":"Background","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","TextPadding":{"PaddingBottom":1},"FontSize":8.0,"Text":"M","TextColor":"#FFFFFF00","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#FF000000","BorderStyle":{"BorderColor":"#FFFFFF00","BorderTop":2,"BorderBottom":2,"BorderLeft":2,"BorderRight":2,"RadiusTopLeft":8,"RadiusTopRight":8,"RadiusBottomLeft":8,"RadiusBottomRight":8,"Bindings":{"BorderColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getTireCompoundColor(classIdx, rowIdx);"},"Mode":2}}},"Height":14.0,"Left":1.0,"Top":3.5,"Visible":true,"Width":14.0,"Name":"Text","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getTireCompound(classIdx, rowIdx);"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getTireCompoundColor(classIdx, rowIdx);"},"Mode":2}}}],"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":437.0,"Top":0.0,"Visible":true,"Width":18.0,"Name":"Tire Compound","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nconst visible = isnull(getStandingsProp(classIdx, rowIdx, 'TireCompoundVisible'), false);\r\nif (!visible) return false;\r\n\r\n// Hide before the race start\r\nif (isRace()) return isRaceStarted();\r\n\r\n// Hide when disconnected (also applies when out of car in pit)\r\nconst connected = getStandingsProp(classIdx, rowIdx, 'Connected');\r\nreturn connected;"},"Mode":2},"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 437 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins","ChildsPositioning":0,"ChildsPositioningAlignment":0,"GroupPadding":{},"ChildsMargin":{},"ChildAlignmentHorizontal":0,"ChildAlignmentVertical":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"L500","TextColor":"#FFFFD100","HorizontalAlignment":1,"VerticalAlignment":1,"UseMonospacedText":true,"CharWidth":8.0,"SpecialCharsWidth":3.0,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":0.0,"Top":0.0,"Visible":true,"Width":31.0,"Name":"Pit Lap","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"if (!isRaceStarted())\r\n{\r\n\treturn '';\r\n}\r\n\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst tireCompoundVisible = getTireCompoundVisible(classIdx, rowIdx);\r\nif (!tireCompoundVisible)\r\n{\r\n\treturn '';\r\n}\r\n\r\nconst inPitLane = isnull(getStandingsProp(classIdx, rowIdx, 'InPitLane'), false);\r\nif (inPitLane)\r\n{\r\n\treturn '';\r\n}\r\n\r\nconst enterPitLap = isnull(getStandingsProp(classIdx, rowIdx, 'EnterPitLap'), -1);\r\nif (enterPitLap <= 0)\r\n{\r\n\treturn '';\r\n}\r\n\r\nreturn 'L' + enterPitLap;"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"PIT","TextColor":"#FF000000","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#BEFFD100","Height":20.0,"Left":0.0,"Top":0.0,"Visible":true,"Width":31.0,"Name":"Pit","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst towing = isnull(getStandingsProp(classIdx, rowIdx, 'Towing'), false);\r\nconst inPitLane = isnull(getStandingsProp(classIdx, rowIdx, 'InPitLane'), false);\r\nreturn inPitLane && !towing;"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":13.0,"Text":"TOW","TextColor":"#FF000000","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#BEFF6345","Height":20.0,"Left":0.0,"Top":0.0,"Visible":true,"Width":31.0,"Name":"Tow","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn isnull(getStandingsProp(classIdx, rowIdx, 'Towing'), false);"},"Mode":2}}}],"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":455.0,"Top":0.0,"Visible":true,"Width":31.0,"Name":"Pit Status","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 455 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"12:34.897","TextColor":"#FFFFFFFF","HorizontalAlignment":1,"VerticalAlignment":1,"UseMonospacedText":true,"CharWidth":8.0,"SpecialCharsWidth":4.0,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":370.0,"Top":0.0,"Visible":true,"Width":65.0,"Name":"Last Lap","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nif (isRace() || isQual())\r\n{\r\n\t// Don't show the lap time of the out/parade lap\r\n\tconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\n\tif(lap == 1) return '';\r\n}\r\n\r\nconst time = getStandingsProp(classIdx, rowIdx, 'LastLapTime');\r\nif (isInvalidTime(time)) return '';\r\n\r\nreturn toshorttime(time, 3, false, true);"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"},"Mode":2},"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.LastVisible'), true);"},"Mode":2},"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 370 + $prop('variable.GapOffset') + $prop('variable.BestOffset');"},"Mode":2},"BackgroundColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const color = 'Transparent';\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\n// Don't show the lap time of the parade lap\r\nif (isRace())\r\n{\r\n\tconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\n\tif(lap == 1) return color;\r\n}\r\n\r\nconst lastTime = getStandingsProp(classIdx, rowIdx, 'LastLapTime');\r\nif (isInvalidTime(lastTime)) return color;\r\n\r\nconst classBestTime = getStandingsClassProp(classIdx, 'BestLapTime');\r\nif (isInvalidTime(classBestTime)) return color;\r\n\r\nconst bestTime = getStandingsProp(classIdx, rowIdx, 'BestLapTime');\r\nif (isInvalidTime(bestTime)) return color;\r\n\r\nif (timespantoseconds(lastTime) == timespantoseconds(classBestTime))\r\n{\r\n\t// Purple\r\n\treturn '#73FF00FF';\r\n}\r\n\r\nif (timespantoseconds(lastTime) == timespantoseconds(bestTime))\r\n{\r\n\t// Green\r\n\treturn '#7352E052';\r\n}\r\n\r\nreturn color;"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"12:34.897","TextColor":"#FFFFFFFF","HorizontalAlignment":1,"VerticalAlignment":1,"UseMonospacedText":true,"CharWidth":8.0,"SpecialCharsWidth":4.0,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":303.0,"Top":0.0,"Visible":true,"Width":65.0,"Name":"Best Lap","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nif (isRace() || isQual())\r\n{\r\n\t// Don't show the lap time of the out/parade lap\r\n\tconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\n\tif(lap == 1) return '';\r\n}\r\n\r\nconst time = getStandingsProp(classIdx, rowIdx, 'BestLapTime');\r\nif (isInvalidTime(time)) return '';\r\n\r\nreturn toshorttime(time, 3, false, true);"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"},"Mode":2},"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.BestVisible'), true);"},"Mode":2},"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 303 + $prop('variable.GapOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"222.8","TextColor":"#FFFFFFFF","HorizontalAlignment":1,"VerticalAlignment":1,"UseMonospacedText":true,"CharWidth":8.0,"SpecialCharsWidth":4.0,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":266.0,"Top":0.0,"Visible":true,"Width":36.0,"Name":"Gap to Leader","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\nif (lap == 0) return '';\r\n\r\nif (rowIdx == 0)\r\n{\r\n\treturn 'L' + lap;\r\n}\r\n\r\nconst lapsBehind = isnull(getStandingsProp(classIdx, rowIdx, 'LapsToClassLeader'), 0);\r\nif (lapsBehind > 0)\r\n{\r\n\treturn String(lapsBehind) + 'L';\r\n}\r\n\r\nconst gap = isnull(getStandingsProp(classIdx, rowIdx, 'GapToClassLeader'), 0);\r\nreturn Math.abs(gap).toFixed(1);"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"},"Mode":2},"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.GapVisible'), true);"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"10.0k","TextColor":"#FF66A8FF","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#FF032F6F","BorderStyle":{"BorderColor":"#FF006EFF","BorderTop":1,"BorderBottom":1,"BorderLeft":1,"BorderRight":1,"RadiusTopLeft":4,"RadiusTopRight":4,"RadiusBottomLeft":4,"RadiusBottomRight":4,"Bindings":{"BorderColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getLicenseColor(classIdx, rowIdx);"},"Mode":2}}},"Height":16.0,"Left":230.0,"Top":2.0,"Visible":true,"Width":33.0,"Name":"iRating","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst iRating = isnull(getStandingsProp(classIdx, rowIdx, 'iRating'), 0);\r\nreturn formatIRating(iRating);"},"Mode":2},"BackgroundColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getLicenseBackColor(classIdx, rowIdx);"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getLicenseTextColor(classIdx, rowIdx);"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"Driver Name","TextColor":"#FFFFFFFF","HorizontalAlignment":0,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":65.0,"Top":0.0,"Visible":true,"Width":160.0,"Name":"Driver Name","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":3,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn isnull(getStandingsProp(classIdx, rowIdx, 'Name'), \"\");"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"},"Mode":2},"Width":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst brand = isnull(getStandingsProp(classIdx, rowIdx, 'CarBrand'), '');\r\nconst logoVisible = isnull($prop('benofficial2.Standings.CarLogoVisible'), true);\r\nconst width = 160;\r\nif (brand == '' || !logoVisible) return width;\r\nreturn width - 24;"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":14.0,"Text":"#999","TextColor":"#FF000000","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#FFFFFFFF","Height":20.0,"Left":27.0,"Top":0.0,"Visible":true,"Width":34.0,"Name":"Number","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst number = isnull(getStandingsProp(classIdx, rowIdx, 'Number'), '');\r\nreturn '#' + number;"},"Mode":2},"BackgroundColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassColor(classIdx);"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassTextColor(classIdx);"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","TextPadding":{"PaddingRight":5},"FontSize":14.0,"Text":"64","TextColor":"#FFFFFFFF","HorizontalAlignment":2,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":2.0,"Top":0.0,"Visible":true,"Width":25.0,"Name":"Position In Class","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst pos = isnull(getStandingsProp(classIdx, rowIdx, 'LivePositionInClass'), 0);\r\n\r\nif (pos > 0)\r\n{\r\n\treturn pos;\r\n}\r\nreturn '';"},"Mode":2},"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.ImageItem, SimHub.Plugins","Image":"library:benofficial2\\CarLogos\\Alpine.png","AutoSize":false,"BackgroundColor":"#00FFFFFF","Height":14.0,"Left":202.0,"Top":3.0,"Visible":true,"Width":24.0,"Name":"Car Logo","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Image":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst brand = isnull(getStandingsProp(classIdx, rowIdx, 'CarBrand'), '');\r\nif (brand == '') return '';\r\n\r\nreturn 'library:benofficial2\\\\CarLogos\\\\' + brand + '.png';"},"Mode":2},"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"const logoVisible = isnull($prop('benofficial2.Standings.CarLogoVisible'), true);\r\nreturn logoVisible;"},"Mode":2}}}],"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":0.0,"Top":25.5,"Visible":true,"Width":486.0,"Name":"Row","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Top":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"let top = 7.5;\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nconst dividerVisible = isnull($prop('benofficial2.Standings.Class' + format(classIdx, '00') + '.LeadFocusedDividerVisible'), false);\r\n\r\nconst headerVisible = isnull($prop('benofficial2.Standings.CarClassHeaderVisible'), true);\r\nconst headerHeight = 18;\r\nif (headerVisible) top += headerHeight;\r\n\r\nconst leadFocusedRows = $prop('benofficial2.Standings.LeadFocusedRows');\r\nif (dividerVisible && rowIdx >= leadFocusedRows)\r\n{\r\n\t// Add a gap as a divider\r\n    return top + 3;\r\n}\r\nreturn top;"},"Mode":2},"Visible":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getStandingsProp(classIdx, rowIdx, 'RowVisible');"},"Mode":2}}}],"Visible":true,"Name":"Row Repeat","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Repetitions":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"const playerCarClassIdx = isnull($prop('benofficial2.Standings.PlayerCarClassIdx'), 0);\r\nif ($prop('variable.ClassIdx') == playerCarClassIdx)\r\n{\r\n\treturn isnull($prop('benofficial2.Standings.MaxRowsPlayerClass'), 8);\r\n}\r\nreturn isnull($prop('benofficial2.Standings.MaxRowsOtherClasses'), 3)"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins","ChildsPositioning":0,"ChildsPositioningAlignment":0,"GroupPadding":{},"ChildsMargin":{},"ChildAlignmentHorizontal":0,"ChildAlignmentVertical":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins","IsRectangleItem":true,"BackgroundColor":"#FF000000","Height":16.0,"Left":0.0,"Opacity":90.0,"Top":0.0,"Visible":true,"Width":486.0,"Name":"Background","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"BackgroundColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"return 'Black';\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst color = getClassColor(classIdx);\r\nif (color == '#FFFFFF') return 'Black';\r\nreturn color;"},"Mode":2},"Width":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 486 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"},"Mode":2},"Opacity":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.HeaderOpacity'), 90);"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins","IsRectangleItem":true,"BackgroundColor":"#00FFFFFF","BorderStyle":{"BorderBottom":4,"Bindings":{"BorderColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassColor(classIdx);"},"Mode":2}}},"Height":16.0,"Left":0.0,"Top":4.0,"Visible":true,"Width":486.0,"Name":"Line","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Width":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 486 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins","IsRectangleItem":true,"BackgroundColor":"#FFFFFFFF","Height":18.0,"Left":0.0,"Top":0.0,"Visible":true,"Width":105.0,"Name":"Car Class Background","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"BackgroundColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassColor(classIdx);"},"Mode":2},"Width":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return $prop('variable.ClassNameWidth');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"LMP3","TextColor":"#FF000000","HorizontalAlignment":0,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":5.0,"Top":-2.0,"Visible":true,"Width":105.0,"Name":"Car Class","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"TextColor":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = isnull($prop('benofficial2.Standings.PlayerCarClassIdx'), 0);\r\nreturn getClassTextColor(classIdx);"},"Mode":2},"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nreturn getStandingsClassProp(classIdx, 'Name');"},"Mode":2},"Width":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return $prop('variable.ClassNameWidth');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins","ChildsPositioning":0,"ChildsPositioningAlignment":0,"GroupPadding":{},"ChildsMargin":{},"ChildAlignmentHorizontal":0,"ChildAlignmentVertical":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"10.3k","TextColor":"#FFFFFFFF","HorizontalAlignment":0,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":20.0,"Top":-3.0,"Visible":true,"Width":30.0,"Name":"Value","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst sof = getStandingsClassProp(classIdx, 'SOF');\r\nreturn formatIRating(sof);"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.ImageItem, SimHub.Plugins","Image":"SOF","AutoSize":false,"BackgroundColor":"#00FFFFFF","Height":11.0,"Left":2.0,"Top":2.0,"Visible":true,"Width":16.0,"Name":"Icon","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0}],"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":110.0,"Top":0.0,"Visible":true,"Width":50.0,"Name":"SOF","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return $prop('variable.ClassNameWidth') + 5;"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"GAP","TextColor":"#FFFFFFFF","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":266.0,"Top":-3.0,"Visible":true,"Width":35.0,"Name":"Gap","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.GapVisible'), true);"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"BEST","TextColor":"#FFFFFFFF","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":303.0,"Top":-3.0,"Visible":true,"Width":65.0,"Name":"Best","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.BestVisible'), true);"},"Mode":2},"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 303 + $prop('variable.GapOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"LAST","TextColor":"#FFFFFFFF","HorizontalAlignment":1,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":370.0,"Top":-3.0,"Visible":true,"Width":65.0,"Name":"Last","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.LastVisible'), true);"},"Mode":2},"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return 370 + $prop('variable.GapOffset') + $prop('variable.BestOffset');"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins","ChildsPositioning":0,"ChildsPositioningAlignment":0,"GroupPadding":{},"ChildsMargin":{},"ChildAlignmentHorizontal":0,"ChildAlignmentVertical":0,"Childrens":[{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins","IsTextItem":true,"Font":"Roboto","FontWeight":"Bold","FontSize":11.0,"Text":"25","TextColor":"#FFFFFFFF","HorizontalAlignment":0,"VerticalAlignment":1,"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":13.0,"Top":-3.0,"Visible":true,"Width":30.0,"Name":"Value","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Text":{"Formula":{"JSExt":1,"Interpreter":1,"Expression":"const classIdx = $prop('variable.ClassIdx');\r\nconst count = isnull(getStandingsClassProp(classIdx, 'DriverCount'), 0);\r\nreturn count;"},"Mode":2}}},{"$type":"SimHub.Plugins.OutputPlugins.GraphicalDash.Models.ImageItem, SimHub.Plugins","Image":"Helmet","AutoSize":false,"BackgroundColor":"#00FFFFFF","Height":9.0,"Left":0.0,"Top":3.0,"Visible":true,"Width":9.0,"Name":"Icon","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0}],"BackgroundColor":"#00FFFFFF","Height":20.0,"Left":165.0,"Top":0.0,"Visible":true,"Width":50.0,"Name":"Driver Count","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Left":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return $prop('variable.ClassNameWidth') + 60;"},"Mode":2}}}],"BackgroundColor":"#00FFFFFF","Height":18.0,"Left":0.0,"Top":8.0,"Visible":true,"Width":486.0,"Name":"Header","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0,"Bindings":{"Visible":{"Formula":{"JSExt":0,"Interpreter":1,"Expression":"return isnull($prop('benofficial2.Standings.CarClassHeaderVisible'), true);"},"Mode":2}}}],"Visible":true,"Name":"Class Standings","RenderingSkip":0,"MinimumRefreshIntervalMS":0.0}],"MinimumRefreshIntervalMS":0.0}],"SnapToGrid":false,"HideLabels":true,"ShowForeground":true,"ForegroundOpacity":100.0,"ShowBackground":true,"BackgroundOpacity":100.0,"ShowBoundingRectangles":false,"GridSize":10,"Images":[{"Name":"SOF","Extension":".png","Modified":false,"Optimized":true,"Width":266,"Height":199,"Length":2202,"MD5":"0cebc57e989e3fdc1a8b7544b99b047b"},{"Name":"Helmet","Extension":".png","Modified":false,"Optimized":true,"Width":99,"Height":87,"Length":1373,"MD5":"7a03a232df04e517c33e35fd696b0e6c"}],"Metadata":{"ScreenCount":1.0,"InGameScreensIndexs":[0],"IdleScreensIndexs":[0],"MainPreviewIndex":0,"IsOverlay":false,"OverlaySizeWarning":false,"MetadataVersion":2.0,"EnableOnDashboardMessaging":true,"PitScreensIndexs":[],"SimHubVersion":"9.7.5","Author":"twitch.tv/benofficial2","Width":486.0,"Height":529.0,"DashboardVersion":""},"ShowOnScreenControls":true,"IsOverlay":false,"EnableClickThroughOverlay":true,"EnableOnDashboardMessaging":true}
+{
+  "Variables": {
+    "DashboardVariables": [
+      {
+        "VariableName": "ClassIdx",
+        "EvaluateOnlyOnce": true,
+        "OverrideWithParentDashboardVariableWhenAvailable": true,
+        "ValueExpression": {
+          "JSExt": 0,
+          "Interpreter": 1,
+          "Expression": "return 0;"
+        },
+        "EvaluateBeforeScreenRoles": false
+      },
+      {
+        "VariableName": "PlayerNameTextColor",
+        "EvaluateOnlyOnce": true,
+        "OverrideWithParentDashboardVariableWhenAvailable": true,
+        "ValueExpression": {
+          "JSExt": 0,
+          "Interpreter": 1,
+          "Expression": "return '#EBAE00';"
+        },
+        "EvaluateBeforeScreenRoles": false
+      },
+      {
+        "VariableName": "ClassNameWidth",
+        "EvaluateOnlyOnce": false,
+        "OverrideWithParentDashboardVariableWhenAvailable": true,
+        "ValueExpression": {
+          "JSExt": 1,
+          "Interpreter": 1,
+          "Expression": "const defaultWidth = 105;\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst textSize = isnull(getStandingsClassProp(classIdx, 'NameSize'), 0);\r\nif (textSize <= 0) return defaultWidth;\r\n\r\n// textSize is in pixel, convert to desired size in SimHub units\r\nreturn textSize * 0.54 + 4;"
+        },
+        "EvaluateBeforeScreenRoles": false
+      },
+      {
+        "VariableName": "GapOffset",
+        "EvaluateOnlyOnce": false,
+        "OverrideWithParentDashboardVariableWhenAvailable": true,
+        "ValueExpression": {
+          "JSExt": 0,
+          "Interpreter": 1,
+          "Expression": "const visible = isnull($prop('benofficial2.Standings.GapVisible'), true);\r\nif (visible) return 0;\r\n\r\nreturn -(35 + 2); // width + padding"
+        },
+        "EvaluateBeforeScreenRoles": false
+      },
+      {
+        "VariableName": "BestOffset",
+        "EvaluateOnlyOnce": false,
+        "OverrideWithParentDashboardVariableWhenAvailable": true,
+        "ValueExpression": {
+          "JSExt": 0,
+          "Interpreter": 1,
+          "Expression": "const visible = isnull($prop('benofficial2.Standings.BestVisible'), true);\r\nif (visible) return 0;\r\n\r\nreturn -(65 + 2); // width + padding"
+        },
+        "EvaluateBeforeScreenRoles": false
+      },
+      {
+        "VariableName": "LastOffset",
+        "EvaluateOnlyOnce": false,
+        "OverrideWithParentDashboardVariableWhenAvailable": true,
+        "ValueExpression": {
+          "JSExt": 0,
+          "Interpreter": 1,
+          "Expression": "const visible = isnull($prop('benofficial2.Standings.LastVisible'), true);\r\nif (visible) return 0;\r\n\r\nreturn -(65 + 2); // width + padding"
+        },
+        "EvaluateBeforeScreenRoles": false
+      }
+    ]
+  },
+  "DashboardDebugManager": {
+    "WindowPositionSettings": {
+      "IsFullScreen": false,
+      "Position": "5,1037,800,871",
+      "TopMost": false,
+      "AllowTransparency": true,
+      "CloseOnMonitorLoss": false,
+      "NoWindowActivate": false
+    }
+  },
+  "Version": 2,
+  "Id": "b49f7a30-4007-4e4b-96f6-f0ff5f96a97a",
+  "BaseHeight": 529,
+  "BaseWidth": 486,
+  "BackgroundColor": "#FF000000",
+  "Screens": [
+    {
+      "RenderingSkip": 0,
+      "Name": "Screen",
+      "InGameScreen": true,
+      "IdleScreen": true,
+      "PitScreen": false,
+      "ScreenId": "d0c09673-2573-4ef9-91f8-fdc2155c625d",
+      "AllowOverlays": true,
+      "IsForegroundLayer": false,
+      "IsOverlayLayer": false,
+      "OverlayTriggerExpression": {
+        "Expression": ""
+      },
+      "ScreenEnabledExpression": {
+        "Expression": ""
+      },
+      "OverlayMaxDuration": 0,
+      "OverlayMinDuration": 0,
+      "IsBackgroundLayer": false,
+      "BackgroundColor": "#00FFFFFF",
+      "Items": [
+        {
+          "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.Layer, SimHub.Plugins",
+          "Group": false,
+          "Repetitions": 0,
+          "Childrens": [
+            {
+              "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.Layer, SimHub.Plugins",
+              "Group": false,
+              "Repetitions": 24,
+              "PrepareRepetitions": true,
+              "RepeatTopOffset": 20.0,
+              "Childrens": [
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins",
+                  "ChildsPositioning": 0,
+                  "ChildsPositioningAlignment": 0,
+                  "GroupPadding": {},
+                  "ChildsMargin": {},
+                  "ChildAlignmentHorizontal": 0,
+                  "ChildAlignmentVertical": 0,
+                  "Childrens": [
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins",
+                      "IsRectangleItem": true,
+                      "BackgroundColor": "#FF000000",
+                      "Height": 20.0,
+                      "Left": 0.0,
+                      "Opacity": 90.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 486.0,
+                      "Name": "Background",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Opacity": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return isnull($prop('benofficial2.Standings.BackgroundOpacity'), 60);"
+                          },
+                          "Mode": 2
+                        },
+                        "Width": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return 486 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"
+                          },
+                          "Mode": 2
+                        },
+                        "BackgroundColor": {
+                          "Formula": {
+                            "Expression": "abs(repeatindex()) % 2"
+                          },
+                          "StartColor": "#FF000000",
+                          "EnableMiddleColor": false,
+                          "MiddleColor": "#FF000000",
+                          "MiddleColorValue": 1.0,
+                          "EndColor": "#FF808080",
+                          "StartColorValue": 0.0,
+                          "EndColorValue": 1.0,
+                          "Mode": 4
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins",
+                      "ChildsPositioning": 0,
+                      "ChildsPositioningAlignment": 0,
+                      "GroupPadding": {},
+                      "ChildsMargin": {},
+                      "ChildAlignmentHorizontal": 0,
+                      "ChildAlignmentVertical": 0,
+                      "Childrens": [
+                        {
+                          "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                          "IsTextItem": true,
+                          "Font": "Roboto",
+                          "FontWeight": "Bold",
+                          "TextPadding": {
+                            "PaddingBottom": 1
+                          },
+                          "FontSize": 10.0,
+                          "Text": "",
+                          "TextColor": "#FFA9A9A9",
+                          "HorizontalAlignment": 1,
+                          "VerticalAlignment": 1,
+                          "BackgroundColor": "#FF000000",
+                          "BorderStyle": {
+                            "BorderColor": "#FF000000",
+                            "BorderTop": 2,
+                            "BorderBottom": 2,
+                            "BorderLeft": 2,
+                            "BorderRight": 2,
+                            "RadiusTopLeft": 8,
+                            "RadiusTopRight": 8,
+                            "RadiusBottomLeft": 8,
+                            "RadiusBottomRight": 8
+                          },
+                          "Height": 18.0,
+                          "Left": 0.0,
+                          "Top": 1.5,
+                          "Visible": false,
+                          "Width": 18.0,
+                          "Name": "Background",
+                          "RenderingSkip": 0,
+                          "MinimumRefreshIntervalMS": 0.0
+                        },
+                        {
+                          "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                          "IsTextItem": true,
+                          "Font": "Roboto",
+                          "FontWeight": "Bold",
+                          "TextPadding": {
+                            "PaddingTop": 2,
+                            "PaddingBottom": 2,
+                            "PaddingLeft": 2,
+                            "PaddingRight": 2
+                          },
+                          "FontSize": 8.0,
+                          "Text": "M",
+                          "TextColor": "#FFFFFF00",
+                          "HorizontalAlignment": 1,
+                          "VerticalAlignment": 1,
+                          "BackgroundColor": "#FF000000",
+                          "BorderStyle": {
+                            "BorderColor": "#FFFFFF00",
+                            "BorderTop": 2,
+                            "BorderBottom": 2,
+                            "BorderLeft": 2,
+                            "BorderRight": 2,
+                            "RadiusTopLeft": 8,
+                            "RadiusTopRight": 8,
+                            "RadiusBottomLeft": 8,
+                            "RadiusBottomRight": 8,
+                            "Bindings": {
+                              "BorderColor": {
+                                "Formula": {
+                                  "JSExt": 1,
+                                  "Interpreter": 1,
+                                  "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getTireCompoundColor(classIdx, rowIdx);"
+                                },
+                                "Mode": 2
+                              }
+                            }
+                          },
+                          "Height": 14.0,
+                          "Left": 1.0,
+                          "Top": 3.5,
+                          "Visible": true,
+                          "Width": 14.0,
+                          "Name": "Text",
+                          "RenderingSkip": 0,
+                          "MinimumRefreshIntervalMS": 0.0,
+                          "Bindings": {
+                            "Text": {
+                              "Formula": {
+                                "JSExt": 1,
+                                "Interpreter": 1,
+                                "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getTireCompound(classIdx, rowIdx);"
+                              },
+                              "Mode": 2
+                            },
+                            "TextColor": {
+                              "Formula": {
+                                "JSExt": 1,
+                                "Interpreter": 1,
+                                "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getTireCompoundColor(classIdx, rowIdx);"
+                              },
+                              "Mode": 2
+                            }
+                          }
+                        }
+                      ],
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 437.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 18.0,
+                      "Name": "Tire Compound",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Visible": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nconst visible = isnull(getStandingsProp(classIdx, rowIdx, 'TireCompoundVisible'), false);\r\nif (!visible) return false;\r\n\r\n// Hide before the race start\r\nif (isRace()) return isRaceStarted();\r\n\r\n// Hide when disconnected (also applies when out of car in pit)\r\nconst connected = getStandingsProp(classIdx, rowIdx, 'Connected');\r\nreturn connected;"
+                          },
+                          "Mode": 2
+                        },
+                        "Left": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return 437 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins",
+                      "ChildsPositioning": 0,
+                      "ChildsPositioningAlignment": 0,
+                      "GroupPadding": {},
+                      "ChildsMargin": {},
+                      "ChildAlignmentHorizontal": 0,
+                      "ChildAlignmentVertical": 0,
+                      "Childrens": [
+                        {
+                          "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                          "IsTextItem": true,
+                          "Font": "Roboto",
+                          "FontWeight": "Bold",
+                          "FontSize": 14.0,
+                          "Text": "L500",
+                          "TextColor": "#FFFFD100",
+                          "HorizontalAlignment": 1,
+                          "VerticalAlignment": 1,
+                          "UseMonospacedText": true,
+                          "CharWidth": 8.0,
+                          "SpecialCharsWidth": 3.0,
+                          "BackgroundColor": "#00FFFFFF",
+                          "Height": 20.0,
+                          "Left": 0.0,
+                          "Top": 0.0,
+                          "Visible": true,
+                          "Width": 31.0,
+                          "Name": "Pit Lap",
+                          "RenderingSkip": 0,
+                          "MinimumRefreshIntervalMS": 0.0,
+                          "Bindings": {
+                            "Text": {
+                              "Formula": {
+                                "JSExt": 1,
+                                "Interpreter": 1,
+                                "Expression": "if (!isRaceStarted())\r\n{\r\n\treturn '';\r\n}\r\n\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst tireCompoundVisible = getTireCompoundVisible(classIdx, rowIdx);\r\nif (!tireCompoundVisible)\r\n{\r\n\treturn '';\r\n}\r\n\r\nconst inPitLane = isnull(getStandingsProp(classIdx, rowIdx, 'InPitLane'), false);\r\nif (inPitLane)\r\n{\r\n\treturn '';\r\n}\r\nconst CurrentLap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 1);\r\nconst enterPitLap = isnull(getStandingsProp(classIdx, rowIdx, 'EnterPitLap'), -1);\r\nconst CurrentStint = CurrentLap - enterPitLap;\r\nif (isnull($prop('benofficial2.Standings.StintVisible'), true))\r\n{\t\r\n\treturn 'S' + CurrentStint;\r\n}\r\nelse if (enterPitLap <= 0)\r\n{\r\n\treturn '';\r\n}\r\n\r\nreturn 'L' + enterPitLap;"
+                              },
+                              "Mode": 2
+                            }
+                          }
+                        },
+                        {
+                          "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                          "IsTextItem": true,
+                          "Font": "Roboto",
+                          "FontWeight": "Bold",
+                          "FontSize": 14.0,
+                          "Text": "PIT",
+                          "TextColor": "#FF000000",
+                          "HorizontalAlignment": 1,
+                          "VerticalAlignment": 1,
+                          "BackgroundColor": "#BEFFD100",
+                          "Height": 20.0,
+                          "Left": 0.0,
+                          "Top": 0.0,
+                          "Visible": false,
+                          "Width": 31.0,
+                          "Name": "Pit",
+                          "RenderingSkip": 0,
+                          "MinimumRefreshIntervalMS": 0.0,
+                          "Bindings": {
+                            "Visible": {
+                              "Formula": {
+                                "JSExt": 1,
+                                "Interpreter": 1,
+                                "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst towing = isnull(getStandingsProp(classIdx, rowIdx, 'Towing'), false);\r\nconst inPitLane = isnull(getStandingsProp(classIdx, rowIdx, 'InPitLane'), false);\r\nreturn inPitLane && !towing;"
+                              },
+                              "Mode": 2
+                            }
+                          }
+                        },
+                        {
+                          "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                          "IsTextItem": true,
+                          "Font": "Roboto",
+                          "FontWeight": "Bold",
+                          "FontSize": 13.0,
+                          "Text": "TOW",
+                          "TextColor": "#FF000000",
+                          "HorizontalAlignment": 1,
+                          "VerticalAlignment": 1,
+                          "BackgroundColor": "#BEFF6345",
+                          "Height": 20.0,
+                          "Left": 0.0,
+                          "Top": 0.0,
+                          "Visible": false,
+                          "Width": 31.0,
+                          "Name": "Tow",
+                          "RenderingSkip": 0,
+                          "MinimumRefreshIntervalMS": 0.0,
+                          "Bindings": {
+                            "Visible": {
+                              "Formula": {
+                                "JSExt": 1,
+                                "Interpreter": 1,
+                                "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn isnull(getStandingsProp(classIdx, rowIdx, 'Towing'), false);"
+                              },
+                              "Mode": 2
+                            }
+                          }
+                        }
+                      ],
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 455.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 31.0,
+                      "Name": "Pit Status",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Left": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return 455 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 14.0,
+                      "Text": "12:34.897",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 1,
+                      "VerticalAlignment": 1,
+                      "UseMonospacedText": true,
+                      "CharWidth": 8.0,
+                      "SpecialCharsWidth": 4.0,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 370.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 65.0,
+                      "Name": "Last Lap",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nif (isRace() || isQual())\r\n{\r\n\t// Don't show the lap time of the out/parade lap\r\n\tconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\n\tif(lap == 1) return '';\r\n}\r\n\r\nconst time = getStandingsProp(classIdx, rowIdx, 'LastLapTime');\r\nif (isInvalidTime(time)) return '';\r\n\r\nreturn toshorttime(time, 3, false, true);"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"
+                          },
+                          "Mode": 2
+                        },
+                        "Visible": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return isnull($prop('benofficial2.Standings.LastVisible'), true);"
+                          },
+                          "Mode": 2
+                        },
+                        "Left": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return 370 + $prop('variable.GapOffset') + $prop('variable.BestOffset');"
+                          },
+                          "Mode": 2
+                        },
+                        "BackgroundColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const color = 'Transparent';\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\n// Don't show the lap time of the parade lap\r\nif (isRace())\r\n{\r\n\tconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\n\tif(lap == 1) return color;\r\n}\r\n\r\nconst lastTime = getStandingsProp(classIdx, rowIdx, 'LastLapTime');\r\nif (isInvalidTime(lastTime)) return color;\r\n\r\nconst classBestTime = getStandingsClassProp(classIdx, 'BestLapTime');\r\nif (isInvalidTime(classBestTime)) return color;\r\n\r\nconst bestTime = getStandingsProp(classIdx, rowIdx, 'BestLapTime');\r\nif (isInvalidTime(bestTime)) return color;\r\n\r\nif (timespantoseconds(lastTime) == timespantoseconds(classBestTime))\r\n{\r\n\t// Purple\r\n\treturn '#73FF00FF';\r\n}\r\n\r\nif (timespantoseconds(lastTime) == timespantoseconds(bestTime))\r\n{\r\n\t// Green\r\n\treturn '#7352E052';\r\n}\r\n\r\nreturn color;"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 14.0,
+                      "Text": "12:34.897",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 1,
+                      "VerticalAlignment": 1,
+                      "UseMonospacedText": true,
+                      "CharWidth": 8.0,
+                      "SpecialCharsWidth": 4.0,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 303.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 65.0,
+                      "Name": "Best Lap",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nif (isRace() || isQual())\r\n{\r\n\t// Don't show the lap time of the out/parade lap\r\n\tconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\n\tif(lap == 1) return '';\r\n}\r\n\r\nconst time = getStandingsProp(classIdx, rowIdx, 'BestLapTime');\r\nif (isInvalidTime(time)) return '';\r\n\r\nreturn toshorttime(time, 3, false, true);"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"
+                          },
+                          "Mode": 2
+                        },
+                        "Visible": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return isnull($prop('benofficial2.Standings.BestVisible'), true);"
+                          },
+                          "Mode": 2
+                        },
+                        "Left": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return 303 + $prop('variable.GapOffset');"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 14.0,
+                      "Text": "222.8",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 1,
+                      "VerticalAlignment": 1,
+                      "UseMonospacedText": true,
+                      "CharWidth": 8.0,
+                      "SpecialCharsWidth": 4.0,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 266.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 36.0,
+                      "Name": "Gap to Leader",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);\r\nif (lap == 0) return '';\r\n\r\nif (rowIdx == 0)\r\n{\r\n\treturn 'L' + lap;\r\n}\r\n\r\nconst lapsBehind = isnull(getStandingsProp(classIdx, rowIdx, 'LapsToClassLeader'), 0);\r\nif (lapsBehind > 0)\r\n{\r\n\treturn String(lapsBehind) + 'L';\r\n}\r\n\r\nconst gap = isnull(getStandingsProp(classIdx, rowIdx, 'GapToClassLeader'), 0);\r\nreturn Math.abs(gap).toFixed(1);"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"
+                          },
+                          "Mode": 2
+                        },
+                        "Visible": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "return isnull($prop('benofficial2.Standings.GapVisible'), true);"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 11.0,
+                      "Text": "10.0k",
+                      "TextColor": "#FF66A8FF",
+                      "HorizontalAlignment": 1,
+                      "VerticalAlignment": 1,
+                      "BackgroundColor": "#FF032F6F",
+                      "BorderStyle": {
+                        "BorderColor": "#FF006EFF",
+                        "BorderTop": 1,
+                        "BorderBottom": 1,
+                        "BorderLeft": 1,
+                        "BorderRight": 1,
+                        "RadiusTopLeft": 4,
+                        "RadiusTopRight": 4,
+                        "RadiusBottomLeft": 4,
+                        "RadiusBottomRight": 4,
+                        "Bindings": {
+                          "BorderColor": {
+                            "Formula": {
+                              "JSExt": 1,
+                              "Interpreter": 1,
+                              "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getLicenseColor(classIdx, rowIdx);"
+                            },
+                            "Mode": 2
+                          }
+                        }
+                      },
+                      "Height": 16.0,
+                      "Left": 230.0,
+                      "Top": 2.0,
+                      "Visible": true,
+                      "Width": 33.0,
+                      "Name": "iRating",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst iRating = isnull(getStandingsProp(classIdx, rowIdx, 'iRating'), 0);\r\nreturn formatIRating(iRating);"
+                          },
+                          "Mode": 2
+                        },
+                        "BackgroundColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getLicenseBackColor(classIdx, rowIdx);"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn getLicenseTextColor(classIdx, rowIdx);"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 14.0,
+                      "Text": "Driver Name",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 0,
+                      "VerticalAlignment": 1,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 65.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 160.0,
+                      "Name": "Driver Name",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 3,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn isnull(getStandingsProp(classIdx, rowIdx, 'Name'), \"\");"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"
+                          },
+                          "Mode": 2
+                        },
+                        "Width": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst brand = isnull(getStandingsProp(classIdx, rowIdx, 'CarBrand'), '');\r\nconst logoVisible = isnull($prop('benofficial2.Standings.CarLogoVisible'), true);\r\nconst width = 160;\r\nif (brand == '' || !logoVisible) return width;\r\nreturn width - 24;"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 14.0,
+                      "Text": "#999",
+                      "TextColor": "#FF000000",
+                      "HorizontalAlignment": 1,
+                      "VerticalAlignment": 1,
+                      "BackgroundColor": "#FFFFFFFF",
+                      "Height": 20.0,
+                      "Left": 27.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 34.0,
+                      "Name": "Number",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst number = isnull(getStandingsProp(classIdx, rowIdx, 'Number'), '');\r\nreturn '#' + number;"
+                          },
+                          "Mode": 2
+                        },
+                        "BackgroundColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassColor(classIdx);"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassTextColor(classIdx);"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "TextPadding": {
+                        "PaddingRight": 5
+                      },
+                      "FontSize": 14.0,
+                      "Text": "64",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 2,
+                      "VerticalAlignment": 1,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 2.0,
+                      "Top": 0.0,
+                      "Visible": true,
+                      "Width": 25.0,
+                      "Name": "Position In Class",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst pos = isnull(getStandingsProp(classIdx, rowIdx, 'LivePositionInClass'), 0);\r\n\r\nif (pos > 0)\r\n{\r\n\treturn pos;\r\n}\r\nreturn '';"
+                          },
+                          "Mode": 2
+                        },
+                        "TextColor": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nif (getStandingsProp(classIdx, rowIdx, 'IsPlayer'))\r\n{\r\n\treturn $prop('variable.PlayerNameTextColor');\r\n}\r\nreturn 'White';"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.ImageItem, SimHub.Plugins",
+                      "Image": "library:benofficial2\\CarLogos\\Alpine.png",
+                      "AutoSize": false,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 14.0,
+                      "Left": 202.0,
+                      "Top": 3.0,
+                      "Visible": true,
+                      "Width": 24.0,
+                      "Name": "Car Logo",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Image": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nconst brand = isnull(getStandingsProp(classIdx, rowIdx, 'CarBrand'), '');\r\nif (brand == '') return '';\r\n\r\nreturn 'library:benofficial2\\\\CarLogos\\\\' + brand + '.png';"
+                          },
+                          "Mode": 2
+                        },
+                        "Visible": {
+                          "Formula": {
+                            "JSExt": 0,
+                            "Interpreter": 1,
+                            "Expression": "const logoVisible = isnull($prop('benofficial2.Standings.CarLogoVisible'), true);\r\nreturn logoVisible;"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    }
+                  ],
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 0.0,
+                  "Top": 25.5,
+                  "Visible": true,
+                  "Width": 486.0,
+                  "Name": "Row",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Top": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "let top = 7.5;\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\n\r\nconst dividerVisible = isnull($prop('benofficial2.Standings.Class' + format(classIdx, '00') + '.LeadFocusedDividerVisible'), false);\r\n\r\nconst headerVisible = isnull($prop('benofficial2.Standings.CarClassHeaderVisible'), true);\r\nconst headerHeight = 18;\r\nif (headerVisible) top += headerHeight;\r\n\r\nconst leadFocusedRows = $prop('benofficial2.Standings.LeadFocusedRows');\r\nif (dividerVisible && rowIdx >= leadFocusedRows)\r\n{\r\n\t// Add a gap as a divider\r\n    return top + 3;\r\n}\r\nreturn top;"
+                      },
+                      "Mode": 2
+                    },
+                    "Visible": {
+                      "Formula": {
+                        "JSExt": 1,
+                        "Interpreter": 1,
+                        "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst rowIdx = repeatindex() - 1;\r\nreturn !getStandingsProp(classIdx, rowIdx, 'RowVisible');"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                }
+              ],
+              "Visible": true,
+              "Name": "Row Repeat",
+              "RenderingSkip": 0,
+              "MinimumRefreshIntervalMS": 0.0,
+              "Bindings": {
+                "Repetitions": {
+                  "Formula": {
+                    "JSExt": 0,
+                    "Interpreter": 1,
+                    "Expression": "const playerCarClassIdx = isnull($prop('benofficial2.Standings.PlayerCarClassIdx'), 0);\r\nif ($prop('variable.ClassIdx') == playerCarClassIdx)\r\n{\r\n\treturn isnull($prop('benofficial2.Standings.MaxRowsPlayerClass'), 8);\r\n}\r\nreturn isnull($prop('benofficial2.Standings.MaxRowsOtherClasses'), 3)"
+                  },
+                  "Mode": 2
+                }
+              }
+            },
+            {
+              "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins",
+              "ChildsPositioning": 0,
+              "ChildsPositioningAlignment": 0,
+              "GroupPadding": {},
+              "ChildsMargin": {},
+              "ChildAlignmentHorizontal": 0,
+              "ChildAlignmentVertical": 0,
+              "Childrens": [
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins",
+                  "IsRectangleItem": true,
+                  "BackgroundColor": "#FF000000",
+                  "Height": 16.0,
+                  "Left": 0.0,
+                  "Opacity": 90.0,
+                  "Top": 0.0,
+                  "Visible": true,
+                  "Width": 486.0,
+                  "Name": "Background",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "BackgroundColor": {
+                      "Formula": {
+                        "JSExt": 1,
+                        "Interpreter": 1,
+                        "Expression": "return 'Black';\r\nconst classIdx = $prop('variable.ClassIdx');\r\nconst color = getClassColor(classIdx);\r\nif (color == '#FFFFFF') return 'Black';\r\nreturn color;"
+                      },
+                      "Mode": 2
+                    },
+                    "Width": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return 486 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"
+                      },
+                      "Mode": 2
+                    },
+                    "Opacity": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return isnull($prop('benofficial2.Standings.HeaderOpacity'), 90);"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins",
+                  "IsRectangleItem": true,
+                  "BackgroundColor": "#00FFFFFF",
+                  "BorderStyle": {
+                    "BorderBottom": 4,
+                    "Bindings": {
+                      "BorderColor": {
+                        "Formula": {
+                          "JSExt": 1,
+                          "Interpreter": 1,
+                          "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassColor(classIdx);"
+                        },
+                        "Mode": 2
+                      }
+                    }
+                  },
+                  "Height": 16.0,
+                  "Left": 0.0,
+                  "Top": 4.0,
+                  "Visible": true,
+                  "Width": 486.0,
+                  "Name": "Line",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Width": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return 486 + $prop('variable.GapOffset') + $prop('variable.BestOffset') + $prop('variable.LastOffset');"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.RectangleItem, SimHub.Plugins",
+                  "IsRectangleItem": true,
+                  "BackgroundColor": "#FFFFFFFF",
+                  "Height": 18.0,
+                  "Left": 0.0,
+                  "Top": 0.0,
+                  "Visible": true,
+                  "Width": 105.0,
+                  "Name": "Car Class Background",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "BackgroundColor": {
+                      "Formula": {
+                        "JSExt": 1,
+                        "Interpreter": 1,
+                        "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nreturn getClassColor(classIdx);"
+                      },
+                      "Mode": 2
+                    },
+                    "Width": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return $prop('variable.ClassNameWidth');"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                  "IsTextItem": true,
+                  "Font": "Roboto",
+                  "FontWeight": "Bold",
+                  "FontSize": 11.0,
+                  "Text": "LMP3",
+                  "TextColor": "#FF000000",
+                  "HorizontalAlignment": 0,
+                  "VerticalAlignment": 1,
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 5.0,
+                  "Top": -2.0,
+                  "Visible": true,
+                  "Width": 105.0,
+                  "Name": "Car Class",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "TextColor": {
+                      "Formula": {
+                        "JSExt": 1,
+                        "Interpreter": 1,
+                        "Expression": "const classIdx = isnull($prop('benofficial2.Standings.PlayerCarClassIdx'), 0);\r\nreturn getClassTextColor(classIdx);"
+                      },
+                      "Mode": 2
+                    },
+                    "Text": {
+                      "Formula": {
+                        "JSExt": 1,
+                        "Interpreter": 1,
+                        "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nreturn getStandingsClassProp(classIdx, 'Name');"
+                      },
+                      "Mode": 2
+                    },
+                    "Width": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return $prop('variable.ClassNameWidth');"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins",
+                  "ChildsPositioning": 0,
+                  "ChildsPositioningAlignment": 0,
+                  "GroupPadding": {},
+                  "ChildsMargin": {},
+                  "ChildAlignmentHorizontal": 0,
+                  "ChildAlignmentVertical": 0,
+                  "Childrens": [
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 11.0,
+                      "Text": "10.3k",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 0,
+                      "VerticalAlignment": 1,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 20.0,
+                      "Top": -3.0,
+                      "Visible": true,
+                      "Width": 30.0,
+                      "Name": "Value",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst sof = getStandingsClassProp(classIdx, 'SOF');\r\nreturn formatIRating(sof);"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.ImageItem, SimHub.Plugins",
+                      "Image": "SOF",
+                      "AutoSize": false,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 11.0,
+                      "Left": 2.0,
+                      "Top": 2.0,
+                      "Visible": true,
+                      "Width": 16.0,
+                      "Name": "Icon",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0
+                    }
+                  ],
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 110.0,
+                  "Top": 0.0,
+                  "Visible": true,
+                  "Width": 50.0,
+                  "Name": "SOF",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Left": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return $prop('variable.ClassNameWidth') + 5;"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                  "IsTextItem": true,
+                  "Font": "Roboto",
+                  "FontWeight": "Bold",
+                  "FontSize": 11.0,
+                  "Text": "GAP",
+                  "TextColor": "#FFFFFFFF",
+                  "HorizontalAlignment": 1,
+                  "VerticalAlignment": 1,
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 266.0,
+                  "Top": -3.0,
+                  "Visible": true,
+                  "Width": 35.0,
+                  "Name": "Gap",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Visible": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return isnull($prop('benofficial2.Standings.GapVisible'), true);"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                  "IsTextItem": true,
+                  "Font": "Roboto",
+                  "FontWeight": "Bold",
+                  "FontSize": 11.0,
+                  "Text": "BEST",
+                  "TextColor": "#FFFFFFFF",
+                  "HorizontalAlignment": 1,
+                  "VerticalAlignment": 1,
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 303.0,
+                  "Top": -3.0,
+                  "Visible": true,
+                  "Width": 65.0,
+                  "Name": "Best",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Visible": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return isnull($prop('benofficial2.Standings.BestVisible'), true);"
+                      },
+                      "Mode": 2
+                    },
+                    "Left": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return 303 + $prop('variable.GapOffset');"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                  "IsTextItem": true,
+                  "Font": "Roboto",
+                  "FontWeight": "Bold",
+                  "FontSize": 11.0,
+                  "Text": "LAST",
+                  "TextColor": "#FFFFFFFF",
+                  "HorizontalAlignment": 1,
+                  "VerticalAlignment": 1,
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 370.0,
+                  "Top": -3.0,
+                  "Visible": true,
+                  "Width": 65.0,
+                  "Name": "Last",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Visible": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return isnull($prop('benofficial2.Standings.LastVisible'), true);"
+                      },
+                      "Mode": 2
+                    },
+                    "Left": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return 370 + $prop('variable.GapOffset') + $prop('variable.BestOffset');"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.GroupItem, SimHub.Plugins",
+                  "ChildsPositioning": 0,
+                  "ChildsPositioningAlignment": 0,
+                  "GroupPadding": {},
+                  "ChildsMargin": {},
+                  "ChildAlignmentHorizontal": 0,
+                  "ChildAlignmentVertical": 0,
+                  "Childrens": [
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.TextItem, SimHub.Plugins",
+                      "IsTextItem": true,
+                      "Font": "Roboto",
+                      "FontWeight": "Bold",
+                      "FontSize": 11.0,
+                      "Text": "25",
+                      "TextColor": "#FFFFFFFF",
+                      "HorizontalAlignment": 0,
+                      "VerticalAlignment": 1,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 20.0,
+                      "Left": 13.0,
+                      "Top": -3.0,
+                      "Visible": true,
+                      "Width": 30.0,
+                      "Name": "Value",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0,
+                      "Bindings": {
+                        "Text": {
+                          "Formula": {
+                            "JSExt": 1,
+                            "Interpreter": 1,
+                            "Expression": "const classIdx = $prop('variable.ClassIdx');\r\nconst count = isnull(getStandingsClassProp(classIdx, 'DriverCount'), 0);\r\nreturn count;"
+                          },
+                          "Mode": 2
+                        }
+                      }
+                    },
+                    {
+                      "$type": "SimHub.Plugins.OutputPlugins.GraphicalDash.Models.ImageItem, SimHub.Plugins",
+                      "Image": "Helmet",
+                      "AutoSize": false,
+                      "BackgroundColor": "#00FFFFFF",
+                      "Height": 9.0,
+                      "Left": 0.0,
+                      "Top": 3.0,
+                      "Visible": true,
+                      "Width": 9.0,
+                      "Name": "Icon",
+                      "RenderingSkip": 0,
+                      "MinimumRefreshIntervalMS": 0.0
+                    }
+                  ],
+                  "BackgroundColor": "#00FFFFFF",
+                  "Height": 20.0,
+                  "Left": 165.0,
+                  "Top": 0.0,
+                  "Visible": true,
+                  "Width": 50.0,
+                  "Name": "Driver Count",
+                  "RenderingSkip": 0,
+                  "MinimumRefreshIntervalMS": 0.0,
+                  "Bindings": {
+                    "Left": {
+                      "Formula": {
+                        "JSExt": 0,
+                        "Interpreter": 1,
+                        "Expression": "return $prop('variable.ClassNameWidth') + 60;"
+                      },
+                      "Mode": 2
+                    }
+                  }
+                }
+              ],
+              "BackgroundColor": "#00FFFFFF",
+              "Height": 18.0,
+              "Left": 0.0,
+              "Top": 8.0,
+              "Visible": true,
+              "Width": 486.0,
+              "Name": "Header",
+              "RenderingSkip": 0,
+              "MinimumRefreshIntervalMS": 0.0,
+              "Bindings": {
+                "Visible": {
+                  "Formula": {
+                    "JSExt": 0,
+                    "Interpreter": 1,
+                    "Expression": "return isnull($prop('benofficial2.Standings.CarClassHeaderVisible'), true);"
+                  },
+                  "Mode": 2
+                }
+              }
+            }
+          ],
+          "Visible": true,
+          "Name": "Class Standings",
+          "RenderingSkip": 0,
+          "MinimumRefreshIntervalMS": 0.0
+        }
+      ],
+      "MinimumRefreshIntervalMS": 0.0
+    }
+  ],
+  "SnapToGrid": false,
+  "HideLabels": true,
+  "ShowForeground": true,
+  "ForegroundOpacity": 100.0,
+  "ShowBackground": true,
+  "BackgroundOpacity": 100.0,
+  "ShowBoundingRectangles": false,
+  "GridSize": 10,
+  "Images": [
+    {
+      "Name": "SOF",
+      "Extension": ".png",
+      "Modified": false,
+      "Optimized": true,
+      "Width": 266,
+      "Height": 199,
+      "Length": 2202,
+      "MD5": "0cebc57e989e3fdc1a8b7544b99b047b"
+    },
+    {
+      "Name": "Helmet",
+      "Extension": ".png",
+      "Modified": false,
+      "Optimized": true,
+      "Width": 99,
+      "Height": 87,
+      "Length": 1373,
+      "MD5": "7a03a232df04e517c33e35fd696b0e6c"
+    }
+  ],
+  "Metadata": {
+    "ScreenCount": 1.0,
+    "InGameScreensIndexs": [
+      0
+    ],
+    "IdleScreensIndexs": [
+      0
+    ],
+    "MainPreviewIndex": 0,
+    "IsOverlay": false,
+    "OverlaySizeWarning": false,
+    "MetadataVersion": 2.0,
+    "EnableOnDashboardMessaging": true,
+    "PitScreensIndexs": [],
+    "SimHubVersion": "9.7.11",
+    "Author": "twitch.tv/benofficial2",
+    "Width": 486.0,
+    "Height": 529.0,
+    "DashboardVersion": ""
+  },
+  "ShowOnScreenControls": true,
+  "IsOverlay": false,
+  "EnableClickThroughOverlay": true,
+  "EnableOnDashboardMessaging": true
+}
