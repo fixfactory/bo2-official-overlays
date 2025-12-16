@@ -1,11 +1,11 @@
 ; Define the installer name and output
 !define PRODUCT_NAME "benofficial2's Official Overlays"
 Name "${PRODUCT_NAME}"
-!define PRODUCT_VERSION "4.1"
+!define PRODUCT_VERSION "4.2 (beta1)"
 !define PRODUCT_PUBLISHER "benofficial2"
 !define PRODUCT_WEB_SITE "https://twitch.tv/benofficial2"
 !define PRODUCT_DIR_REGKEY "Software\bo2-official-overlays"
-!define SIMHUB_VERSION "9.10.11"
+!define SIMHUB_VERSION "9.10.15"
 
 ; Include Modern User Interface
 !include "MUI2.nsh"
