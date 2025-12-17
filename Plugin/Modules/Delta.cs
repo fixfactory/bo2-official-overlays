@@ -38,6 +38,7 @@ namespace benofficial2.Plugin
         public int LivePositionInClass { get; set; } = 0;
         public string Name { get; set; } = string.Empty;
         public double GapToPlayer { get; set; } = 0;
+        public double LapsToPlayer { get; set; } = 0;
         public TimeSpan LastLapTime { get; set; } = TimeSpan.Zero;
     }
 
@@ -80,6 +81,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: $"Delta.{aheadBehind}.LivePositionInClass", valueProvider: () => row.LivePositionInClass);
             plugin.AttachDelegate(name: $"Delta.{aheadBehind}.Name", valueProvider: () => row.Name);
             plugin.AttachDelegate(name: $"Delta.{aheadBehind}.GapToPlayer", valueProvider: () => row.GapToPlayer);
+            plugin.AttachDelegate(name: $"Delta.{aheadBehind}.LapsToPlayer", valueProvider: () => row.LapsToPlayer);
             plugin.AttachDelegate(name: $"Delta.{aheadBehind}.LastLapTime", valueProvider: () => row.LastLapTime);
         }
 
@@ -141,8 +143,22 @@ namespace benofficial2.Plugin
             row.Visible = driver.Position > 0;
             row.LivePositionInClass = livePositionInClass;
             row.Name = driver.Name;
-            row.GapToPlayer = driver.RelativeGapToPlayer;
             row.LastLapTime = driver.LastLapTime;
+
+            if (relativeIdx < 0)
+            {
+                Driver playerDriver = _driverModule.GetPlayerDriver();
+                if (playerDriver != null)
+                {
+                    row.GapToPlayer = playerDriver.GapToClassOpponentAhead;
+                    row.LapsToPlayer = playerDriver.LapsToClassOpponentAhead;
+                }
+            }
+            else
+            {
+                row.GapToPlayer = driver.GapToClassOpponentAhead;
+                row.LapsToPlayer = driver.LapsToClassOpponentAhead;
+            }
         }
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
@@ -156,6 +172,7 @@ namespace benofficial2.Plugin
             row.LivePositionInClass = 0;
             row.Name = string.Empty;
             row.GapToPlayer = 0;
+            row.LapsToPlayer = 0;
             row.LastLapTime = TimeSpan.Zero;
         }
     }
