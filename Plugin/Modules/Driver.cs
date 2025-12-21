@@ -154,6 +154,7 @@ namespace benofficial2.Plugin
         public int LapsToClassOpponentAhead { get; set; } = 0;
         public double GapToClassOpponentAhead { get; set; } = 0.0;
         public double RelativeGapToPlayer { get; set; } = 0.0;
+        public double RelativeDistanceToPlayer { get; set; } = 0.0;
         public double EstTime { get; set; } = 0.0;
         public int TireCompoundIdx { get; set; } = -1;
         public int PushToPassCount { get; set; } = 0;
@@ -979,6 +980,25 @@ namespace benofficial2.Plugin
         {
             DriversByCarIdx.TryGetValue(PlayerDriver.CarIdx, out Driver driver);
             return driver;
+        }
+
+        public Driver GetHighlightedDriver(bool fallbackToPlayer = true)
+        {
+            int highlightedCarIdx = -1;
+            if (HighlightedDriver.CarIdx >= 0)
+            {
+                highlightedCarIdx = HighlightedDriver.CarIdx;
+            }
+            else
+            {
+                if (!fallbackToPlayer)
+                    return null;
+
+                highlightedCarIdx = PlayerDriver.CarIdx;
+            }
+
+            DriversByCarIdx.TryGetValue(highlightedCarIdx, out Driver highlightedDriver);
+            return highlightedDriver;
         }
 
         public static string ConvertColorString(string input)

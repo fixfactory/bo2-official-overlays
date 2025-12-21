@@ -108,6 +108,9 @@ namespace benofficial2.Plugin
         public RelativeAhead Ahead = new RelativeAhead();
         public RelativeBehind Behind = new RelativeBehind();
 
+        public List<Driver> DriversAheadOnTrack { get; internal set; } = new List<Driver>();
+        public List<Driver> DriversBehindOnTrack { get; internal set; } = new List<Driver>();
+
         public override void Init(PluginManager pluginManager, benofficial2 plugin)
         {
             _driverModule = plugin.GetModule<DriverModule>();
@@ -173,6 +176,9 @@ namespace benofficial2.Plugin
                 return;
 
             _lastUpdateTime = data.FrameTime;
+
+            UpdateRelativeDistances(ref data);
+            UpdateDriversAheadBehindOnTrack(ref data);
 
             UpdateRelative(ref data, Ahead.Rows, RelativeAhead.MaxRows, data.NewData.OpponentsAheadOnTrack);
             UpdateRelative(ref data, Behind.Rows, RelativeBehind.MaxRows, data.NewData.OpponentsBehindOnTrack);
@@ -268,6 +274,58 @@ namespace benofficial2.Plugin
                     timeDiff -= playerDriver.CarClassEstLapTime;
 
                 opponentDriver.RelativeGapToPlayer = timeDiff;
+            }
+        }
+
+        public void UpdateRelativeDistances(ref GameData data)
+        {
+            Driver highlightedDriver = _driverModule.GetHighlightedDriver();
+            if (highlightedDriver == null)
+                return;
+
+            bool isLoneQual = data.NewData.SessionTypeName.IndexOf("Lone Qual") != -1;
+
+            foreach (Driver driver in _driverModule.Drivers.Values)
+            {
+                if (driver.CarIdx == highlightedDriver.CarIdx || driver.IsPaceCar || !driver.IsConnected || driver.InPit || isLoneQual)
+                {
+                    driver.RelativeDistanceToPlayer = 0.0;
+                    continue;
+                }
+                    
+                driver.RelativeDistanceToPlayer = GetRelativeTrackDistance(highlightedDriver.TrackPositionPercent, driver.TrackPositionPercent);
+            }
+        }
+
+        public void UpdateDriversAheadBehindOnTrack(ref GameData data)
+        {
+            DriversBehindOnTrack = _driverModule.Drivers.Values
+                .Where(d => d.RelativeDistanceToPlayer > 0)
+                .OrderBy(d => d.RelativeDistanceToPlayer)
+                .ToList();
+
+            DriversAheadOnTrack = _driverModule.Drivers.Values
+                .Where(d => d.RelativeDistanceToPlayer < 0)
+                .OrderBy(d => Math.Abs(d.RelativeDistanceToPlayer))
+                .ToList();
+        }
+
+        public static double GetRelativeTrackDistance(double currentTrackPosPct, double otherTrackPosPct)
+        {
+            if (currentTrackPosPct < otherTrackPosPct)
+            {
+                if (otherTrackPosPct - currentTrackPosPct < 0.5)
+                    return (otherTrackPosPct - currentTrackPosPct) * -1;
+                else
+                    return 1.0 - otherTrackPosPct + currentTrackPosPct;
+            }
+            else
+            {
+                if (currentTrackPosPct - otherTrackPosPct <= 0.5)
+                    return currentTrackPosPct - otherTrackPosPct;
+                else
+                    return (1.0 - currentTrackPosPct + otherTrackPosPct) * -1;
+
             }
         }
 
