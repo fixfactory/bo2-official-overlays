@@ -167,8 +167,15 @@ namespace benofficial2.Plugin
         public bool OutLap { get; internal set; } = false;
         public int StintLap { get; internal set; } = 0;
         public string Number { get; internal set; } = "";
+        public string Name { get; set; } = string.Empty;
         public string CarBrand { get; internal set; } = "";
         public string CountryCode { get; internal set; } = "";
+        public int SessionFlags { get; set; } = 0;
+        public int IRating { get; set; } = 0;
+        public int IRatingChange { get; set; } = 0;
+        public string License { get; set; } = string.Empty;
+        public double SafetyRating { get; set; } = 0.0;
+        public int Position { get; set; } = 0;
         public int LivePositionInClass { get; internal set; } = 0;
         public bool HadWhiteFlag { get; internal set; } = false;
         public bool HadCheckeredFlag { get; internal set; } = false;
@@ -178,21 +185,27 @@ namespace benofficial2.Plugin
         public double CurrentLapHighPrecision { get; set; } = -1;
         public int CurrentLap { get; set; } = 0;
         public int TeamIncidentCount { get; set; } = 0;
-        public int IRatingChange { get; set; } = 0;
+        public string CarClassColor { get; set; } = string.Empty;
         public string TireCompound { get; set; } = string.Empty;
+        public int PushToPassCount { get; set; } = 0;
+        public bool PushToPassActivated { get; set; } = false;
     }
 
     public class HighlightedDriver
     {
         public int CarIdx { get; set; } = -1;
+        public bool OutLap { get; internal set; } = false;
         public string Number { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string CarBrand { get; set; } = string.Empty;
         public string CarName { get; set; } = string.Empty;
         public string CountryCode { get; set; } = string.Empty;
+        public int SessionFlags { get; set; } = 0;
         public int IRating { get; set; } = 0;
+        public int IRatingChange { get; set; } = 0;
         public string License { get; set; } = string.Empty;
         public double SafetyRating { get; set; } = 0.0;
+        public int Position { get; set; } = 0;
         public int LivePositionInClass { get; set; } = 0;
         public int CurrentLap { get; set; } = 0;
         public double CurrentLapHighPrecision { get; set; } = 0.0;
@@ -201,6 +214,9 @@ namespace benofficial2.Plugin
         public string CarClassTextColor { get; set; } = string.Empty;
         public TimeSpan LastLapTime { get; internal set; } = TimeSpan.Zero;
         public TimeSpan BestLapTime { get; internal set; } = TimeSpan.Zero;
+        public string TireCompound { get; set; } = string.Empty;
+        public int PushToPassCount { get; set; } = 0;
+        public bool PushToPassActivated { get; set; } = false;
     }
 
     public class DriverModule : PluginModuleBase
@@ -245,40 +261,60 @@ namespace benofficial2.Plugin
 
             HighlightedDriverSettings = plugin.ReadCommonSettings<HighlightedDriverSettings>("HighlightedDriverSettings", () => new HighlightedDriverSettings());
 
+            plugin.AttachDelegate(name: "Player.CarIdx", valueProvider: () => PlayerDriver.CarIdx);
             plugin.AttachDelegate(name: "Player.OutLap", valueProvider: () => PlayerDriver.OutLap);
             plugin.AttachDelegate(name: "Player.StintLap", valueProvider: () => PlayerDriver.StintLap);
             plugin.AttachDelegate(name: "Player.Number", valueProvider: () => PlayerDriver.Number);
+            plugin.AttachDelegate(name: "Player.Name", valueProvider: () => PlayerDriver.Name);
             plugin.AttachDelegate(name: "Player.CarBrand", valueProvider: () => PlayerDriver.CarBrand);
             plugin.AttachDelegate(name: "Player.CountryCode", valueProvider: () => PlayerDriver.CountryCode);
+            plugin.AttachDelegate(name: "Player.SessionFlags", valueProvider: () => PlayerDriver.SessionFlags);
+            plugin.AttachDelegate(name: "Player.Position", valueProvider: () => PlayerDriver.Position);
             plugin.AttachDelegate(name: "Player.LivePositionInClass", valueProvider: () => PlayerDriver.LivePositionInClass);
+            plugin.AttachDelegate(name: "Player.CurrentLap", valueProvider: () => PlayerDriver.CurrentLap);
+            plugin.AttachDelegate(name: "Player.CurrentLapHighPrecision", valueProvider: () => PlayerDriver.CurrentLapHighPrecision);
             plugin.AttachDelegate(name: "Player.LastLapTime", valueProvider: () => PlayerDriver.LastLapTime);
             plugin.AttachDelegate(name: "Player.BestLapTime", valueProvider: () => PlayerDriver.BestLapTime);
             plugin.AttachDelegate(name: "Player.AvgLapTime", valueProvider: () => PlayerDriver.AvgLapTime);
             plugin.AttachDelegate(name: "Player.CurrentLap", valueProvider: () => PlayerDriver.CurrentLap);
             plugin.AttachDelegate(name: "Player.TeamIncidentCount", valueProvider: () => PlayerDriver.TeamIncidentCount);
+            plugin.AttachDelegate(name: "Player.CarClassColor", valueProvider: () => PlayerDriver.CarClassColor);
+            plugin.AttachDelegate(name: "Player.IRating", valueProvider: () => PlayerDriver.IRating);
             plugin.AttachDelegate(name: "Player.iRatingChange", valueProvider: () => PlayerDriver.IRatingChange);
+            plugin.AttachDelegate(name: "Player.License", valueProvider: () => PlayerDriver.License);
+            plugin.AttachDelegate(name: "Player.SafetyRating", valueProvider: () => PlayerDriver.SafetyRating);
             plugin.AttachDelegate(name: "Player.TireCompound", valueProvider: () => PlayerDriver.TireCompound);
+            plugin.AttachDelegate(name: "Player.PushToPassCount", valueProvider: () => PlayerDriver.PushToPassCount);
+            plugin.AttachDelegate(name: "Player.PushToPassActivated", valueProvider: () => PlayerDriver.PushToPassActivated);
             plugin.AttachDelegate(name: "Highlighted.HideWhenInCar", valueProvider: () => HighlightedDriverSettings.HideWhenInCar);
             plugin.AttachDelegate(name: "Highlighted.HideWhenUIVisible", valueProvider: () => HighlightedDriverSettings.HideWhenUIVisible);
             plugin.AttachDelegate(name: "Highlighted.CarBrandVisible", valueProvider: () => HighlightedDriverSettings.CarBrandVisible);
             plugin.AttachDelegate(name: "Highlighted.Width", valueProvider: () => HighlightedDriverSettings.Width);
             plugin.AttachDelegate(name: "Highlighted.BackgroundOpacity", valueProvider: () => HighlightedDriverSettings.BackgroundOpacity);
             plugin.AttachDelegate(name: "Highlighted.CarIdx", valueProvider: () => HighlightedDriver.CarIdx);
+            plugin.AttachDelegate(name: "Highlighted.OutLap", valueProvider: () => HighlightedDriver.OutLap);
             plugin.AttachDelegate(name: "Highlighted.Number", valueProvider: () => HighlightedDriver.Number);
             plugin.AttachDelegate(name: "Highlighted.Name", valueProvider: () => HighlightedDriver.Name);
             plugin.AttachDelegate(name: "Highlighted.CarBrand", valueProvider: () => HighlightedDriver.CarBrand);
             plugin.AttachDelegate(name: "Highlighted.CarName", valueProvider: () => HighlightedDriver.CarName);
+            plugin.AttachDelegate(name: "Highlighted.SessionFlags", valueProvider: () => HighlightedDriver.SessionFlags);
             plugin.AttachDelegate(name: "Highlighted.CountryCode", valueProvider: () => HighlightedDriver.CountryCode);
             plugin.AttachDelegate(name: "Highlighted.IRating", valueProvider: () => HighlightedDriver.IRating);
+            plugin.AttachDelegate(name: "Highlighted.iRatingChange", valueProvider: () => HighlightedDriver.IRatingChange);
             plugin.AttachDelegate(name: "Highlighted.License", valueProvider: () => HighlightedDriver.License);
             plugin.AttachDelegate(name: "Highlighted.SafetyRating", valueProvider: () => HighlightedDriver.SafetyRating);
+            plugin.AttachDelegate(name: "Highlighted.Position", valueProvider: () => HighlightedDriver.Position);
             plugin.AttachDelegate(name: "Highlighted.LivePositionInClass", valueProvider: () => HighlightedDriver.LivePositionInClass);
             plugin.AttachDelegate(name: "Highlighted.CurrentLap", valueProvider: () => HighlightedDriver.CurrentLap);
+            plugin.AttachDelegate(name: "Highlighted.CurrentLapHighPrecision", valueProvider: () => HighlightedDriver.CurrentLapHighPrecision);
             plugin.AttachDelegate(name: "Highlighted.TeamIncidentCount", valueProvider: () => HighlightedDriver.TeamIncidentCount);
             plugin.AttachDelegate(name: "Highlighted.CarClassColor", valueProvider: () => HighlightedDriver.CarClassColor);
             plugin.AttachDelegate(name: "Highlighted.CarClassTextColor", valueProvider: () => HighlightedDriver.CarClassTextColor);
             plugin.AttachDelegate(name: "Highlighted.LastLapTime", valueProvider: () => HighlightedDriver.LastLapTime);
             plugin.AttachDelegate(name: "Highlighted.BestLapTime", valueProvider: () => HighlightedDriver.BestLapTime);
+            plugin.AttachDelegate(name: "Highlighted.TireCompound", valueProvider: () => HighlightedDriver.TireCompound);
+            plugin.AttachDelegate(name: "Highlighted.PushToPassCount", valueProvider: () => HighlightedDriver.PushToPassCount);
+            plugin.AttachDelegate(name: "Highlighted.PushToPassActivated", valueProvider: () => HighlightedDriver.PushToPassActivated);
         }
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
@@ -479,8 +515,12 @@ namespace benofficial2.Plugin
                     PlayerDriver.OutLap = driver.OutLap;
                     PlayerDriver.StintLap = driver.StintLap;
                     PlayerDriver.Number = driver.CarNumber;
+                    PlayerDriver.Name = driver.Name;
                     PlayerDriver.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName);
+                    PlayerDriver.CarClassColor = driver.CarClassColor;
                     PlayerDriver.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+                    PlayerDriver.SessionFlags = driver.SessionFlags;
+                    PlayerDriver.Position = driver.Position;
                     PlayerDriver.LastLapTime = driver.LastLapTime;
                     PlayerDriver.BestLapTime = driver.BestLapTime;
                     PlayerDriver.AvgLapTime = driver.AvgLapTime.GetAverageLapTime();
@@ -488,6 +528,12 @@ namespace benofficial2.Plugin
                     PlayerDriver.CurrentLap = Math.Max(0, driver.Lap > 0 ? driver.Lap : (int)Math.Ceiling(driver.CurrentLapHighPrecision));
                     PlayerDriver.TeamIncidentCount = driver.TeamIncidentCount;
                     PlayerDriver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                    PlayerDriver.PushToPassCount = driver.PushToPassCount;
+                    PlayerDriver.PushToPassActivated = driver.PushToPassActivated;
+                    PlayerDriver.IRating = driver.IRating;
+                    PlayerDriver.IRatingChange = driver.IRatingChange;
+                    PlayerDriver.License = driver.License;
+                    PlayerDriver.SafetyRating = driver.SafetyRating;
 
                     if (_sessionModule.Race)
                     {
@@ -504,12 +550,17 @@ namespace benofficial2.Plugin
                     }
                     else
                     {
+                        HighlightedDriver.OutLap = driver.OutLap;
                         HighlightedDriver.Name = driver.Name;
                         HighlightedDriver.Number = driver.CarNumber;
                         HighlightedDriver.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName);
                         HighlightedDriver.CarName = driver.CarName;
+                        HighlightedDriver.CarClassColor = driver.CarClassColor;
                         HighlightedDriver.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+                        HighlightedDriver.SessionFlags = driver.SessionFlags;
+                        HighlightedDriver.Position = driver.Position;
                         HighlightedDriver.IRating = driver.IRating;
+                        HighlightedDriver.IRatingChange = driver.IRatingChange;
                         HighlightedDriver.License = driver.License;
                         HighlightedDriver.SafetyRating = driver.SafetyRating;
                         HighlightedDriver.CurrentLap = Math.Max(0, driver.Lap > 0 ? driver.Lap : (int)Math.Ceiling(driver.CurrentLapHighPrecision));
@@ -517,14 +568,14 @@ namespace benofficial2.Plugin
                         HighlightedDriver.TeamIncidentCount = driver.TeamIncidentCount;
                         HighlightedDriver.LastLapTime = driver.LastLapTime;
                         HighlightedDriver.BestLapTime = driver.BestLapTime;
+                        HighlightedDriver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                        HighlightedDriver.PushToPassCount = driver.PushToPassCount;
+                        HighlightedDriver.PushToPassActivated = driver.PushToPassActivated;
                     }                        
                 }
             }
 
             UpdateQualResult(ref data);
-
-            // Now done in standings module
-            //UpdateGaps(ref data);
         }
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
@@ -920,29 +971,21 @@ namespace benofficial2.Plugin
             }
         }
 
-        private void UpdateGaps(ref GameData data)
-        {
-            foreach (Opponent opponent in data.NewData.Opponents)
-            {
-                if (!Drivers.TryGetValue(opponent.CarNumber, out Driver driver))
-                {
-                    Debug.Assert(false);
-                    continue;
-                }
-
-                driver.LapsToClassLeader = opponent.LapsToClassLeader ?? 0;
-                driver.GapToClassLeader = opponent.GaptoClassLeader ?? 0.0;
-            }
-        }
-
         private void BlankPlayerDriver()
         {
             PlayerDriver.CarIdx = -1;
             PlayerDriver.OutLap = false;
             PlayerDriver.StintLap = 0;
             PlayerDriver.Number = "";
+            PlayerDriver.Name = "";
             PlayerDriver.CarBrand = "";
             PlayerDriver.CountryCode = "";
+            PlayerDriver.SessionFlags = 0;
+            PlayerDriver.IRating = 0;
+            PlayerDriver.IRatingChange = 0;
+            PlayerDriver.License = string.Empty;
+            PlayerDriver.SafetyRating = 0.0;
+            PlayerDriver.Position = 0;
             PlayerDriver.LivePositionInClass = 0;
             PlayerDriver.HadWhiteFlag = false;
             PlayerDriver.HadCheckeredFlag = false;
@@ -952,20 +995,26 @@ namespace benofficial2.Plugin
             PlayerDriver.CurrentLapHighPrecision = -1;
             PlayerDriver.CurrentLap = 0;
             PlayerDriver.TeamIncidentCount = 0;
-            PlayerDriver.IRatingChange = 0;
+            PlayerDriver.CarClassColor = string.Empty;
             PlayerDriver.TireCompound = string.Empty;
+            PlayerDriver.PushToPassCount = 0;
+            PlayerDriver.PushToPassActivated = false;
         }
         private void BlankHighlightedDriver()
         {
             HighlightedDriver.CarIdx = -1;
+            HighlightedDriver.OutLap = false;
             HighlightedDriver.Number = string.Empty;
             HighlightedDriver.Name = string.Empty;
             HighlightedDriver.CarBrand = string.Empty;
             HighlightedDriver.CarName = string.Empty;
             HighlightedDriver.CountryCode = string.Empty;
+            HighlightedDriver.SessionFlags = 0;
             HighlightedDriver.IRating = 0;
+            HighlightedDriver.IRatingChange = 0;
             HighlightedDriver.License = string.Empty;
             HighlightedDriver.SafetyRating = 0.0;
+            HighlightedDriver.Position = 0;
             HighlightedDriver.LivePositionInClass = 0;
             HighlightedDriver.CurrentLap = 0;
             HighlightedDriver.CurrentLapHighPrecision = -1;
@@ -974,6 +1023,9 @@ namespace benofficial2.Plugin
             HighlightedDriver.CarClassTextColor = string.Empty;
             HighlightedDriver.LastLapTime = TimeSpan.Zero;
             HighlightedDriver.BestLapTime = TimeSpan.Zero;
+            HighlightedDriver.TireCompound = string.Empty;
+            HighlightedDriver.PushToPassCount = 0;
+            HighlightedDriver.PushToPassActivated = false;
         }
 
         public Driver GetPlayerDriver()

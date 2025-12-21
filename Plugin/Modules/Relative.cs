@@ -53,8 +53,8 @@ namespace benofficial2.Plugin
     {
         public bool RowVisible { get; set; } = false;
         public int LivePositionInClass { get; set; } = 0;
-        public string ClassColor { get; set; } = string.Empty;
-        public string ClassTextColor { get; set; } = string.Empty;
+        public string CarClassColor { get; set; } = string.Empty;
+        public string CarClassTextColor { get; set; } = string.Empty;
         public string Number { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string CarBrand { get; set; } = string.Empty;
@@ -146,8 +146,8 @@ namespace benofficial2.Plugin
                 RelativeRow row = rows[rowIdx];
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.RowVisible", valueProvider: () => row.RowVisible);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.LivePositionInClass", valueProvider: () => row.LivePositionInClass);
-                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.ClassColor", valueProvider: () => row.ClassColor);
-                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.ClassTextColor", valueProvider: () => row.ClassTextColor);
+                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CarClassColor", valueProvider: () => row.CarClassColor);
+                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CarClassTextColor", valueProvider: () => row.CarClassTextColor);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.Number", valueProvider: () => row.Number);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.Name", valueProvider: () => row.Name);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CarBrand", valueProvider: () => row.CarBrand);
@@ -180,27 +180,24 @@ namespace benofficial2.Plugin
             UpdateRelativeDistances(ref data);
             UpdateDriversAheadBehindOnTrack(ref data);
 
-            UpdateRelative(ref data, Ahead.Rows, RelativeAhead.MaxRows, data.NewData.OpponentsAheadOnTrack);
-            UpdateRelative(ref data, Behind.Rows, RelativeBehind.MaxRows, data.NewData.OpponentsBehindOnTrack);
+            UpdateRelative(ref data, Ahead.Rows, RelativeAhead.MaxRows, DriversAheadOnTrack);
+            UpdateRelative(ref data, Behind.Rows, RelativeBehind.MaxRows, DriversBehindOnTrack);
         }
 
-        public void UpdateRelative(ref GameData data, List<RelativeRow> rows, int maxRows, List<Opponent> opponents)
+        public void UpdateRelative(ref GameData data, List<RelativeRow> rows, int maxRows, List<Driver> drivers)
         {
             for (int rowIdx = 0; rowIdx < maxRows; rowIdx++)
             {
                 RelativeRow row = rows[rowIdx];
 
-                if (rowIdx >= opponents.Count)
+                if (rowIdx >= drivers.Count)
                 {
                     BlankRow(row);
                     continue;
                 }
 
-                Opponent opponent = opponents[rowIdx];
-                Driver driver = null;
-
-                _driverModule.Drivers?.TryGetValue(opponent.CarNumber, out driver);
-                if (driver == null || !IsValidRow(opponent))
+                Driver driver = drivers[rowIdx];
+                if (driver == null || !IsValidRow(driver))
                 {
                     BlankRow(row);
                     continue;
@@ -208,8 +205,8 @@ namespace benofficial2.Plugin
 
                 row.RowVisible = true;
                 row.LivePositionInClass = driver.LivePositionInClass;
-                row.ClassColor = driver.CarClassColor;
-                row.ClassTextColor = "#000000";
+                row.CarClassColor = driver.CarClassColor;
+                row.CarClassTextColor = "#000000";
                 row.Number = driver.CarNumber;
                 row.Name = driver.Name;
                 row.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName); ;
@@ -236,42 +233,34 @@ namespace benofficial2.Plugin
 
         public void UpdateGaps(ref GameData data)
         {
-            _driverModule.DriversByCarIdx.TryGetValue(_driverModule.PlayerDriver.CarIdx, out Driver playerDriver);
-            if (playerDriver == null)
+            Driver highlightedDriver = _driverModule.GetHighlightedDriver(false);
+            if (highlightedDriver == null)
                 return;
 
-            foreach (Opponent opponent in data.NewData.OpponentsAheadOnTrack)
+            foreach (Driver opponentDriver in DriversAheadOnTrack)
             {
-                _driverModule.Drivers.TryGetValue(opponent.CarNumber, out Driver opponentDriver);
-                if (opponentDriver == null)
-                    continue;
-
                 // Scale opponent estimated time to player's car class
-                double opponentEstTimeScaled = GetEstTimeScaled(opponentDriver, playerDriver);
+                double opponentEstTimeScaled = GetEstTimeScaled(opponentDriver, highlightedDriver);
 
-                double timeDiff = GetEstTimeDiff(playerDriver.CarClassEstLapTime, opponentEstTimeScaled, playerDriver.EstTime);
+                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTimeScaled, highlightedDriver.EstTime);
 
                 // Make sure timeDiff is positive
                 while (timeDiff < 0.0)
-                    timeDiff += playerDriver.CarClassEstLapTime;
+                    timeDiff += highlightedDriver.CarClassEstLapTime;
 
                 opponentDriver.RelativeGapToPlayer = timeDiff;
             }
 
-            foreach (Opponent opponent in data.NewData.OpponentsBehindOnTrack)
+            foreach (Driver opponentDriver in DriversBehindOnTrack)
             {
-                _driverModule.Drivers.TryGetValue(opponent.CarNumber, out Driver opponentDriver);
-                if (opponentDriver == null)
-                    continue;
-
                 // Scale opponent estimated time to player's car class
-                double opponentEstTimeScaled = GetEstTimeScaled(opponentDriver, playerDriver);
+                double opponentEstTimeScaled = GetEstTimeScaled(opponentDriver, highlightedDriver);
 
-                double timeDiff = GetEstTimeDiff(playerDriver.CarClassEstLapTime, opponentEstTimeScaled, playerDriver.EstTime);
+                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTimeScaled, highlightedDriver.EstTime);
 
                 // Make sure timeDiff is negative
                 while (timeDiff > 0.0)
-                    timeDiff -= playerDriver.CarClassEstLapTime;
+                    timeDiff -= highlightedDriver.CarClassEstLapTime;
 
                 opponentDriver.RelativeGapToPlayer = timeDiff;
             }
@@ -279,7 +268,7 @@ namespace benofficial2.Plugin
 
         public void UpdateRelativeDistances(ref GameData data)
         {
-            Driver highlightedDriver = _driverModule.GetHighlightedDriver();
+            Driver highlightedDriver = _driverModule.GetHighlightedDriver(false);
             if (highlightedDriver == null)
                 return;
 
@@ -299,6 +288,14 @@ namespace benofficial2.Plugin
 
         public void UpdateDriversAheadBehindOnTrack(ref GameData data)
         {
+            Driver highlightedDriver = _driverModule.GetHighlightedDriver(false);
+            if (highlightedDriver == null)
+            {
+                DriversBehindOnTrack = new List<Driver>();
+                DriversAheadOnTrack = new List<Driver>();
+                return;
+            }
+
             DriversBehindOnTrack = _driverModule.Drivers.Values
                 .Where(d => d.RelativeDistanceToPlayer > 0)
                 .OrderBy(d => d.RelativeDistanceToPlayer)
@@ -367,8 +364,8 @@ namespace benofficial2.Plugin
         {
             row.RowVisible = false;
             row.LivePositionInClass = 0;
-            row.ClassColor = string.Empty;
-            row.ClassTextColor = string.Empty;
+            row.CarClassColor = string.Empty;
+            row.CarClassTextColor = string.Empty;
             row.Number = string.Empty;
             row.Name = string.Empty;
             row.CarBrand = string.Empty;
@@ -383,7 +380,7 @@ namespace benofficial2.Plugin
             row.LastLapTime = TimeSpan.Zero;
             row.SessionFlags = 0;
         }
-        public bool IsValidRow(Opponent opponent)
+        public bool IsValidRow(Driver driver)
         {
             return true;
         }
