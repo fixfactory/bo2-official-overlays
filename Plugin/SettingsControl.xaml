@@ -517,6 +517,13 @@
                                 IsChecked="{Binding Plugin.Modules[TelemetryModule].Settings.PedalsValuesVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 Show Pedals Values
                             </styles:SHToggleCheckbox>
+
+                            <styles:SHToggleCheckbox 
+                                ToolTip="Blink the pedal input when assist (ABS or TC) is active." 
+                                HorizontalAlignment="Left" Margin="10,0,4,8"
+                                IsChecked="{Binding Plugin.Modules[TelemetryModule].Settings.BlinkWhenAssistActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                Blink when Assist Active
+                            </styles:SHToggleCheckbox>
                         </StackPanel>
 
                         <styles:SHToggleCheckbox 
