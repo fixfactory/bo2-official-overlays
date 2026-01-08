@@ -1,6 +1,6 @@
 /*
     benofficial2's Official Overlays
-    Copyright (C) 2023-2025 benofficial2
+    Copyright (C) 2023-2026 benofficial2
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

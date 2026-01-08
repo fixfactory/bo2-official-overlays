@@ -1,6 +1,6 @@
 ﻿/*
     benofficial2's Official Overlays
-    Copyright (C) 2025 benofficial2
+    Copyright (C) 2025-2026 benofficial2
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("benofficial2")]
 [assembly: AssemblyProduct("benofficial2.Plugin")]
-[assembly: AssemblyCopyright("Copyright © 2025")]
+[assembly: AssemblyCopyright("Copyright © 2025-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
