@@ -96,11 +96,6 @@ Section "Relative" SEC_FOLDER4
   File /r "..\Overlays\benofficial2 - iRacing Relative\*.*"
 SectionEnd
 
-Section "Standings" SEC_FOLDER5
-  SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Standings"
-  File /r "..\Overlays\benofficial2 - iRacing Standings\*.*"
-SectionEnd
-
 Section "Track Map" SEC_FOLDER6
   SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Map"
   File /r "..\Overlays\benofficial2 - iRacing Track Map\*.*"
@@ -193,7 +188,6 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER2} "Install iRacing Delta overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER3} "Install iRacing Inputs overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER4} "Install iRacing Relative overlay"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER5} "Install iRacing Standings overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER6} "Install iRacing Track Map overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER7} "Install iRacing Setup Cover overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER8} "Install Twitch Chat overlay"
