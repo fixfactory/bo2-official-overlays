@@ -8,6 +8,7 @@ Plugin/obj/
 Plugin/.vs/
 Plugin/benofficial2.Tests/bin/
 Plugin/benofficial2.Tests/obj/
+__pycache__/
 
 # Ignore all VS Code workspace files
 *.code-workspace
