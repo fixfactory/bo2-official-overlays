@@ -97,7 +97,7 @@ namespace benofficial2.Plugin
     public class RelativeModule : PluginModuleBase
     {
         private DateTime _lastUpdateTime = DateTime.MinValue;
-        private TimeSpan _updateInterval = TimeSpan.FromMilliseconds(500);
+        private TimeSpan _updateInterval = TimeSpan.FromMilliseconds(100);
 
         private DriverModule _driverModule = null;
         private CarModule _carModule = null;
