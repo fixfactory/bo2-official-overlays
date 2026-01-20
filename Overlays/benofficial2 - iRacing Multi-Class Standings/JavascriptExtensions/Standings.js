@@ -72,78 +72,72 @@ function getLapTimingVisible(classIdx, rowIdx)
 function getLicenseColor(classIdx, rowIdx)
 {
     const license = isnull(getStandingsProp(classIdx, rowIdx, 'License'), 'R');
+    if (license == 'P')
+        return '#7C00FF'
+
     if (license == 'A')
-    {
         return '#006EFF'
-    }
-    else if (license == 'B')
-    {
+
+    if (license == 'B')
         return '#33CC00'
-    }
-    else if (license == 'C')
-    {
+
+    if (license == 'C')
         return '#FFCC00'
-    }
-    else if (license == 'D')
-    {
+
+    if (license == 'D')
         return '#FF6600'
-    }
-    else if (license == 'R')
-    {
+
+    if (license == 'R')
         return '#E1251B'
-    }
+
     return '#808085'
 }
 
 function getLicenseTextColor(classIdx, rowIdx)
 {
     const license = isnull(getStandingsProp(classIdx, rowIdx, 'License'), 'R');
+    if (license == 'P')
+        return '#B066FF'
+
     if (license == 'A')
-    {
         return '#66A8FF'
-    }
-    else if (license == 'B')
-    {
+
+    if (license == 'B')
         return '#85E066'
-    }
-    else if (license == 'C')
-    {
+
+    if (license == 'C')
         return '#FFE066'
-    }
-    else if (license == 'D')
-    {
+
+    if (license == 'D')
         return '#FFA366'
-    }
-    else if (license == 'R')
-    {
+
+    if (license == 'R')
         return '#ED7C66'
-    }
+
     return '#AEAEB0'
 }
 
 function getLicenseBackColor(classIdx, rowIdx)
 {
     const license = isnull(getStandingsProp(classIdx, rowIdx, 'License'), 'R');
+    if (license == 'P')
+        return '#35036F'
+
     if (license == 'A')
-    {
         return '#032F6F'
-    }
-    else if (license == 'B')
-    {
+
+    if (license == 'B')
         return '#175509'
-    }
-    else if (license == 'C')
-    {
+
+    if (license == 'C')
         return '#50410A'
-    }
-    else if (license == 'D')
-    {
+
+    if (license == 'D')
         return '#692C09'
-    }
-    else if (license == 'R')
-    {
+
+    if (license == 'R')
         return '#5D1214'
-    }
+
     return '#37373F'
 }
 

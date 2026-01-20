@@ -113,7 +113,7 @@ function formatSafetyRating(license, sr)
     if (Number(sr) <= 0.01)
         return rating + '--'
     
-    return rating + truncateToDecimal(sr, 1)
+    return rating + truncateToDecimal(Number(sr), 1)
 }
 
 function formatIRating(iRating)
@@ -123,3 +123,4 @@ function formatIRating(iRating)
     
     return truncateToDecimal(Number(iRating) / 1000, 1) + 'k';
 }
+

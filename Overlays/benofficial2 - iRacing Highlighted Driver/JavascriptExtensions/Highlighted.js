@@ -24,5 +24,16 @@ function truncateToDecimal(num, decimals)
 
 function formatIRating(iRating)
 {
+    if (Number(iRating) / 1000 <= 0.01)
+        return '--'
+
     return truncateToDecimal(Number(iRating) / 1000, 1) + 'k';
+}
+
+function formatSafetyRating(safetyRating)
+{
+    if (Number(safetyRating) <= 0.01)
+        return '--'
+    
+    return truncateToDecimal(Number(safetyRating), 1)
 }
