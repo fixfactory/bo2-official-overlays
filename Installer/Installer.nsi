@@ -171,6 +171,11 @@ Section "Relative Humidity" SEC_FOLDER20
   File /r "..\Overlays\benofficial2 - iRacing Relative Humidity\*.*"
 SectionEnd
 
+Section "Track Rubber" SEC_FOLDER21
+  SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Rubber"
+  File /r "..\Overlays\benofficial2 - iRacing Track Rubber\*.*"
+SectionEnd
+
 Section "Plugin" SEC_PLUGIN
   SectionIn RO
   WriteUninstaller "$INSTDIR\bo2-official-overlays-uninstall.exe"
@@ -218,6 +223,7 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER18} "Install iRacing Track Temperature overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER19} "Install iRacing Air Temperature overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER20} "Install iRacing Relative Humidity overlay"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER21} "Install iRacing Track Rubber overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PLUGIN} "Install necessary files such as the plugin, license and uninstaller"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
@@ -243,6 +249,7 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Temperature"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Air Temperature"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Relative Humidity"
+  RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Rubber"
   RMDir /r "$INSTDIR\ImageLibrary\benofficial2"
       
   ; Remove the uninstaller itself

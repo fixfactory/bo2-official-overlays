@@ -91,6 +91,7 @@ namespace benofficial2.Plugin
         public double MaxFuelPct { get; internal set; } = 1.0;
         public bool TeamRacing { get; internal set; } = false;
         public string SubType { get; internal set; } = string.Empty;
+        public double TrackRubberPct { get; internal set; } = 0.0;
 
         public override int UpdatePriority => 10;
 
@@ -111,6 +112,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Session.TeamRacing", valueProvider: () => TeamRacing);
             plugin.AttachDelegate(name: "Session.LapsTotal", valueProvider: () => SessionLapsTotal);
             plugin.AttachDelegate(name: "Session.SubType", valueProvider: () => SubType);
+            plugin.AttachDelegate(name: "Session.TrackRubberPct", valueProvider: () => TrackRubberPct);
         }
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
@@ -152,17 +154,21 @@ namespace benofficial2.Plugin
                 {
                     RawDataHelper.TryGetSessionData<string>(ref data, out string sessionSubType, "SessionInfo", "Sessions", State.CurrentSessionIdx, "SessionSubType");
                     SubType = sessionSubType;
+
+                    RawDataHelper.TryGetSessionData<string>(ref data, out string rubberState, "SessionInfo", "Sessions", State.CurrentSessionIdx, "SessionTrackRubberState");
+                    TrackRubberPct = ParseTrackRubberPct(rubberState);
                 }
                 else
                 {
                     SubType = string.Empty;
+                    TrackRubberPct = 0.0;
                 }
 
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int sessionTimeTotal, "SessionTimeTotal");
                 SessionTimeTotal = TimeSpan.FromSeconds(sessionTimeTotal);
 
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int totalLaps, "SessionLapsTotal");
-                SessionLapsTotal = (totalLaps > 0) && (totalLaps < 20000) ? totalLaps : 0;
+                SessionLapsTotal = (totalLaps > 0) && (totalLaps < 20000) ? totalLaps : 0;               
             }
 
             // Determine if replay is playing.
@@ -262,6 +268,34 @@ namespace benofficial2.Plugin
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
         {
+        }
+
+        static public double ParseTrackRubberPct(string rubberState)
+        {
+            // Return Track Rubber Percentage (aka baseRubberPct) based on values shared by iRacing developers.
+            switch (rubberState)
+            {
+                case "clean":
+                    return 0.04;
+                case "slight usage":
+                    return 0.15;
+                case "low usage":
+                    return 0.28;
+                case "moderately low usage":
+                    return 0.42;
+                case "moderate usage":
+                    return 0.57;
+                case "moderately high usage":
+                    return 0.71;
+                case "high usage":
+                    return 0.84;
+                case "extensive usage":
+                    return 0.95;
+                case "maximum usage":
+                    return 1.00;
+                default:
+                    return 0.0;
+            }
         }
     }
 }

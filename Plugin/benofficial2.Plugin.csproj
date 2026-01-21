@@ -131,6 +131,7 @@
     <Compile Include="Modules\Telemetry.cs" />
     <Compile Include="Modules\Track.cs" />
     <Compile Include="Modules\TrackMap.cs" />
+    <Compile Include="Modules\TrackRubber.cs" />
     <Compile Include="Modules\TrackTemperature.cs" />
     <Compile Include="Modules\TrackWetness.cs" />
     <Compile Include="Modules\TwitchChat.cs" />

@@ -1014,6 +1014,21 @@
                     </StackPanel>
                 </styles:SHSection>
 
+                <styles:SHSection Title="TRACK RUBBER OVERLAY OPTIONS" ShowSeparator="True">
+                    <StackPanel HorizontalAlignment="Left">
+                        <styles:SHToggleCheckbox 
+                            ToolTip="Hide the overlay when the replay is playing (i.e. when out of the car)" 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[TrackRubberModule].Settings.HideInReplay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Hide in replay
+                        </styles:SHToggleCheckbox>
+
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TitledSlider Width="400" Title="Background Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[TrackRubberModule].Settings.BackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </StackPanel>
+                </styles:SHSection>
+
                 <styles:SHSection Title="TRACK TEMPERATURE OVERLAY OPTIONS" ShowSeparator="True">
                     <StackPanel HorizontalAlignment="Left">
                         <styles:SHToggleCheckbox 

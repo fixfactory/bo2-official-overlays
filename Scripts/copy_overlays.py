@@ -41,6 +41,7 @@ overlays_to_copy = [
     "benofficial2 - iRacing Wind",
     "benofficial2 - iRacing Precipitation",
     "benofficial2 - iRacing Track Wetness",
+    "benofficial2 - iRacing Track Rubber",
     "benofficial2 - iRacing Track Temperature",
     "benofficial2 - iRacing Air Temperature",
     "benofficial2 - iRacing Relative Humidity",
