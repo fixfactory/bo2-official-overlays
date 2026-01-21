@@ -110,6 +110,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="IRatingCalculator.cs" />
     <Compile Include="ModuleSetting.cs" />
+    <Compile Include="Modules\AirTemperature.cs" />
     <Compile Include="Modules\BlindSpotMonitor.cs" />
     <Compile Include="Modules\Car.cs" />
     <Compile Include="Modules\Dash.cs" />
@@ -123,12 +124,14 @@
     <Compile Include="Modules\Precipitation.cs" />
     <Compile Include="Modules\RejoinHelper.cs" />
     <Compile Include="Modules\Relative.cs" />
+    <Compile Include="Modules\RelativeHumidity.cs" />
     <Compile Include="Modules\Session.cs" />
     <Compile Include="Modules\Spotter.cs" />
     <Compile Include="Modules\Standings.cs" />
     <Compile Include="Modules\Telemetry.cs" />
     <Compile Include="Modules\Track.cs" />
     <Compile Include="Modules\TrackMap.cs" />
+    <Compile Include="Modules\TrackTemperature.cs" />
     <Compile Include="Modules\TrackWetness.cs" />
     <Compile Include="Modules\TwitchChat.cs" />
     <Compile Include="Modules\Wind.cs" />

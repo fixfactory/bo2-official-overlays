@@ -5,7 +5,7 @@ Name "${PRODUCT_NAME}"
 !define PRODUCT_PUBLISHER "benofficial2"
 !define PRODUCT_WEB_SITE "https://twitch.tv/benofficial2"
 !define PRODUCT_DIR_REGKEY "Software\bo2-official-overlays"
-!define SIMHUB_VERSION "9.10.15"
+!define SIMHUB_VERSION "9.11.0"
 
 ; Include Modern User Interface
 !include "MUI2.nsh"
@@ -156,6 +156,21 @@ Section "Fuel Calculator" SEC_FOLDER17
   File /r "..\Overlays\benofficial2 - iRacing Fuel Calculator Live\*.*"
 SectionEnd
 
+Section "Track Temperature" SEC_FOLDER18
+  SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Temperature"
+  File /r "..\Overlays\benofficial2 - iRacing Track Temperature\*.*"
+SectionEnd
+
+Section "Air Temperature" SEC_FOLDER19
+  SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Air Temperature"
+  File /r "..\Overlays\benofficial2 - iRacing Air Temperature\*.*"
+SectionEnd
+
+Section "Relative Humidity" SEC_FOLDER20
+  SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Relative Humidity"
+  File /r "..\Overlays\benofficial2 - iRacing Relative Humidity\*.*"
+SectionEnd
+
 Section "Plugin" SEC_PLUGIN
   SectionIn RO
   WriteUninstaller "$INSTDIR\bo2-official-overlays-uninstall.exe"
@@ -200,6 +215,9 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER15} "Install iRacing Track Wetness overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER16} "Install iRacing Highlighted Driver overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER17} "Install iRacing Fuel Calculator overlay"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER18} "Install iRacing Track Temperature overlay"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER19} "Install iRacing Air Temperature overlay"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER20} "Install iRacing Relative Humidity overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PLUGIN} "Install necessary files such as the plugin, license and uninstaller"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
@@ -222,6 +240,9 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Wetness"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Highlighted Driver"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Fuel Calculator Live"
+  RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Temperature"
+  RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Air Temperature"
+  RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Relative Humidity"
   RMDir /r "$INSTDIR\ImageLibrary\benofficial2"
       
   ; Remove the uninstaller itself
