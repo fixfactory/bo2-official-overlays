@@ -133,6 +133,7 @@
     <Compile Include="Modules\TrackMap.cs" />
     <Compile Include="Modules\TrackRubber.cs" />
     <Compile Include="Modules\TrackTemperature.cs" />
+    <Compile Include="Modules\TrackTime.cs" />
     <Compile Include="Modules\TrackWetness.cs" />
     <Compile Include="Modules\TwitchChat.cs" />
     <Compile Include="Modules\Wind.cs" />
