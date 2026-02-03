@@ -47,8 +47,8 @@ function getTireCompoundVisible(classIdx, rowIdx)
         return false;
 
     // Hide before the race start
-    if (isRace()) 
-        return isRaceStarted();
+    //if (isRace()) 
+    //    return isRaceStarted();
 
     const connected = getStandingsProp(classIdx, rowIdx, 'Connected');
     return connected;
