@@ -525,14 +525,7 @@
                                 Blink when Assist Active
                             </styles:SHToggleCheckbox>
                         </StackPanel>
-
-                        <styles:SHToggleCheckbox 
-                            ToolTip="Show a rotating steering wheel image" 
-                            HorizontalAlignment="Left" Margin="0,0,4,8"
-                            IsChecked="{Binding Plugin.Modules[TelemetryModule].Settings.SteeringVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            Show Steering Wheel
-                        </styles:SHToggleCheckbox>
-
+                       
                         <StackPanel Orientation="Horizontal">
                             <styles:SHToggleCheckbox 
                                 ToolTip="Show the current gear and speed" 
@@ -549,6 +542,35 @@
                             </styles:SHToggleCheckbox>
                         </StackPanel>
 
+                        <styles:SHToggleCheckbox 
+                            ToolTip="Show a rotating steering wheel image" 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[TelemetryModule].Settings.SteeringVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Show Steering Wheel
+                        </styles:SHToggleCheckbox>
+
+                        <Label Content="Custom Steering Image" Margin="0,0,0,0"/>
+
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox x:Name="SteeringImagePathTextBox"
+                                 Grid.Column="0"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,8,0"
+                                 IsReadOnly="False" 
+                                 Text="{Binding Plugin.Modules[TelemetryModule].Settings.SteeringImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="Path to custom steering image. Leave empty for default image." />
+
+                            <Button Grid.Column="1"
+                                Content="Browse..."
+                                Padding="12,4"
+                                Click="SteeringBrowseImage_Click" />
+                        </Grid>
+                        
                         <StackPanel Orientation="Horizontal">
                             <ui:TitledSlider Width="400" Title="Background Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[TelemetryModule].Settings.BackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>       

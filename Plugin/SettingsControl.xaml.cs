@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
 
 namespace benofficial2.Plugin
 {
@@ -112,6 +113,23 @@ namespace benofficial2.Plugin
                 FileName = "https://chatis.is2511.com/",
                 UseShellExecute = true // Ensures it opens in the default browser
             });
+        }
+
+        private void SteeringBrowseImage_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "Select PNG Image",
+                Filter = "PNG Images (*.png)|*.png",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                SteeringImagePathTextBox.Text = dialog.FileName;
+            }
         }
     }
 }
