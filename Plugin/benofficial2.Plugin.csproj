@@ -126,6 +126,7 @@
     <Compile Include="Modules\Relative.cs" />
     <Compile Include="Modules\RelativeHumidity.cs" />
     <Compile Include="Modules\Session.cs" />
+    <Compile Include="Modules\SetupCover.cs" />
     <Compile Include="Modules\Spotter.cs" />
     <Compile Include="Modules\Standings.cs" />
     <Compile Include="Modules\Telemetry.cs" />

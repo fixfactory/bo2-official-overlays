@@ -131,5 +131,22 @@ namespace benofficial2.Plugin
                 SteeringImagePathTextBox.Text = dialog.FileName;
             }
         }
+
+        private void SetupCoverBrowseImage_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "Select PNG Image",
+                Filter = "PNG Images (*.png)|*.png",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                SetupCoverImagePathTextBox.Text = dialog.FileName;
+            }
+        }
     }
 }
