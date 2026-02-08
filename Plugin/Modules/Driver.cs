@@ -738,11 +738,8 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int position, "CarIdxPosition", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int classPosition, "CarIdxClassPosition", carIdx);
                 RawDataHelper.TryGetTelemetryData<bool>(ref data, out bool onPitRoad, "CarIdxOnPitRoad", carIdx);
-                RawDataHelper.TryGetTelemetryData<int>(ref data, out int lap, "CarIdxLap", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "CarIdxTrackSurface", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int lapCompleted, "CarIdxLapCompleted", carIdx);
-                RawDataHelper.TryGetTelemetryData<float>(ref data, out float lapDistPct, "CarIdxLapDistPct", carIdx);
-                RawDataHelper.TryGetTelemetryData<float>(ref data, out float estTime, "CarIdxEstTime", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int tireCompoundIdx, "CarIdxTireCompound", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pCount, "CarIdxP2P_Count", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pStatus, "CarIdxP2P_Status", carIdx);
@@ -779,22 +776,10 @@ namespace benofficial2.Plugin
                 driver.PositionInClass = classPosition;
                 driver.InPit = onPitRoad;
                 driver.InPitBox = trackSurface == (int)TrackLoc.InPitStall;
-                driver.Lap = lap;
                 driver.LapsCompleted = lapCompleted;
-                driver.TrackPositionPercent = lapDistPct;
-                driver.EstTime = estTime;
                 driver.TireCompoundIdx = tireCompoundIdx;
                 driver.PushToPassCount = p2pCount;
                 driver.PushToPassActivated = p2pStatus > 0;
-
-                if (driver.Lap > -1 && driver.TrackPositionPercent > -Constants.DistanceEpsilon)
-                {
-                    driver.CurrentLapHighPrecisionRaw = driver.Lap - 1 + driver.TrackPositionPercent;
-                }
-                else
-                {
-                    driver.CurrentLapHighPrecisionRaw = -1;
-                }
             }
         }
 
@@ -806,8 +791,21 @@ namespace benofficial2.Plugin
                     continue;
 
                 RawDataHelper.TryGetTelemetryData<float>(ref data, out float estTime, "CarIdxEstTime", driver.CarIdx);
+                RawDataHelper.TryGetTelemetryData<int>(ref data, out int lap, "CarIdxLap", driver.CarIdx);
+                RawDataHelper.TryGetTelemetryData<float>(ref data, out float lapDistPct, "CarIdxLapDistPct", driver.CarIdx);
 
                 driver.EstTime = estTime;
+                driver.Lap = lap;
+                driver.TrackPositionPercent = lapDistPct;
+
+                if (driver.Lap > -1 && driver.TrackPositionPercent > -Constants.DistanceEpsilon)
+                {
+                    driver.CurrentLapHighPrecisionRaw = driver.Lap - 1 + driver.TrackPositionPercent;
+                }
+                else
+                {
+                    driver.CurrentLapHighPrecisionRaw = -1;
+                }
             }
         }
 
