@@ -223,6 +223,8 @@ namespace benofficial2.Plugin
     {
         private DateTime _lastUpdateTime = DateTime.MinValue;
         private TimeSpan _updateInterval = TimeSpan.FromMilliseconds(500);
+        private DateTime _lastUpdateTimeHighFreq = DateTime.MinValue;
+        private TimeSpan _updateIntervalHighFreq = TimeSpan.FromMilliseconds(100);
         private TimeSpan _minTimeInPit = TimeSpan.FromMilliseconds(2500);
 
         private SessionModule _sessionModule = null;
@@ -785,6 +787,11 @@ namespace benofficial2.Plugin
 
         private void UpdateDriversHighFreq(ref GameData data)
         {
+            if (data.FrameTime - _lastUpdateTimeHighFreq < _updateIntervalHighFreq)
+                return;
+
+            _lastUpdateTimeHighFreq = data.FrameTime;
+
             foreach (var driver in Drivers.Values)
             {
                 if (driver.CarIdx < 0 || driver.CarIdx >= MaxDrivers)
