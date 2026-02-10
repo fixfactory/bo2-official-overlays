@@ -39,6 +39,7 @@ namespace benofficial2.Plugin
     {
         private readonly Queue<TimeSpan> _lapTimes = new Queue<TimeSpan>();
         private readonly int _maxLapCount;
+        private long _sumTicks = 0;
         private int _previousLap = -1;
         private int _invalidLap = -1;
         private TimeSpan _previousLapTime = TimeSpan.Zero;
@@ -70,10 +71,11 @@ namespace benofficial2.Plugin
 
             if (_lapTimes.Count == _maxLapCount)
             {
-                _lapTimes.Dequeue();
+                var removed = _lapTimes.Dequeue();
+                _sumTicks -= removed.Ticks;
             }
-
             _lapTimes.Enqueue(lapTime);
+            _sumTicks += lapTime.Ticks;
             //SimHub.Logging.Current.Info($"AverageLapTime: Added lapTime={lapTime}, currentLap={currentLap}");
         }
 
@@ -93,7 +95,8 @@ namespace benofficial2.Plugin
                 return TimeSpan.Zero;
             }
 
-            long averageTicks = (long)_lapTimes.Average(ts => ts.Ticks);
+            // Use running sum for O(1) average computation
+            long averageTicks = _sumTicks / _lapTimes.Count;
             return new TimeSpan(averageTicks);
         }
     }
