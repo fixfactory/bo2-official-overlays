@@ -359,8 +359,12 @@ namespace benofficial2.Plugin
                 BlankHighlightedDriver();
             }
 
-            foreach (Driver driver in Drivers.Values)
+            for (int i = 0; i < MaxDrivers; i++)
             {
+                Driver driver = _driversByCarIdx[i];
+                if (driver == null)
+                    continue;
+
                 // Update the average lap time for the driver
                 int currentLap = driver.Lap;
                 driver.AvgLapTime.AddLapTime(currentLap - 1, driver.LastLapTime);
@@ -682,8 +686,12 @@ namespace benofficial2.Plugin
 
         private void InvalidatePositions()
         {
-            foreach (var driver in Drivers.Values)
+            for (int i = 0; i < MaxDrivers; i++)
             {
+                Driver driver = _driversByCarIdx[i];
+                if (driver == null)
+                    continue;
+
                 driver.Position = 0;
                 driver.PositionInClass = 0;
                 driver.LivePositionInClass = 0;
@@ -794,9 +802,10 @@ namespace benofficial2.Plugin
 
             _lastUpdateTimeHighFreq = data.FrameTime;
 
-            foreach (var driver in Drivers.Values)
+            for (int i = 0; i < MaxDrivers; i++)
             {
-                if (driver.CarIdx < 0 || driver.CarIdx >= MaxDrivers)
+                Driver driver = _driversByCarIdx[i];
+                if (driver == null)
                     continue;
 
                 RawDataHelper.TryGetTelemetryData<float>(ref data, out float estTime, "CarIdxEstTime", driver.CarIdx);
