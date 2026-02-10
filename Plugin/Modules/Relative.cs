@@ -209,8 +209,8 @@ namespace benofficial2.Plugin
                 row.CarClassTextColor = "#000000";
                 row.Number = driver.CarNumber;
                 row.Name = driver.Name;
-                row.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName); ;
-                row.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+                row.CarBrand = driver.CarBrand;
+                row.CountryCode = driver.CountryCode;
                 row.OutLap = driver.OutLap;
                 row.iRating = driver.IRating;
                 row.iRatingChange = driver.IRatingChange;
@@ -220,7 +220,7 @@ namespace benofficial2.Plugin
                 row.CurrentLapHighPrecision = driver.CurrentLapHighPrecisionRaw;
                 row.LastLapTime = driver.LastLapTime;
                 row.SessionFlags = driver.SessionFlags;
-                row.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                row.TireCompound = driver.TireCompound;
                 row.PushToPassCount = driver.PushToPassCount;
                 row.PushToPassActivated = driver.PushToPassActivated;
             }

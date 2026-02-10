@@ -108,10 +108,12 @@ namespace benofficial2.Plugin
         public int CarIdx { get; set; } = -1;
         public string CarId { get; set; } = string.Empty;
         public string CarName { get; set; } = string.Empty;
+        public string CarBrand { get; set; } = string.Empty;
         public string CarNumber { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string TeamName { get; set; } = string.Empty;
         public int FlairId { get; set; } = 0;
+        public string CountryCode { get; set; } = string.Empty;
         public int CarClassId { get; set; } = 0;
         public string CarClassName { get; set; } = string.Empty;
         public string CarClassColor { get; set; } = string.Empty;
@@ -150,6 +152,7 @@ namespace benofficial2.Plugin
         public int TeamIncidentCount { get; set; } = 0;
         public int IRating { get; set; } = 0;
         public int IRatingChange { get; set; } = 0;
+        public string LicenseString { get; set; } = string.Empty;
         public string License { get; set; } = string.Empty;
         public double SafetyRating { get; set; } = 0.0;
         public int LapsToClassLeader { get; set; } = 0;
@@ -160,6 +163,7 @@ namespace benofficial2.Plugin
         public double RelativeDistanceToPlayer { get; set; } = 0.0;
         public double EstTime { get; set; } = 0.0;
         public int TireCompoundIdx { get; set; } = -1;
+        public string TireCompound { get; set; } = string.Empty;
         public int PushToPassCount { get; set; } = 0;
         public bool PushToPassActivated { get; set; } = false;
     }
@@ -528,9 +532,9 @@ namespace benofficial2.Plugin
                     PlayerDriver.StintLap = driver.StintLap;
                     PlayerDriver.Number = driver.CarNumber;
                     PlayerDriver.Name = driver.Name;
-                    PlayerDriver.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName);
+                    PlayerDriver.CarBrand = driver.CarBrand;
                     PlayerDriver.CarClassColor = driver.CarClassColor;
-                    PlayerDriver.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+                    PlayerDriver.CountryCode = driver.CountryCode;
                     PlayerDriver.SessionFlags = driver.SessionFlags;
                     PlayerDriver.Position = driver.Position;
                     PlayerDriver.LastLapTime = driver.LastLapTime;
@@ -539,7 +543,7 @@ namespace benofficial2.Plugin
                     PlayerDriver.CurrentLapHighPrecision = driver.CurrentLapHighPrecision;
                     PlayerDriver.CurrentLap = Math.Max(0, driver.Lap > 0 ? driver.Lap : (int)Math.Ceiling(driver.CurrentLapHighPrecision));
                     PlayerDriver.TeamIncidentCount = driver.TeamIncidentCount;
-                    PlayerDriver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                    PlayerDriver.TireCompound = driver.TireCompound;
                     PlayerDriver.PushToPassCount = driver.PushToPassCount;
                     PlayerDriver.PushToPassActivated = driver.PushToPassActivated;
                     PlayerDriver.IRating = driver.IRating;
@@ -565,10 +569,10 @@ namespace benofficial2.Plugin
                         HighlightedDriver.OutLap = driver.OutLap;
                         HighlightedDriver.Name = driver.Name;
                         HighlightedDriver.Number = driver.CarNumber;
-                        HighlightedDriver.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName);
+                        HighlightedDriver.CarBrand = driver.CarBrand;
                         HighlightedDriver.CarName = driver.CarName;
                         HighlightedDriver.CarClassColor = driver.CarClassColor;
-                        HighlightedDriver.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+                        HighlightedDriver.CountryCode = driver.CountryCode;
                         HighlightedDriver.SessionFlags = driver.SessionFlags;
                         HighlightedDriver.Position = driver.Position;
                         HighlightedDriver.IRating = driver.IRating;
@@ -580,7 +584,7 @@ namespace benofficial2.Plugin
                         HighlightedDriver.TeamIncidentCount = driver.TeamIncidentCount;
                         HighlightedDriver.LastLapTime = driver.LastLapTime;
                         HighlightedDriver.BestLapTime = driver.BestLapTime;
-                        HighlightedDriver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                        HighlightedDriver.TireCompound = driver.TireCompound;
                         HighlightedDriver.PushToPassCount = driver.PushToPassCount;
                         HighlightedDriver.PushToPassActivated = driver.PushToPassActivated;
                     }                        
@@ -763,7 +767,13 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pStatus, "CarIdxP2P_Status", carIdx);
 
                 Driver driver = GetDriver(carIdx);
+
+                string prevCarId = string.Empty;
+                int prevFlairId = -1;
                 int prevCarClassId = -1;
+                string prevLicenseString = string.Empty;
+                int prevTireCompoundIdx = -1;
+
                 if (driver == null)
                 {
                     driver = new Driver();
@@ -772,17 +782,29 @@ namespace benofficial2.Plugin
                 }
                 else
                 {
+                    prevCarId = driver.CarId;
+                    prevFlairId = driver.FlairId;
                     prevCarClassId = driver.CarClassId;
+                    prevLicenseString = driver.LicenseString;
+                    prevTireCompoundIdx = driver.TireCompoundIdx;
                 }
 
                 driver.DriverInfoIdx = i;
                 driver.CarIdx = carIdx;
                 driver.CarId = carPath;
                 driver.CarName = carScreenNameShort;
+
+                if (prevCarId != driver.CarId)
+                    driver.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName);
+                
                 driver.CarNumber = carNumber;
                 driver.Name = userName;
                 driver.TeamName = teamName;
                 driver.FlairId = flairId;
+
+                if (prevFlairId != driver.FlairId)
+                     driver.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+
                 driver.IsPlayer = carIdx == playerCarIdx;
                 driver.IsConnected = trackSurface > (int)TrackLoc.NotInWorld;
                 driver.IsPaceCar = carIsPaceCar == 1;
@@ -792,7 +814,11 @@ namespace benofficial2.Plugin
                 driver.CarClassEstLapTime = carClassEstLapTime;
                 driver.TeamIncidentCount = teamIncidentCount;
                 driver.IRating = iRating;
-                (driver.License, driver.SafetyRating) = ParseLicenseString(licString);
+                driver.LicenseString = licString;
+
+                if (prevLicenseString != driver.LicenseString)
+                    (driver.License, driver.SafetyRating) = ParseLicenseString(driver.LicenseString);
+
                 driver.LastLapTime = lastLapTime > 0 ? TimeSpan.FromSeconds(lastLapTime) : TimeSpan.Zero;
                 driver.BestLapTime = bestLapTime > 0 ? TimeSpan.FromSeconds(bestLapTime) : TimeSpan.Zero;
                 driver.SessionFlags = sessionFlags;
@@ -802,6 +828,10 @@ namespace benofficial2.Plugin
                 driver.InPitBox = trackSurface == (int)TrackLoc.InPitStall;
                 driver.LapsCompleted = lapCompleted;
                 driver.TireCompoundIdx = tireCompoundIdx;
+
+                if (prevTireCompoundIdx != driver.TireCompoundIdx)
+                    driver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+
                 driver.PushToPassCount = p2pCount;
                 driver.PushToPassActivated = p2pStatus > 0;
 

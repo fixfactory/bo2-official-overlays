@@ -426,10 +426,10 @@ namespace benofficial2.Plugin
                             row.Name = driver.Name;
                         }
                         row.CarId = driver.CarId;
-                        row.CarBrand = _carModule.GetCarBrand(driver.CarId, driver.CarName);
+                        row.CarBrand = driver.CarBrand;
                         row.CarClassColor = driver.CarClassColor;
                         row.CarClassTextColor = "#000000";
-                        row.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
+                        row.CountryCode = driver.CountryCode;
                         row.InPitLane = driver.InPit;
                         row.Towing = driver.Towing;
                         row.OutLap = driver.OutLap;
@@ -445,7 +445,7 @@ namespace benofficial2.Plugin
                         row.GapToClassLeader = driver.GapToClassLeader;
                         row.LapsToClassOpponentAhead = driver.LapsToClassOpponentAhead;
                         row.GapToClassOpponentAhead = driver.GapToClassOpponentAhead;
-                        row.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                        row.TireCompound = driver.TireCompound;
                         row.TireCompoundVisible = row.TireCompound.Length > 0;
                         row.BestLapTime = driver.BestLapTime;
                         row.LastLapTime = driver.LastLapTime;
