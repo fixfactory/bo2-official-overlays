@@ -242,8 +242,7 @@ namespace benofficial2.Plugin
         // Key is car number
         public Dictionary<string, Driver> Drivers { get; private set; } = new Dictionary<string, Driver>();
 
-        // Key is CarIdx
-        public Dictionary<int, Driver> DriversByCarIdx { get; private set; } = new Dictionary<int, Driver>();
+        private Driver[] _driversByCarIdx = new Driver[MaxDrivers];
 
         public HighlightedDriverSettings HighlightedDriverSettings { get; set; }
 
@@ -333,7 +332,7 @@ namespace benofficial2.Plugin
             if (_sessionState.SessionChanged)
             {
                 Drivers = new Dictionary<string, Driver>();
-                DriversByCarIdx = new Dictionary<int, Driver>();
+                _driversByCarIdx = new Driver[MaxDrivers];
                 BlankPlayerDriver();
                 BlankHighlightedDriver();
                 QualResultsUpdated = false;
@@ -636,7 +635,8 @@ namespace benofficial2.Plugin
                     for (int i = 0; i < qualPositions.Count; i++)
                     {
                         RawDataHelper.TryGetValue<int>(qualPositions, out int carIdx, i, "CarIdx");
-                        if (!DriversByCarIdx.TryGetValue(carIdx, out Driver driver))
+                        Driver driver = GetDriver(carIdx);
+                        if (driver == null)
                         {
                             Debug.Assert(false);
                             continue;
@@ -661,7 +661,8 @@ namespace benofficial2.Plugin
                 for (int i = 0; i < qualResults.Count; i++)
                 {
                     RawDataHelper.TryGetValue<int>(qualResults, out int carIdx, i, "CarIdx");
-                    if (!DriversByCarIdx.TryGetValue(carIdx, out Driver driver))
+                    Driver driver = GetDriver(carIdx);
+                    if (driver == null)
                     {
                         Debug.Assert(false);
                         continue;
@@ -746,11 +747,12 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pCount, "CarIdxP2P_Count", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pStatus, "CarIdxP2P_Status", carIdx);
 
-                if (!Drivers.TryGetValue(carNumber, out Driver driver))
+                Driver driver = GetDriver(carIdx);
+                if (driver == null)
                 {
                     driver = new Driver();
                     Drivers[carNumber] = driver;
-                    DriversByCarIdx[carIdx] = driver;
+                    _driversByCarIdx[carIdx] = driver;
                 }
 
                 driver.DriverInfoIdx = i;
@@ -841,7 +843,8 @@ namespace benofficial2.Plugin
                 if (carIdx < 0) 
                     continue;
 
-                if (!DriversByCarIdx.TryGetValue(carIdx, out Driver driver))
+                Driver driver = GetDriver(carIdx);
+                if (driver == null)
                 {
                     Debug.Assert(false);
                     continue;
@@ -1033,10 +1036,17 @@ namespace benofficial2.Plugin
             HighlightedDriver.PushToPassActivated = false;
         }
 
+        public Driver GetDriver(int carIdx)
+        {
+            if (carIdx < 0 || carIdx >= MaxDrivers)
+                return null;
+
+            return _driversByCarIdx[carIdx];
+        }
+
         public Driver GetPlayerDriver()
         {
-            DriversByCarIdx.TryGetValue(PlayerDriver.CarIdx, out Driver driver);
-            return driver;
+            return GetDriver(PlayerDriver.CarIdx);
         }
 
         public Driver GetHighlightedDriver(bool fallbackToPlayer = true)
@@ -1054,8 +1064,7 @@ namespace benofficial2.Plugin
                 highlightedCarIdx = PlayerDriver.CarIdx;
             }
 
-            DriversByCarIdx.TryGetValue(highlightedCarIdx, out Driver highlightedDriver);
-            return highlightedDriver;
+            return GetDriver(highlightedCarIdx);
         }
 
         public static string ConvertColorString(string input)

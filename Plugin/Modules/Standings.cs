@@ -801,20 +801,7 @@ namespace benofficial2.Plugin
 
         public (Driver, int) FindHighlightedDriver(ref GameData data)
         {
-            int highlightedCarIdx = -1;
-            Driver highlightedDriver = null;
-
-            if (_driverModule.HighlightedDriver.CarIdx >= 0)
-            {
-                highlightedCarIdx = _driverModule.HighlightedDriver.CarIdx;
-            }
-            else
-            {
-                highlightedCarIdx = _driverModule.PlayerDriver.CarIdx;
-            }
-
-            _driverModule.DriversByCarIdx.TryGetValue(highlightedCarIdx, out highlightedDriver);           
-
+            Driver highlightedDriver = _driverModule.GetHighlightedDriver(true);
             if (highlightedDriver != null)
             {
                 for (int carClassIdx = 0; carClassIdx < LiveClassLeaderboards.Count; carClassIdx++)
