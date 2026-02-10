@@ -375,13 +375,13 @@ namespace benofficial2.Plugin
                     // Remember when they entered the pit.
                     if (driver.InPitSince == DateTime.MinValue)
                     {
-                        driver.InPitSince = DateTime.Now;
+                        driver.InPitSince = data.FrameTime;
                         driver.EnterPitLapUnconfirmed = currentLap;
                     }
 
                     // If they are in the pit for a very short time then we consider that a glitch in telemetry and ignore it.
                     if (driver.InPitSince > DateTime.MinValue &&
-                        driver.InPitSince + _minTimeInPit < DateTime.Now)
+                        driver.InPitSince + _minTimeInPit < data.FrameTime)
                     {
                         driver.EnterPitLap = driver.EnterPitLapUnconfirmed;
                         driver.OutLap = false;
@@ -392,9 +392,9 @@ namespace benofficial2.Plugin
                         {
                             if (driver.InPitBoxSince == DateTime.MinValue)
                             {
-                                driver.InPitBoxSince = DateTime.Now;
+                                driver.InPitBoxSince = data.FrameTime;
                             }
-                            driver.LastPitStopDuration = DateTime.Now - driver.InPitBoxSince;
+                            driver.LastPitStopDuration = data.FrameTime - driver.InPitBoxSince;
                         }
                         else
                         {
@@ -409,7 +409,7 @@ namespace benofficial2.Plugin
                     if (driver.IsConnected &&
                         driver.InPitSince > DateTime.MinValue &&
                         !(_sessionModule.Race && !_sessionModule.RaceStarted) &&
-                        driver.InPitSince + _minTimeInPit < DateTime.Now)
+                        driver.InPitSince + _minTimeInPit < data.FrameTime)
                     {
                         driver.ExitPitLap = currentLap;
 
@@ -456,12 +456,12 @@ namespace benofficial2.Plugin
 
                                 if (driver.IsPlayer)
                                 {
-                                    driver.TowingEndTime = DateTime.Now + TimeSpan.FromSeconds(playerCarTowTime);
+                                    driver.TowingEndTime = data.FrameTime + TimeSpan.FromSeconds(playerCarTowTime);
                                 }
                                 else
                                 {
                                     (double towLength, TimeSpan towTime) = ComputeTowLengthAndTime(data.NewData.TrackLength, driver.CurrentLapHighPrecision, driver.CurrentLapHighPrecisionRaw);
-                                    driver.TowingEndTime = DateTime.Now + towTime;
+                                    driver.TowingEndTime = data.FrameTime + towTime;
                                 }
                             }
                         }
@@ -477,7 +477,7 @@ namespace benofficial2.Plugin
                             driver.CurrentLapHighPrecisionRaw > driver.LastCurrentLapHighPrecision + smallDistancePct;
 
                         bool done = driver.CurrentLapHighPrecisionRaw == -1;
-                        bool towEnded = !driver.IsPlayer && DateTime.Now > driver.TowingEndTime;
+                        bool towEnded = !driver.IsPlayer && data.FrameTime > driver.TowingEndTime;
                         bool playerNotTowing = driver.IsPlayer && playerCarTowTime <= 0;
                         if (playerNotTowing || towEnded || movingForward || done)
                         {

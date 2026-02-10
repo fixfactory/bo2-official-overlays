@@ -83,13 +83,13 @@ namespace benofficial2.Plugin
 
                     if (Activated)
                     {
-                        _activatedTime = DateTime.Now;
+                        _activatedTime = data.FrameTime;
                         _deactivatedTime = DateTime.MinValue;
                     }
                     else
                     {
                         _activatedTime = DateTime.MinValue;
-                        _deactivatedTime = DateTime.Now;
+                        _deactivatedTime = data.FrameTime;
                     }
                 }
 
@@ -112,7 +112,7 @@ namespace benofficial2.Plugin
 
                         if (_deactivatedTime != DateTime.MinValue)
                         {
-                            TimeSpan deactivatedDuration = DateTime.Now - _deactivatedTime;
+                            TimeSpan deactivatedDuration = data.FrameTime - _deactivatedTime;
                             if (deactivatedDuration.TotalSeconds < TotalCooldown)
                             {
                                 Cooldown = (float)(TotalCooldown - deactivatedDuration.TotalSeconds);
