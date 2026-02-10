@@ -3,18 +3,17 @@
 
 # Ignore folders
 Bin/
-Plugin/bin/
-Plugin/obj/
-Plugin/.vs/
-Plugin/benofficial2.Tests/bin/
-Plugin/benofficial2.Tests/obj/
+bin/
+obj/
+.vs/
+packages/
 __pycache__/
 
 # Ignore all VS Code workspace files
 *.code-workspace
 
 # Ignore VS user file
-Plugin/benofficial2.Plugin.csproj.user
+*.csproj.user
 
 # Ignore all .env, .pfx files, including in subdirectories
 **/*.env

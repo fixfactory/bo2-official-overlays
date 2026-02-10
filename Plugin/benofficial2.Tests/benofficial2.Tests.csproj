@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\benofficial2.Plugin.csproj" />
+    <ProjectReference Include="..\benofficial2.Plugin\benofficial2.Plugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>

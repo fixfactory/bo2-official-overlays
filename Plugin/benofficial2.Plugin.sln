@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benofficial2.Plugin", "benofficial2.Plugin.csproj", "{833040C9-FE5E-4CCF-B21D-71979E049B6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benofficial2.Plugin", "benofficial2.Plugin\benofficial2.Plugin.csproj", "{833040C9-FE5E-4CCF-B21D-71979E049B6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benofficial2.Tests", "benofficial2.Tests\benofficial2.Tests.csproj", "{1E42ACBA-5414-4E2C-93F2-5440B58D4D13}"
 EndProject
