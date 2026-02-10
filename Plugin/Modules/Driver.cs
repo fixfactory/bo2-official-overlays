@@ -243,6 +243,9 @@ namespace benofficial2.Plugin
         public Dictionary<string, Driver> Drivers { get; private set; } = new Dictionary<string, Driver>();
 
         private Driver[] _driversByCarIdx = new Driver[MaxDrivers];
+        
+        // Cached mapping from car class id -> list of drivers in that class to avoid LINQ GroupBy allocations
+        private Dictionary<int, List<Driver>> _driversByClass = new Dictionary<int, List<Driver>>();
 
         public HighlightedDriverSettings HighlightedDriverSettings { get; set; }
 
@@ -333,6 +336,7 @@ namespace benofficial2.Plugin
             {
                 Drivers = new Dictionary<string, Driver>();
                 _driversByCarIdx = new Driver[MaxDrivers];
+                _driversByClass.Clear();
                 BlankPlayerDriver();
                 BlankHighlightedDriver();
                 QualResultsUpdated = false;
@@ -756,11 +760,16 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pStatus, "CarIdxP2P_Status", carIdx);
 
                 Driver driver = GetDriver(carIdx);
+                int prevCarClassId = -1;
                 if (driver == null)
                 {
                     driver = new Driver();
                     Drivers[carNumber] = driver;
                     _driversByCarIdx[carIdx] = driver;
+                }
+                else
+                {
+                    prevCarClassId = driver.CarClassId;
                 }
 
                 driver.DriverInfoIdx = i;
@@ -792,6 +801,34 @@ namespace benofficial2.Plugin
                 driver.TireCompoundIdx = tireCompoundIdx;
                 driver.PushToPassCount = p2pCount;
                 driver.PushToPassActivated = p2pStatus > 0;
+
+                // Maintain cached drivers-by-class mapping when class membership changes or new driver added
+                if (prevCarClassId != driver.CarClassId)
+                {
+                    // remove from previous class mapping
+                    if (prevCarClassId >= 0)
+                    {
+                        if (_driversByClass.TryGetValue(prevCarClassId, out var prevList))
+                        {
+                            prevList.Remove(driver);
+                            if (prevList.Count == 0)
+                                _driversByClass.Remove(prevCarClassId);
+                        }
+                    }
+
+                    // add to new class mapping
+                    if (driver.CarClassId >= 0)
+                    {
+                        if (!_driversByClass.TryGetValue(driver.CarClassId, out var list))
+                        {
+                            list = new List<Driver>();
+                            _driversByClass[driver.CarClassId] = list;
+                        }
+
+                        if (!list.Contains(driver))
+                            list.Add(driver);
+                    }
+                }
             }
         }
 
@@ -913,11 +950,13 @@ namespace benofficial2.Plugin
             if (!_standingsModule.Settings.IRatingChangeVisible && !_relativeModule.Settings.IRatingChangeVisible)
                 return;
 
-            foreach (var group in Drivers.Values.GroupBy(d => d.CarClassId))
+            // Iterate cached drivers-by-class map to avoid allocations caused by LINQ GroupBy
+            foreach (var kvp in _driversByClass)
             {
-                int carClassId = group.Key;
-                int countInClass = group.Count();
-                var raceResults = new List<RaceResult<Driver>>();
+                int carClassId = kvp.Key;
+                var group = kvp.Value;
+                int countInClass = group.Count;
+                var raceResults = new List<RaceResult<Driver>>(group.Count);
 
                 if (!_sessionModule.RaceStarted)
                 {
@@ -936,15 +975,26 @@ namespace benofficial2.Plugin
                 }
                 else
                 {
-                    // Consider drivers with an official position first. They are considered as started.
-                    // TODO: Should DQ drivers be considered as not started?
-                    // TODO: How much of the first lap should be completed to be considered started?
-                    var withPosition = group.Where(d => d.PositionInClass != 0).ToList();
-                    foreach (var driver in withPosition)
+                    // Build lists without LINQ to avoid allocations
+                    var withPosition = new List<Driver>(group.Count);
+                    var noPosition = new List<Driver>(group.Count);
+
+                    foreach (var driver in group)
                     {
                         if (driver.IsPaceCar)
                             continue;
 
+                        if (driver.PositionInClass != 0)
+                            withPosition.Add(driver);
+                        else
+                            noPosition.Add(driver);
+                    }
+
+                    // Consider drivers with an official position first. They are considered as started.
+                    // TODO: Should DQ drivers be considered as not started?
+                    // TODO: How much of the first lap should be completed to be considered started?
+                    foreach (var driver in withPosition)
+                    {
                         int positionInClass = driver.LivePositionInClass;
                         if (positionInClass <= 0)
                         {
@@ -959,9 +1009,12 @@ namespace benofficial2.Plugin
                          true));
                     }
 
-                    // Then consider drivers without an official position. They are considered as not started.
-                    // Assign them a position by sorting them by IRating.
-                    var noPosition = group.Where(d => d.PositionInClass == 0).OrderByDescending(d => d.IRating).ToList();
+                    // Assign positions for drivers without an official position by sorting them by IRating (descending)
+                    if (noPosition.Count > 1)
+                    {
+                        noPosition.Sort((a, b) => b.IRating.CompareTo(a.IRating));
+                    }
+
                     int nextPosition = withPosition.Count + 1;
                     foreach (var driver in noPosition)
                     {
