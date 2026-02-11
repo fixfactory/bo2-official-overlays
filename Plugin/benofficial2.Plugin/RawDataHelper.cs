@@ -18,9 +18,11 @@
 
 using GameReaderCommon;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +30,13 @@ namespace benofficial2.Plugin
 {
     public static class RawDataHelper
     {
+        // Cache the last raw root object and its AllSessionData dictionary to avoid
+        // repeated dynamic lookups when called multiple times within the same frame.
+        private static object s_cachedAllSessionDataRoot = null;
+        private static IDictionary<object, object> s_cachedAllSessionData = null;
+        private static object s_cachedTelemetryRoot = null;
+        private static IDictionary<string, object> s_cachedTelemetry = null;
+
         public static bool TryGetSessionData<T>(ref GameData data, out T result, params object[] path)
         {
             result = default;
@@ -37,9 +46,24 @@ namespace benofficial2.Plugin
 
             try
             {
+                // If the raw root object is the same as last call, reuse the cached
+                // AllSessionData dictionary to avoid repeated dynamic property access.
+                if (ReferenceEquals(raw, s_cachedAllSessionDataRoot) && s_cachedAllSessionData != null)
+                {
+                    return TryGetValue<T>(s_cachedAllSessionData, out result, path);
+                }
+
                 if (raw.AllSessionData is IDictionary<object, object> allSessionData)
                 {
+                    s_cachedAllSessionDataRoot = raw;
+                    s_cachedAllSessionData = allSessionData;
                     return TryGetValue<T>(allSessionData, out result, path);
+                }
+                else
+                {
+                    // Clear cache for this raw root when AllSessionData isn't present.
+                    s_cachedAllSessionDataRoot = raw;
+                    s_cachedAllSessionData = null;
                 }
             }
             catch { Debug.Assert(false); }
@@ -55,7 +79,20 @@ namespace benofficial2.Plugin
 
             try
             {
-                if (raw.AllSessionData is IDictionary<object, object> allSessionData)
+                IDictionary<object, object> allSessionData = null;
+
+                if (ReferenceEquals(raw, s_cachedAllSessionDataRoot) && s_cachedAllSessionData != null)
+                {
+                    allSessionData = s_cachedAllSessionData;
+                }
+                else if (raw.AllSessionData is IDictionary<object, object> asd)
+                {
+                    s_cachedAllSessionDataRoot = raw;
+                    s_cachedAllSessionData = asd;
+                    allSessionData = asd;
+                }
+
+                if (allSessionData != null)
                 {
                     result = default;
                     foreach (var path in paths)
@@ -78,9 +115,23 @@ namespace benofficial2.Plugin
 
             try
             {
+                // Reuse cached telemetry dictionary when the raw telemetry root is the same
+                if (ReferenceEquals(raw, s_cachedTelemetryRoot) && s_cachedTelemetry != null)
+                {
+                    return TryGetValue<T>(s_cachedTelemetry, out result, path);
+                }
+
                 if (raw.Telemetry is IDictionary<string, object> telemetry)
                 {
+                    s_cachedTelemetryRoot = raw;
+                    s_cachedTelemetry = telemetry;
                     return TryGetValue<T>(telemetry, out result, path);
+                }
+                else
+                {
+                    // Clear telemetry cache for this raw root when Telemetry isn't present.
+                    s_cachedTelemetryRoot = raw;
+                    s_cachedTelemetry = null;
                 }
             }
             catch { Debug.Assert(false); }
