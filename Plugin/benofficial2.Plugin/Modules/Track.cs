@@ -49,12 +49,13 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
-            if (_trackInfo.Json == null) return;
-            if (data.NewData.TrackId == _lastTrackId) return;
-            _lastTrackId = data.NewData.TrackId;
+            if (_trackInfo.Json == null) 
+                return;
 
-            dynamic raw = data.NewData.GetRawDataObject();
-            if (raw == null) return;
+            if (data.NewData.TrackId == _lastTrackId) 
+                return;
+
+            _lastTrackId = data.NewData.TrackId;
 
             if (data.NewData.TrackId.Length == 0)
             {
@@ -80,7 +81,8 @@ namespace benofficial2.Plugin
             QualStartTrackPct = track?["qualStartTrackPct"]?.Value<float>() ?? 0.0f;
             RaceStartTrackPct = track?["raceStartTrackPct"]?.Value<float>() ?? 0.0f;
 
-            try { TrackType = raw.AllSessionData["WeekendInfo"]["TrackType"]; } catch { Debug.Assert(false); }
+            RawDataHelper.TryGetSessionData<string>(ref data, out string trackType, "WeekendInfo", "TrackType");
+            TrackType = trackType;
 
             RawDataHelper.TryGetSessionData<string>(ref data, out string trackLengthStr, "WeekendInfo", "TrackLength");
             string[] parts = trackLengthStr.Split(' '); // e.g. "3.426 km"

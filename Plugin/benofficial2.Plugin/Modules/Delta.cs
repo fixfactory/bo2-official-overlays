@@ -87,27 +87,28 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
-            dynamic raw = data.NewData.GetRawDataObject();
-            if (raw == null) return;
-            if (_sessionModule == null) return;
+            if (_sessionModule == null) 
+                return;
 
             float delta = 0.0f;
             if (_sessionModule.Practice)
             {
-                try { delta = (float)raw.Telemetry["LapDeltaToSessionBestLap_DD"]; } catch { }
+                RawDataHelper.TryGetTelemetryData<float>(ref data, out delta, "LapDeltaToSessionBestLap_DD");
             }
             else if (_sessionModule.Race)
             {
-                try { delta = (float)raw.Telemetry["LapDeltaToSessionBestLap_DD"]; } catch { }
+                RawDataHelper.TryGetTelemetryData<float>(ref data, out delta, "LapDeltaToSessionBestLap_DD");
             }
             else if (_sessionModule.Qual)
             {
-                try { delta = (float)raw.Telemetry["LapDeltaToBestLap_DD"]; } catch { }
+                RawDataHelper.TryGetTelemetryData<float>(ref data, out delta, "LapDeltaToBestLap_DD");
             }
 
             Speed = Math.Min((float)data.NewData.SpeedLocal, (float)data.NewData.SpeedLocal * -delta);
 
-            if (data.FrameTime - _lastUpdateTime < _updateInterval) return;
+            if (data.FrameTime - _lastUpdateTime < _updateInterval) 
+                return;
+
             _lastUpdateTime = data.FrameTime;
 
             UpdateHeadToHead(ref data, HeadToHeadRowAhead, -1);

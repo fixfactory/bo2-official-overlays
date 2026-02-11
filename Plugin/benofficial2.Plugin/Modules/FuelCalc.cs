@@ -234,52 +234,39 @@ namespace benofficial2.Plugin
 
         private void UpdateBestLapTime(ref GameData data)
         {
-            dynamic raw = data.NewData.GetRawDataObject();
-            if (raw == null)
-                return;
+            RawDataHelper.TryGetSessionData<List<object>>(ref data, out List<object> drivers, "DriverInfo", "Drivers");
+            int driverCount = drivers != null ? drivers.Count : 0;
 
-            int driverCount = 0;
-            try { driverCount = (int)raw.AllSessionData["DriverInfo"]["Drivers"].Count; } catch { Debug.Assert(false); }
-
-            int playerCarIdx = -1;
-            try { playerCarIdx = int.Parse(raw.AllSessionData["DriverInfo"]["DriverCarIdx"]); } catch { Debug.Assert(false); }
-
+            RawDataHelper.TryGetSessionData<int>(ref data, out int playerCarIdx, "DriverInfo", "DriverCarIdx");
             if (playerCarIdx < 0 || playerCarIdx >= driverCount)
                 return;
 
-            string playerClassId = data.NewData.CarClass;
-            try { playerClassId = raw.AllSessionData["DriverInfo"]["Drivers"][playerCarIdx]["CarClassID"]; } catch { Debug.Assert(false); }
+            RawDataHelper.TryGetSessionData<string>(ref data, out string playerClassId, "DriverInfo", "Drivers", playerCarIdx, "CarClassID");
 
             // Try to find the fastest time of any session
-            int sessionCount = 0;
-            try { sessionCount = (int)raw.AllSessionData["SessionInfo"]["Sessions"].Count; } catch { Debug.Assert(false); }
-
+            RawDataHelper.TryGetSessionData<List<object>>(ref data, out List<object> sessions, "SessionInfo", "Sessions");
+            int sessionCount = sessions != null ? sessions.Count : 0;
+            
             double fastestTime = 0;
             for (int sessionIdx = 0; sessionIdx < sessionCount; sessionIdx++)
             {
-                List<object> positions = null;
-                try { positions = raw.AllSessionData["SessionInfo"]["Sessions"][sessionIdx]["ResultsPositions"]; } catch { Debug.Assert(false); }
+                RawDataHelper.TryGetSessionData<List<object>>(ref data, out List<object> positions, "SessionInfo", "Sessions", sessionIdx, "ResultsPositions");
                 if (positions == null)
                     continue;
 
                 for (int posIdx = 0; posIdx < positions.Count; posIdx++)
                 {
-                    int carIdx = -1;
-                    try { carIdx = int.Parse(raw.AllSessionData["SessionInfo"]["Sessions"][sessionIdx]["ResultsPositions"][posIdx]["CarIdx"]); } catch { Debug.Assert(false); }
-
+                    RawDataHelper.TryGetSessionData<int>(ref data, out int carIdx, "SessionInfo", "Sessions", sessionIdx, "ResultsPositions", posIdx, "CarIdx");
                     Driver driver = _driverModule.GetDriver(carIdx);
                     if (driver == null)
                         continue;
 
-                    string classId = string.Empty;
-                    try { classId = raw.AllSessionData["DriverInfo"]["Drivers"][driver.DriverInfoIdx]["CarClassID"]; } catch { Debug.Assert(false); }
+                    RawDataHelper.TryGetSessionData<string>(ref data, out string classId, "DriverInfo", "Drivers", driver.DriverInfoIdx, "CarClassID");
 
                     // Must be in same class as player
                     if (playerClassId == null || playerClassId == classId)
                     {
-                        double timeSecs = 0;
-                        try { timeSecs = double.Parse(raw.AllSessionData["SessionInfo"]["Sessions"][sessionIdx]["ResultsPositions"][posIdx]["FastestTime"]); } catch { Debug.Assert(false); }
-
+                        RawDataHelper.TryGetSessionData<float>(ref data, out float timeSecs, "SessionInfo", "Sessions", sessionIdx, "ResultsPositions", posIdx, "FastestTime");
                         if (timeSecs > 0 && (timeSecs < fastestTime || fastestTime == 0))
                         {
                             fastestTime = timeSecs;

@@ -117,9 +117,6 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
-            dynamic raw = data.NewData.GetRawDataObject();
-            if (raw == null) return;
-
             State.Update(ref data);
 
             if (State.SessionChanged)
@@ -133,19 +130,17 @@ namespace benofficial2.Plugin
 
                 Offline = data.NewData.SessionTypeName.IndexOf("Offline") != -1;
 
-                string category = string.Empty;
-                try { category = raw.AllSessionData["WeekendInfo"]["Category"]; } catch { Debug.Assert(false);  }
+                RawDataHelper.TryGetSessionData<string>(ref data, out string category, "WeekendInfo", "Category");
                 Oval = category == "Oval" || category == "DirtOval";
 
-                int standingStart = 0;
-                try { standingStart = int.Parse(raw.AllSessionData["WeekendInfo"]["WeekendOptions"]["StandingStart"]); } catch { Debug.Assert(false); }
+                RawDataHelper.TryGetSessionData<int>(ref data, out int standingStart, "WeekendInfo", "WeekendOptions", "StandingStart");
                 StandingStart = standingStart == 1;
 
-                int shortParadeLap = 0;
-                try { shortParadeLap = int.Parse(raw.AllSessionData["WeekendInfo"]["WeekendOptions"]["ShortParadeLap"]); } catch { Debug.Assert(false); }
+                RawDataHelper.TryGetSessionData<int>(ref data, out int shortParadeLap, "WeekendInfo", "WeekendOptions", "ShortParadeLap");
                 ShortParadeLap = shortParadeLap == 1;
 
-                try { MaxFuelPct = double.Parse(raw.AllSessionData["DriverInfo"]["DriverCarMaxFuelPct"]); } catch { Debug.Assert(false); }
+                RawDataHelper.TryGetSessionData<float>(ref data, out float driverCarMaxFuelPct, "DriverInfo", "DriverCarMaxFuelPct");
+                MaxFuelPct = driverCarMaxFuelPct;
 
                 RawDataHelper.TryGetSessionData<string>(ref data, out string teamRacing, "WeekendInfo", "TeamRacing");
                 TeamRacing = teamRacing == "1";
@@ -175,15 +170,9 @@ namespace benofficial2.Plugin
             // There's a short moment when loading into a session when isReplayPlaying is false
             // but position or trackSurface is -1.
             // IsReplayPlaying is false when spotting.
-            bool isReplayPLaying = false;
-            try { isReplayPLaying = (bool)raw.Telemetry["IsReplayPlaying"]; } catch { }
-
-            int position = -1;
-            try { position = (int)raw.Telemetry["PlayerCarPosition"]; } catch { }
-
-            int trackSurface = -1;
-            try { trackSurface = (int)raw.Telemetry["PlayerTrackSurface"]; } catch { }
-
+            RawDataHelper.TryGetTelemetryData<bool>(ref data, out bool isReplayPLaying, "IsReplayPlaying");
+            RawDataHelper.TryGetTelemetryData<int>(ref data, out int position, "PlayerCarPosition");
+            RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "PlayerTrackSurface");
             ReplayPlaying = isReplayPLaying || position < 0 || trackSurface < 0;
 
             // Determine if Session Screen is active (out of car)
@@ -193,8 +182,7 @@ namespace benofficial2.Plugin
             UIHidden = (camCameraState & 0x0008) != 0; // irsdk_UIHidden
 
             // Determine if race started
-            int sessionState = 0;
-            try { sessionState = (int)raw.Telemetry["SessionState"]; } catch { }
+            RawDataHelper.TryGetTelemetryData<int>(ref data, out int sessionState, "SessionState");
             RaceStarted = Race && sessionState >= 4;
 
             // Determine if we joined a race session in progress.
