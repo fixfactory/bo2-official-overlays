@@ -187,7 +187,7 @@ Section "Plugin" SEC_PLUGIN
 
   SetOutPath "$INSTDIR"
   File /oname=bo2-official-overlays-license.txt "..\LICENSE"
-  File "..\Plugin\bin\Release\benofficial2.Plugin.dll"
+  File "..\Plugin\benofficial2.Plugin\bin\Release\benofficial2.Plugin.dll"
 
   SetOutPath "$INSTDIR\ImageLibrary\benofficial2\CarLogos"
   File /r "..\Images\CarLogos\*.*"
