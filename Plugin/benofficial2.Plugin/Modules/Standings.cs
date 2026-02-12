@@ -105,6 +105,7 @@ namespace benofficial2.Plugin
     {
         public const int MaxRows = 25;
         public string Name { get; set; } = string.Empty;
+        public string LastMeasuredName { get; set; } = string.Empty;
         public float NameSize { get; set; } = 0;
         public int VisibleRowCount { get; set; } = 0;
         public List<StandingRow> Rows { get; internal set; }
@@ -340,7 +341,14 @@ namespace benofficial2.Plugin
                         carClass.Name = _carModule.GetCarClassName(leaderboard.CarClassName);
                     }
 
-                    carClass.NameSize = MeasureTextInPixels(carClass.Name);
+                    if (carClass.LastMeasuredName != carClass.Name)
+                    {
+                        carClass.NameSize = MeasureTextInPixels(carClass.Name);
+
+                        // Cache the last name used to compute NameSize to avoid re-measuring every update
+                        carClass.LastMeasuredName = carClass.Name;
+                    }
+
                     carClass.Sof = CalculateSof(leaderboard.Drivers);
                     carClass.DriverCount = leaderboard.Drivers.Count;
                     carClass.BestLapTime = FindBestLapTime(leaderboard.Drivers);
@@ -536,6 +544,7 @@ namespace benofficial2.Plugin
         public void BlankCarClass(StandingCarClass carClass)
         {
             carClass.Name = string.Empty;
+            carClass.LastMeasuredName = string.Empty;
             carClass.NameSize = 0;
             carClass.VisibleRowCount = 0;
             carClass.LeadFocusedDividerVisible = false;
