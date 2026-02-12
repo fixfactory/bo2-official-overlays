@@ -1,7 +1,17 @@
 ; Define the installer name and output
 !define PRODUCT_NAME "benofficial2's Official Overlays"
 Name "${PRODUCT_NAME}"
-!define PRODUCT_VERSION "5.0 (beta5)"
+!define PRODUCT_VERSION "5.0"
+
+; Enable this define for beta builds (uncomment to activate)
+!define PRODUCT_BETA_VERSION "5"
+
+!ifdef PRODUCT_BETA_VERSION
+  !define PRODUCT_VERSION_FULL "${PRODUCT_VERSION} (beta${PRODUCT_BETA_VERSION})"
+!else
+  !define PRODUCT_VERSION_FULL "${PRODUCT_VERSION}"
+!endif
+
 !define PRODUCT_PUBLISHER "benofficial2"
 !define PRODUCT_WEB_SITE "https://twitch.tv/benofficial2"
 !define PRODUCT_DIR_REGKEY "Software\bo2-official-overlays"
@@ -19,12 +29,16 @@ Name "${PRODUCT_NAME}"
 ;!define MUI_ICON "installer.ico" ; Optional: Add your icon file here
 
 ; Custom Welcome Page Text
-!define MUI_WELCOMEPAGE_TITLE "Welcome to ${PRODUCT_NAME} ${PRODUCT_VERSION} Setup"
+!define MUI_WELCOMEPAGE_TITLE "Welcome to ${PRODUCT_NAME} ${PRODUCT_VERSION_FULL} Setup"
 !define MUI_WELCOMEPAGE_TEXT "You will soon be racing with the greatest overlays in sim-racing history.$\r$\n$\r$\nSince the overlays are made with SimHub, it is necessary to have installed SimHub version ${SIMHUB_VERSION} or later.$\r$\n$\r$\nThis Setup will guide you through this process.$\r$\n$\r$\nClick Next to continue."
 
 ; Custom Finish Page Text
-!define MUI_FINISHPAGE_TITLE "Completing ${PRODUCT_NAME} ${PRODUCT_VERSION} Setup"
-!define MUI_FINISHPAGE_TEXT "Thank you for installing my overlays. I hope you will enjoy them!$\r$\n$\r$\nPlease consider following me on Twitch at twitch.tv/benofficial2$\r$\n$\r$\nClick Finish to close Setup and open Twitch."
+!define MUI_FINISHPAGE_TITLE "Completing ${PRODUCT_NAME} ${PRODUCT_VERSION_FULL} Setup"
+!ifdef PRODUCT_BETA_VERSION
+  !define MUI_FINISHPAGE_TEXT "Thank you for installing the *beta* overlays. This is a pre-release build. Please report any issues you encounter.$\r$\n$\r$\nClick Finish to close Setup."
+!else
+  !define MUI_FINISHPAGE_TEXT "Thank you for installing my overlays. I hope you will enjoy them!$\r$\n$\r$\nPlease consider following me on Twitch at twitch.tv/benofficial2$\r$\n$\r$\nClick Finish to close Setup and open Twitch."
+!endif
 
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
@@ -66,7 +80,7 @@ Function DependenciesPageLeave
 FunctionEnd
 
 ; Installer attributes
-OutFile "..\Bin\bo2-official-overlays-install-v${PRODUCT_VERSION}.exe"
+OutFile "..\Bin\bo2-official-overlays-install-v${PRODUCT_VERSION_FULL}.exe"
 InstallDir "$PROGRAMFILES\SimHub"
 DirText "Setup will install ${PRODUCT_NAME} in the following folder.$\r$\nIMPORTANT: Choose the folder where SimHub is installed on your computer."
 ShowInstDetails show
@@ -204,7 +218,7 @@ Section "Plugin" SEC_PLUGIN
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bo2-official-overlays" \
                 "UninstallString" "$\"$INSTDIR\bo2-official-overlays-uninstall.exe$\""
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bo2-official-overlays" \
-                "DisplayVersion" "${PRODUCT_VERSION}"
+                "DisplayVersion" "${PRODUCT_VERSION_FULL}"
 SectionEnd
 
 ; Components Page Descriptions
@@ -269,7 +283,11 @@ Section "Uninstall"
 SectionEnd
 
 Function FinishPageLeave
-  ExecShell "open" "https://www.twitch.tv/benofficial2"
+  !ifdef PRODUCT_BETA_VERSION
+    ExecShell "open" "https://streamelements.com/benofficial2/tip"
+  !else
+    ExecShell "open" "https://www.twitch.tv/benofficial2"
+  !endif
 FunctionEnd
 
 ; Sign executable using code-signing certificate
