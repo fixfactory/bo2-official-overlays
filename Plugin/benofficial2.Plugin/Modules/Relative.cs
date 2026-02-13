@@ -34,6 +34,7 @@ namespace benofficial2.Plugin
         public bool HeaderVisible { get; set; } = true;
         public int HeaderOpacity { get; set; } = 90;
         public bool FooterVisible { get; set; } = false;
+        public bool IncludeCarsOnPitLane { get; set; } = false;
         public bool CarLogoVisible { get; set; } = true;
         public bool CountryFlagVisible { get; set; } = true;
         public bool SafetyRatingVisible { get; set; } = true;
@@ -60,6 +61,7 @@ namespace benofficial2.Plugin
         public string CarBrand { get; set; } = string.Empty;
         public string CountryCode { get; set; } = string.Empty;
         public bool OutLap { get; set; } = false;
+        public bool InPit { get; set; } = false;
         public int iRating { get; set; } = 0;
         public float iRatingChange { get; set; } = 0;
         public string License { get; set; } = string.Empty;
@@ -124,6 +126,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Relative.HeaderVisible", valueProvider: () => Settings.HeaderVisible);
             plugin.AttachDelegate(name: "Relative.HeaderOpacity", valueProvider: () => Settings.HeaderOpacity);
             plugin.AttachDelegate(name: "Relative.FooterVisible", valueProvider: () => Settings.FooterVisible);
+            plugin.AttachDelegate(name: "Relative.IncludeCarsOnPitLane", valueProvider: () => Settings.IncludeCarsOnPitLane);
             plugin.AttachDelegate(name: "Relative.CarLogoVisible", valueProvider: () => Settings.CarLogoVisible);
             plugin.AttachDelegate(name: "Relative.CountryFlagVisible", valueProvider: () => Settings.CountryFlagVisible);
             plugin.AttachDelegate(name: "Relative.SafetyRatingVisible", valueProvider: () => Settings.SafetyRatingVisible);
@@ -153,6 +156,7 @@ namespace benofficial2.Plugin
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CarBrand", valueProvider: () => row.CarBrand);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CountryCode", valueProvider: () => row.CountryCode);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.OutLap", valueProvider: () => row.OutLap);
+                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.InPit", valueProvider: () => row.InPit);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.iRating", valueProvider: () => row.iRating);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.iRatingChange", valueProvider: () => row.iRatingChange);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.License", valueProvider: () => row.License);
@@ -212,6 +216,7 @@ namespace benofficial2.Plugin
                 row.CarBrand = driver.CarBrand;
                 row.CountryCode = driver.CountryCode;
                 row.OutLap = driver.OutLap;
+                row.InPit = driver.InPit;
                 row.iRating = driver.IRating;
                 row.iRatingChange = driver.IRatingChange;
                 row.License = driver.License;
@@ -276,7 +281,8 @@ namespace benofficial2.Plugin
 
             foreach (Driver driver in _driverModule.Drivers.Values)
             {
-                if (driver.CarIdx == highlightedDriver.CarIdx || driver.IsPaceCar || !driver.IsConnected || driver.InPit || isLoneQual)
+                bool isExcludedInPit = !Settings.IncludeCarsOnPitLane && driver.InPit;
+                if (driver.CarIdx == highlightedDriver.CarIdx || driver.IsPaceCar || !driver.IsConnected || isExcludedInPit || isLoneQual)
                 {
                     driver.RelativeDistanceToPlayer = 0.0;
                     continue;
@@ -371,6 +377,7 @@ namespace benofficial2.Plugin
             row.CarBrand = string.Empty;
             row.CountryCode = string.Empty;
             row.OutLap = false;
+            row.InPit = false;
             row.iRating = 0;
             row.iRatingChange = 0;
             row.License = string.Empty;

@@ -52,47 +52,55 @@ function getRelativeRowVisible(index)
 
 function getRelativeTextColor(index)
 {
-    if (!isRace()) 
-        return 'White';
+    const red = '#FF6345'
+    const blue = '#43B7EA'
+    const white = 'White'
+
+    const redInPit = '#913927'
+    const blueInPit = '#276D8C'
+    const whiteInPit = '#828282'
+
+    const highlighted = '#EBAE00'
 
     if (index == 0)
     {
         const highlight = isnull($prop('benofficial2.Relative.HighlightPlayerRow'), false)
         if (highlight) 
-            return 'White'
+            return white
 
-        return '#FFEBAE00'
+        return highlighted
     }
+
+    const inPit = getRelativeProp(index, 'InPit');
+
+    if (!isRace()) 
+        return inPit ? whiteInPit : white
 
     const lap = getRelativeProp(index, 'CurrentLapHighPrecision');
     const playerLap = getRelativeProp(0, 'CurrentLapHighPrecision');
 
     if (playerLap <= 0 || lap <= 0) 
-        return 'White';
-
-    const red = '#FFFF6345';
-    const blue = '#43B7EA';
-    const white = 'White';
+        return inPit ? whiteInPit : white
 
     let deltaLap = playerLap - lap;
 
     if (index < 0)
     {
         if (deltaLap < -0.75) 
-            return red;
+            return inPit ? redInPit : red
 
         if (deltaLap > 0.25) 
-            return blue;
+            return inPit ? blueInPit : blue
     }
     else if (index > 0)
     {
         if (deltaLap < -0.25) 
-            return red;
+            return inPit ? redInPit : red
 
         if (deltaLap > 0.75) 
-            return blue;
+            return inPit ? blueInPit : blue
     }
-    return white;
+    return inPit ? whiteInPit : white
 }
 
 function getClassSof(classIdx)

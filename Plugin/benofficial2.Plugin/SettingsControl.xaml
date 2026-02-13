@@ -364,6 +364,13 @@
                         </StackPanel>
 
                         <styles:SHToggleCheckbox 
+                            ToolTip="Turn on to include cars on pit lane in the relative." 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[RelativeModule].Settings.IncludeCarsOnPitLane, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Include cars on pit lane
+                        </styles:SHToggleCheckbox>
+                        
+                        <styles:SHToggleCheckbox 
                             ToolTip="Show the country flag corresponding to the driver's flair" 
                             HorizontalAlignment="Left" Margin="0,0,4,8"
                             IsChecked="{Binding Plugin.Modules[RelativeModule].Settings.CountryFlagVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
