@@ -113,6 +113,10 @@ namespace benofficial2.Plugin
         public List<Driver> DriversAheadOnTrack { get; internal set; } = new List<Driver>();
         public List<Driver> DriversBehindOnTrack { get; internal set; } = new List<Driver>();
 
+        // Internal reusable buffers to avoid per-frame allocations
+        private readonly List<Driver> _bufferBehind = new List<Driver>(32);
+        private readonly List<Driver> _bufferAhead = new List<Driver>(32);
+
         public override void Init(PluginManager pluginManager, benofficial2 plugin)
         {
             _driverModule = plugin.GetModule<DriverModule>();
@@ -297,20 +301,45 @@ namespace benofficial2.Plugin
             Driver highlightedDriver = _driverModule.GetHighlightedDriver(false);
             if (highlightedDriver == null)
             {
-                DriversBehindOnTrack = new List<Driver>();
-                DriversAheadOnTrack = new List<Driver>();
+                DriversBehindOnTrack.Clear();
+                DriversAheadOnTrack.Clear();
                 return;
             }
 
-            DriversBehindOnTrack = _driverModule.Drivers.Values
-                .Where(d => d.RelativeDistanceToPlayer > Constants.LapEpsilon)
-                .OrderBy(d => d.RelativeDistanceToPlayer)
-                .ToList();
+            // Reuse internal buffers to avoid per-frame allocations
+            var bufBehind = _bufferBehind;
+            var bufAhead = _bufferAhead;
+            bufBehind.Clear();
+            bufAhead.Clear();
 
-            DriversAheadOnTrack = _driverModule.Drivers.Values
-                .Where(d => d.RelativeDistanceToPlayer < -Constants.LapEpsilon)
-                .OrderBy(d => Math.Abs(d.RelativeDistanceToPlayer))
-                .ToList();
+            // Single pass through all drivers
+            foreach (var driver in _driverModule.Drivers.Values)
+            {
+                double dist = driver.RelativeDistanceToPlayer;
+                if (dist > Constants.LapEpsilon)
+                {
+                    bufBehind.Add(driver);
+                }
+                else if (dist < -Constants.LapEpsilon)
+                {
+                    bufAhead.Add(driver);
+                }
+            }
+
+            // Sort buffers in-place:
+            // - behind: smallest positive distances first (closest behind)
+            // - ahead: smallest absolute distances first (closest ahead)
+            bufBehind.Sort((a, b) => a.RelativeDistanceToPlayer.CompareTo(b.RelativeDistanceToPlayer));
+            bufAhead.Sort((a, b) => Math.Abs(a.RelativeDistanceToPlayer).CompareTo(Math.Abs(b.RelativeDistanceToPlayer)));
+
+            // Copy into public lists (clear + AddRange to reuse list instances)
+            DriversBehindOnTrack.Clear();
+            if (bufBehind.Count > 0)
+                DriversBehindOnTrack.AddRange(bufBehind);
+
+            DriversAheadOnTrack.Clear();
+            if (bufAhead.Count > 0)
+                DriversAheadOnTrack.AddRange(bufAhead);
         }
 
         public static double GetRelativeTrackDistance(double currentTrackPosPct, double otherTrackPosPct)
