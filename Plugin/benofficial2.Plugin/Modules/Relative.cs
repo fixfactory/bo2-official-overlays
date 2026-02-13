@@ -297,12 +297,12 @@ namespace benofficial2.Plugin
             }
 
             DriversBehindOnTrack = _driverModule.Drivers.Values
-                .Where(d => d.RelativeDistanceToPlayer > 0)
+                .Where(d => d.RelativeDistanceToPlayer > Constants.LapEpsilon)
                 .OrderBy(d => d.RelativeDistanceToPlayer)
                 .ToList();
 
             DriversAheadOnTrack = _driverModule.Drivers.Values
-                .Where(d => d.RelativeDistanceToPlayer < 0)
+                .Where(d => d.RelativeDistanceToPlayer < Constants.LapEpsilon)
                 .OrderBy(d => Math.Abs(d.RelativeDistanceToPlayer))
                 .ToList();
         }
