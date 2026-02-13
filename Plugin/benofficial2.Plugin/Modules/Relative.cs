@@ -302,7 +302,7 @@ namespace benofficial2.Plugin
                 .ToList();
 
             DriversAheadOnTrack = _driverModule.Drivers.Values
-                .Where(d => d.RelativeDistanceToPlayer < Constants.LapEpsilon)
+                .Where(d => d.RelativeDistanceToPlayer < -Constants.LapEpsilon)
                 .OrderBy(d => Math.Abs(d.RelativeDistanceToPlayer))
                 .ToList();
         }
