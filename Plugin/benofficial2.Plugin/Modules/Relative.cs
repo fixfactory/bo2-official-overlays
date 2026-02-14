@@ -44,6 +44,7 @@ namespace benofficial2.Plugin
         public bool TireCompoundVisible { get; set; } = true;
         public int AlternateRowBackgroundColor { get; set; } = 15;
         public bool HighlightPlayerRow { get; set; } = true;
+        public bool UseHighPrecisionGaps { get; set; } = true;
         public int BackgroundOpacity { get; set; } = 60;
 
         // Deprecated pre-4.0
@@ -102,8 +103,7 @@ namespace benofficial2.Plugin
         private TimeSpan _updateInterval = TimeSpan.FromMilliseconds(100);
 
         private DriverModule _driverModule = null;
-        private CarModule _carModule = null;
-        private FlairModule _flairModule = null;
+        private TrackModule _trackModule = null;
 
         public RelativeSettings Settings { get; set; }
 
@@ -117,11 +117,13 @@ namespace benofficial2.Plugin
         private readonly List<Driver> _bufferBehind = new List<Driver>(32);
         private readonly List<Driver> _bufferAhead = new List<Driver>(32);
 
+        private CarEstTimeCache _cachedEstTimes = new CarEstTimeCache();
+        private string _cachedTrackId = string.Empty;
+
         public override void Init(PluginManager pluginManager, benofficial2 plugin)
         {
             _driverModule = plugin.GetModule<DriverModule>();
-            _carModule = plugin.GetModule<CarModule>();
-            _flairModule = plugin.GetModule<FlairModule>();
+            _trackModule = plugin.GetModule<TrackModule>();
 
             Settings = plugin.ReadCommonSettings<RelativeSettings>("RelativeSettings", () => new RelativeSettings());
             plugin.AttachDelegate(name: "Relative.HideInReplay", valueProvider: () => Settings.HideInReplay);
@@ -177,9 +179,6 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
-            // Update gaps every frame to keep them smooth in the Rejoin Helper.
-            UpdateGaps(ref data);
-
             if (data.FrameTime - _lastUpdateTime < _updateInterval) 
                 return;
 
@@ -188,13 +187,17 @@ namespace benofficial2.Plugin
             UpdateRelativeDistances(ref data);
             UpdateDriversAheadBehindOnTrack(ref data);
 
+            UpdateCachedEstTimes(ref data);
+            UpdateGaps(ref data);
+
             UpdateRelative(ref data, Ahead.Rows, RelativeAhead.MaxRows, DriversAheadOnTrack);
             UpdateRelative(ref data, Behind.Rows, RelativeBehind.MaxRows, DriversBehindOnTrack);
         }
 
         public void UpdateRelative(ref GameData data, List<RelativeRow> rows, int maxRows, List<Driver> drivers)
         {
-            for (int rowIdx = 0; rowIdx < maxRows; rowIdx++)
+            int visibleRows = Math.Min(Settings.MaxRows, maxRows);
+            for (int rowIdx = 0; rowIdx < visibleRows; rowIdx++)
             {
                 RelativeRow row = rows[rowIdx];
 
@@ -233,11 +236,41 @@ namespace benofficial2.Plugin
                 row.PushToPassCount = driver.PushToPassCount;
                 row.PushToPassActivated = driver.PushToPassActivated;
             }
+
+            for (int rowIdx = visibleRows; rowIdx < maxRows; rowIdx++)
+            {
+                BlankRow(rows[rowIdx]);
+            }
         }
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
         {
             plugin.SaveCommonSettings("RelativeSettings", Settings);
+        }
+
+        public void UpdateCachedEstTimes(ref GameData data)
+        {
+            if (Settings.UseHighPrecisionGaps == false)
+                return;
+
+            if (data.NewData.TrackId != _cachedTrackId)
+            {
+                _cachedEstTimes.Clear();
+            }
+
+            if (!_cachedEstTimes.IsInitialized && _trackModule.TrackLength > Constants.DistanceEpsilon)
+            {
+                _cachedEstTimes.Initialize(_trackModule.TrackLength * 1000.0);
+                _cachedTrackId = data.NewData.TrackId;
+            }
+
+            foreach (Driver driver in _driverModule.Drivers.Values)
+            {
+                if (driver.IsConnected && driver.TrackPositionPercent > Constants.LapEpsilon && driver.EstTime > Constants.SecondsEpsilon)
+                {
+                    _cachedEstTimes.AddEstTime(driver.CarId, driver.TrackPositionPercent, driver.EstTime, driver.CarClassEstLapTime);
+                }
+            }
         }
 
         public void UpdateGaps(ref GameData data)
@@ -246,12 +279,13 @@ namespace benofficial2.Plugin
             if (highlightedDriver == null)
                 return;
 
-            foreach (Driver opponentDriver in DriversAheadOnTrack)
+            int maxRows = Settings.MaxRows;
+            int aheadCount = Math.Min(maxRows, DriversAheadOnTrack.Count);
+            for (int i = 0; i < aheadCount; i++)
             {
-                // Scale opponent estimated time to player's car class
-                double opponentEstTimeScaled = GetEstTimeScaled(opponentDriver, highlightedDriver);
-
-                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTimeScaled, highlightedDriver.EstTime);
+                Driver opponentDriver = DriversAheadOnTrack[i];
+                double opponentEstTime = GetEstTimeAtOpponentPos(opponentDriver, highlightedDriver);
+                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTime, highlightedDriver.EstTime);
 
                 // Make sure timeDiff is positive
                 while (timeDiff < 0.0)
@@ -260,16 +294,16 @@ namespace benofficial2.Plugin
                 opponentDriver.RelativeGapToPlayer = timeDiff;
             }
 
-            foreach (Driver opponentDriver in DriversBehindOnTrack)
+            int behindCount = Math.Min(maxRows, DriversBehindOnTrack.Count);
+            for (int i = 0; i < behindCount; i++)
             {
-                // Scale player estimated time to opponent's car class
-                double highlightedEstTimeScaled = GetEstTimeScaled(highlightedDriver, opponentDriver);
-
-                double timeDiff = GetEstTimeDiff(opponentDriver.CarClassEstLapTime, opponentDriver.EstTime, highlightedEstTimeScaled);
+                Driver opponentDriver = DriversBehindOnTrack[i];
+                double opponentEstTime = GetEstTimeAtOpponentPos(opponentDriver, highlightedDriver);
+                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTime, highlightedDriver.EstTime);
 
                 // Make sure timeDiff is negative
                 while (timeDiff > 0.0)
-                    timeDiff -= opponentDriver.CarClassEstLapTime;
+                    timeDiff -= highlightedDriver.CarClassEstLapTime;
 
                 opponentDriver.RelativeGapToPlayer = timeDiff;
             }
@@ -361,22 +395,34 @@ namespace benofficial2.Plugin
             }
         }
 
-        private double GetEstTimeScaled(Driver driverAhead, Driver driverBehind)
+        private double GetEstTimeAtOpponentPos(Driver opponentDriver, Driver driver)
         {
-            // Scale opponent estimated time to player's car class
-            double estTimeScaled = driverAhead.EstTime * driverBehind.CarClassEstLapTime / driverAhead.CarClassEstLapTime;
+            double estTime = 0.0;
+            if (Settings.UseHighPrecisionGaps && opponentDriver.CarId != driver.CarId)
+            {
+                // Using a cache of EstTimes around the track, we can better estimate EstTime.
+                // We interpolate what *our* EstTime would be at *their* position.
+                estTime = _cachedEstTimes.GetEstTime(driver.CarId, opponentDriver.TrackPositionPercent);
+            }
+
+            if (estTime < Constants.SecondsEpsilon)
+            {
+                // Scale the opponent's EstTime to the driver's car class (no change if same car).
+                // This is a best effort approximation because we don't have *our* EstTime at *their* position.
+                estTime = opponentDriver.EstTime * driver.CarClassEstLapTime / opponentDriver.CarClassEstLapTime;
+            }
 
             // Make sure opponent time is not ahead when behind on track, and not behind when ahead on track.
-            if (driverAhead.TrackPositionPercent < driverBehind.TrackPositionPercent)
+            if (opponentDriver.TrackPositionPercent < driver.TrackPositionPercent)
             {
-                estTimeScaled = Math.Min(driverBehind.EstTime, estTimeScaled);
+                estTime = Math.Min(driver.EstTime, estTime);
             }
-            else if (driverAhead.TrackPositionPercent > driverBehind.TrackPositionPercent)
+            else if (opponentDriver.TrackPositionPercent > driver.TrackPositionPercent)
             {
-                estTimeScaled = Math.Max(driverBehind.EstTime, estTimeScaled);
+                estTime = Math.Max(driver.EstTime, estTime);
             }
 
-            return estTimeScaled;
+            return estTime;
         }
 
         static public double GetEstTimeDiff(double estLapTime, double opponentEstTime, double playerEstTime)
