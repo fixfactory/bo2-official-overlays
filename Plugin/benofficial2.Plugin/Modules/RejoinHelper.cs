@@ -41,6 +41,10 @@ namespace benofficial2.Plugin
     {
         private DriverModule _driverModule = null;
         private SessionModule _sessionModule = null;
+        private RelativeModule _relativeModule = null;
+
+        private DateTime _lastUpdateTime = DateTime.MinValue;
+        private TimeSpan _updateInterval = TimeSpan.FromMilliseconds(100);
 
         public RejoinHelperSettings Settings { get; set; }
         public bool Visible { get; set; } = false;
@@ -56,6 +60,7 @@ namespace benofficial2.Plugin
         {
             _driverModule = plugin.GetModule<DriverModule>();
             _sessionModule = plugin.GetModule<SessionModule>();
+            _relativeModule = plugin.GetModule<RelativeModule>();
 
             Settings = plugin.ReadCommonSettings<RejoinHelperSettings>("RejoinHelperSettings", () => new RejoinHelperSettings());
             plugin.AttachDelegate(name: "RejoinHelper.Enabled", valueProvider: () => Settings.Enabled);
@@ -70,6 +75,11 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
+            if (data.FrameTime - _lastUpdateTime < _updateInterval)
+                return;
+
+            _lastUpdateTime = data.FrameTime;
+
             // Wait for race to be started for a few seconds not to trigger on a standing start
             if (!Settings.Enabled || (_sessionModule.Race && (_sessionModule.RaceFinished || _sessionModule.RaceTimer < 3)))
             {
@@ -77,55 +87,53 @@ namespace benofficial2.Plugin
                 Gap = 0;
                 State = StateClear;
                 ColorPct = 100;
+                return;
             }
-            else
-            {
-                RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "PlayerTrackSurface");
-                bool isSlow = data.NewData.SpeedKmh < Settings.MinSpeed;
-                Visible = isSlow || trackSurface == 0;
 
-                List<Opponent> opponents = data.NewData.OpponentsBehindOnTrack;
-                if (opponents.Count > 0)
+            RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "PlayerTrackSurface");
+            bool isSlow = data.NewData.SpeedKmh < Settings.MinSpeed;
+            Visible = isSlow || trackSurface == 0;
+          
+            if (_relativeModule.DriversBehindOnTrack.Count > 0)
+            {
+                Driver driver = _relativeModule.DriversBehindOnTrack[0];
+                if (driver != null)
                 {
-                    _driverModule.Drivers.TryGetValue(opponents[0].CarNumber, out Driver driver);
-                    if (driver != null)
-                    {
-                        Gap = Math.Abs(driver.RelativeGapToPlayer);
-                    }
-                    else
-                    {
-                        Gap = 0;
-                    }
+                    Gap = Math.Abs(driver.RelativeGapToPlayer);
                 }
                 else
                 {
                     Gap = 0;
                 }
+            }
+            else
+            {
+                Gap = 0;
+            }
 
-                if (Gap <= 0)
+            if (Gap < Constants.SecondsEpsilon)
+            {
+                State = StateClear;
+                ColorPct = 100;
+            }
+            else
+            {
+                if (Gap >= Settings.MinimumClearGap.Value)
                 {
                     State = StateClear;
                     ColorPct = 100;
                 }
+                else if (Gap >= Settings.MinimumCareGap.Value)
+                {
+                    State = StateCare;
+                    double ratio = (Gap - Settings.MinimumCareGap.Value) / (Settings.MinimumClearGap.Value - Settings.MinimumCareGap.Value);
+                    ColorPct = ((100 - 50) * ratio) + 50;
+                }
                 else
                 {
-                    if (Gap >= Settings.MinimumClearGap.Value)
-                    {
-                        State = StateClear;
-                        ColorPct = 100;
-                    }
-                    else if (Gap >= Settings.MinimumCareGap.Value)
-                    {
-                        State = StateCare;
-                        double ratio = (Gap - Settings.MinimumCareGap.Value) / (Settings.MinimumClearGap.Value - Settings.MinimumCareGap.Value);
-                        ColorPct = ((100 - 50) * ratio) + 50;
-                    }
-                    else
-                    {
-                        State = StateYield;
-                        double ratio = Gap / Settings.MinimumClearGap.Value;
-                        ColorPct = 50 * ratio;
-                    }
+                    State = StateYield;
+                    double ratio = Gap / Settings.MinimumClearGap.Value;
+                    ColorPct = 50 * ratio;
                 }
             }
         }
