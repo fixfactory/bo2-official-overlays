@@ -172,6 +172,11 @@ namespace benofficial2.Plugin
 
         public List<ClassLeaderboard> LiveClassLeaderboards { get; private set; } = new List<ClassLeaderboard>();
 
+        // Reusable buffers to avoid per-frame allocations
+        private readonly Dictionary<int, ClassLeaderboard> _classMapBuffer = new Dictionary<int, ClassLeaderboard>(MaxCarClasses);
+        private readonly List<Driver> _scoredDriversBuffer = new List<Driver>(64);
+        private readonly List<ClassLeaderboard> _leaderboardPool = new List<ClassLeaderboard>();
+
         public override int UpdatePriority => 80;
 
         public StandingsModule()
@@ -607,19 +612,45 @@ namespace benofficial2.Plugin
             row.JokerLapsComplete = 0;
         }
 
+        private ClassLeaderboard GetLeaderboardFromPool(int poolIndex)
+        {
+            if (poolIndex < _leaderboardPool.Count)
+            {
+                var leaderboard = _leaderboardPool[poolIndex];
+                leaderboard.CarClassId = 0;
+                leaderboard.CarClassName = string.Empty;
+                leaderboard.CarClassColor = string.Empty;
+                leaderboard.Drivers.Clear();
+                leaderboard.CarNames.Clear();
+                leaderboard.LeaderPosition = 0;
+                leaderboard.EstLapTime = 0.0;
+                return leaderboard;
+            }
+            else
+            {
+                var newLeaderboard = new ClassLeaderboard();
+                _leaderboardPool.Add(newLeaderboard);
+                return newLeaderboard;
+            }
+        }
+
         private void UpdateLeaderboards(ref GameData data)
         {
             // Build leaderboards grouped by car class without LINQ allocations
-            var classMap = new Dictionary<int, ClassLeaderboard>();
-            List<Driver> scoredDriversAllClasses = new List<Driver>();
+            // Reuse buffers to avoid per-frame allocations
+            var classMap = _classMapBuffer;
+            classMap.Clear();
+            var scoredDriversAllClasses = _scoredDriversBuffer;
+            scoredDriversAllClasses.Clear();
 
+            int poolIndex = 0;
             foreach (var driver in _driverModule.Drivers.Values)
             {
                 int carClassId = driver.CarClassId;
                 bool newLeaderboard = false;
                 if (!classMap.TryGetValue(carClassId, out var leaderboard))
                 {
-                    leaderboard = new ClassLeaderboard();
+                    leaderboard = GetLeaderboardFromPool(poolIndex++);
                     leaderboard.CarClassId = carClassId;
                     leaderboard.CarClassColor = driver.CarClassColor;
                     leaderboard.CarClassName = driver.CarClassName;
@@ -657,8 +688,12 @@ namespace benofficial2.Plugin
                 }
             }
 
-            // Convert map to list
-            LiveClassLeaderboards = new List<ClassLeaderboard>(classMap.Values);
+            // Reuse existing list to avoid allocation; clear and repopulate
+            LiveClassLeaderboards.Clear();
+            foreach (var leaderboard in classMap.Values)
+            {
+                LiveClassLeaderboards.Add(leaderboard);
+            }
 
             // Sort drivers inside each leaderboard using in-place Sort to avoid LINQ
             foreach (var leaderboard in LiveClassLeaderboards)
