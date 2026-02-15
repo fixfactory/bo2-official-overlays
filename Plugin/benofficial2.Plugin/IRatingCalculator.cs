@@ -51,58 +51,117 @@ namespace benofficial2.Plugin
 
     public static class IRatingCalculator
     {
+        private const int MaxPreallocatedSize = 64;
+        private static readonly float[] s_preallocatedExpectedScores = new float[MaxPreallocatedSize];
+        private static readonly float[] s_preallocatedFudgeFactors = new float[MaxPreallocatedSize];
+        private static readonly float[] s_preallocatedChanges = new float[MaxPreallocatedSize];
+
         public static List<CalculationResult<T>> Calculate<T>(List<RaceResult<T>> raceResults)
         {
+            int numRegistrations = raceResults.Count;
+            if (numRegistrations == 0)
+                return new List<CalculationResult<T>>();
+
             float br1 = 1600f / (float)Math.Log(2);
 
-            int numRegistrations = raceResults.Count;
-            int numStarters = raceResults.Count(r => r.Started);
+            int numStarters = 0;
+            for (int i = 0; i < numRegistrations; i++)
+            {
+                if (raceResults[i].Started)
+                    numStarters++;
+            }
             int numNonStarters = numRegistrations - numStarters;
 
-            var chances = raceResults.Select(a =>
+            float[] expectedScores;
+            float[] fudgeFactors;
+            float[] changes;
+
+            if (numRegistrations <= MaxPreallocatedSize)
             {
-                float aRating = a.StartIRating;
-                return raceResults.Select(b =>
+                expectedScores = s_preallocatedExpectedScores;
+                fudgeFactors = s_preallocatedFudgeFactors;
+                changes = s_preallocatedChanges;
+
+                Array.Clear(expectedScores, 0, numRegistrations);
+                Array.Clear(fudgeFactors, 0, numRegistrations);
+                Array.Clear(changes, 0, numRegistrations);
+            }
+            else
+            {
+                expectedScores = new float[numRegistrations];
+                fudgeFactors = new float[numRegistrations];
+                changes = new float[numRegistrations];
+            }
+
+            for (int i = 0; i < numRegistrations; i++)
+            {
+                float aRating = raceResults[i].StartIRating;
+                float score = -0.5f;
+
+                for (int j = 0; j < numRegistrations; j++)
                 {
-                    float bRating = b.StartIRating;
-                    return Chance(aRating, bRating, br1);
-                }).ToList();
-            }).ToList();
+                    float bRating = raceResults[j].StartIRating;
+                    score += Chance(aRating, bRating, br1);
+                }
 
-            var expectedScores = chances.Select(ch => ch.Sum() - 0.5f).ToList();
+                expectedScores[i] = score;
+            }
 
-            var fudgeFactors = raceResults.Select(r =>
+            float x = numRegistrations - numNonStarters / 2f;
+            for (int i = 0; i < numRegistrations; i++)
             {
-                if (!r.Started) return 0f;
-                float x = numRegistrations - numNonStarters / 2f;
-                return (x / 2f - r.FinishRank) / 100f;
-            }).ToList();
-
-            var changesStarters = raceResults.Zip(expectedScores, (r, s) => (r, s))
-                .Zip(fudgeFactors, (rs, f) =>
+                if (raceResults[i].Started)
                 {
-                    var (r, s) = rs;
-                    if (!r.Started) return (float?)null;
-                    return ((numRegistrations - r.FinishRank - s - f) * 200f) / numStarters;
-                }).ToList();
+                    fudgeFactors[i] = (x / 2f - raceResults[i].FinishRank) / 100f;
+                }
+            }
 
-            float sumChangesStarters = changesStarters.Where(c => c.HasValue).Sum(c => c.Value);
-
-            var expectedNonStarters = raceResults.Zip(expectedScores, (r, s) => r.Started ? (float?)null : s).ToList();
-            float sumExpectedNonStarters = expectedNonStarters.Where(x => x.HasValue).Sum(x => x.Value);
-
-            var changesNonStarters = expectedNonStarters.Select(s =>
-                s.HasValue ? -sumChangesStarters / numNonStarters * s.Value / (sumExpectedNonStarters / numNonStarters) : (float?)null
-            ).ToList();
-
-            var changes = changesStarters.Zip(changesNonStarters, (a, b) => a ?? b ?? throw new Exception("Invalid state")).ToList();
-
-            return raceResults.Zip(changes, (r, c) => new CalculationResult<T>
+            float sumChangesStarters = 0f;
+            for (int i = 0; i < numRegistrations; i++)
             {
-                RaceResult = r,
-                IRatingChange = c,
-                NewIRating = (uint)Math.Round(r.StartIRating + c)
-            }).ToList();
+                if (raceResults[i].Started)
+                {
+                    float change = ((numRegistrations - raceResults[i].FinishRank - expectedScores[i] - fudgeFactors[i]) * 200f) / numStarters;
+                    changes[i] = change;
+                    sumChangesStarters += change;
+                }
+            }
+
+            if (numNonStarters > 0)
+            {
+                float sumExpectedNonStarters = 0f;
+                for (int i = 0; i < numRegistrations; i++)
+                {
+                    if (!raceResults[i].Started)
+                    {
+                        sumExpectedNonStarters += expectedScores[i];
+                    }
+                }
+
+                float avgExpectedNonStarters = sumExpectedNonStarters / numNonStarters;
+                float changeMultiplier = -sumChangesStarters / numNonStarters / avgExpectedNonStarters;
+
+                for (int i = 0; i < numRegistrations; i++)
+                {
+                    if (!raceResults[i].Started)
+                    {
+                        changes[i] = changeMultiplier * expectedScores[i];
+                    }
+                }
+            }
+
+            var results = new List<CalculationResult<T>>(numRegistrations);
+            for (int i = 0; i < numRegistrations; i++)
+            {
+                results.Add(new CalculationResult<T>
+                {
+                    RaceResult = raceResults[i],
+                    IRatingChange = changes[i],
+                    NewIRating = (uint)Math.Round(raceResults[i].StartIRating + changes[i])
+                });
+            }
+
+            return results;
         }
 
         private static float Chance(float a, float b, float factor)
