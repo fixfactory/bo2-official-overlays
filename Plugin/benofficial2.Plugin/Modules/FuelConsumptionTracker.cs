@@ -117,8 +117,10 @@ namespace benofficial2.Plugin
 
             percentile = Math.Max(0, Math.Min(100, percentile));
 
-            var sorted = _allConsumptions.OrderBy(x => x).ToList();
-            double index = (percentile / 100.0) * (sorted.Count - 1);
+            double[] sorted = _allConsumptions.ToArray();
+            Array.Sort(sorted);
+
+            double index = (percentile / 100.0) * (sorted.Length - 1);
             int lower = (int)Math.Floor(index);
             int upper = (int)Math.Ceiling(index);
 
