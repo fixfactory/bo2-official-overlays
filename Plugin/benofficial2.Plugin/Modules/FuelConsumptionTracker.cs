@@ -37,6 +37,7 @@ namespace benofficial2.Plugin
         private bool _previousLapValid = false;
 
         private readonly List<double> _allConsumptions = new List<double>();
+        private double[] _sortedCache = null;
 
         public void Update(double lapPosition, double fuelLevel, bool invalidate, int incidentCount)
         {
@@ -65,6 +66,7 @@ namespace benofficial2.Plugin
                 if (fullLapCompleted && !_wasInvalidated && !incidentHappened && lapFuelConsumed > Constants.FuelEpsilon)
                 {
                     _allConsumptions.Add(lapFuelConsumed);
+                    _sortedCache = null;
                     _previousLapValid = true;
                 }
                 else
@@ -117,18 +119,21 @@ namespace benofficial2.Plugin
 
             percentile = Math.Max(0, Math.Min(100, percentile));
 
-            double[] sorted = _allConsumptions.ToArray();
-            Array.Sort(sorted);
+            if (_sortedCache == null || _sortedCache.Length != _allConsumptions.Count)
+            {
+                _sortedCache = _allConsumptions.ToArray();
+                Array.Sort(_sortedCache);
+            }
 
-            double index = (percentile / 100.0) * (sorted.Length - 1);
+            double index = (percentile / 100.0) * (_sortedCache.Length - 1);
             int lower = (int)Math.Floor(index);
             int upper = (int)Math.Ceiling(index);
 
             if (lower == upper)
-                return sorted[lower];
+                return _sortedCache[lower];
 
             double fraction = index - lower;
-            return sorted[lower] + (sorted[upper] - sorted[lower]) * fraction;
+            return _sortedCache[lower] + (_sortedCache[upper] - _sortedCache[lower]) * fraction;
         }
 
         public int GetValidLapCount() => _allConsumptions.Count;
@@ -144,6 +149,7 @@ namespace benofficial2.Plugin
             _lapIncidentCount = 0;
             _lapFuelStart = -1.0;
             _allConsumptions.Clear();
+            _sortedCache = null;
         }
     }
 }
