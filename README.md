@@ -57,7 +57,7 @@ This overlay shows the live **Leaderboard** for up to 4 car classes. Optional co
 </p>
 
 > [!NOTE]
-> The old **Standings** overlay has been deprecated and will not be supported anymore. Please use the **Multi-Class Standings** overlay instead, which can be configured to look the same with only the player's car class.*
+> The old **Standings** overlay has been deprecated and will not be supported anymore. Please use the **Multi-Class Standings** overlay instead, which can be configured to look the same with only the player's car class.
 
 ## Relative
 
@@ -71,7 +71,7 @@ There's an optional footer (not enabled by default) that shows additional sessio
 
 ## Spotter
 
-This overlay shows orange bars when side-by-side with another car. This complements your audio spotter as it will show up the moment your spotter starts talking. The size of the orange bar gives your an idea of the amount of car overlap and how fast you are passing them so you can time the perfect move. 
+This overlay shows orange bars when side-by-side with another car. This complements your audio spotter as it will show up the moment your spotter starts talking. The size of the orange bar gives your an idea of the amount of car overlap and how fast you are passing them so you can time the perfect move.
 
 <p align="center">
   <img src="Images/Screenshots/Spotter.png" width="400"/>
@@ -124,7 +124,7 @@ This delta bar can help you improve your lap times by giving you on-the-spot fee
 </p>
 
 > [!NOTE]
-> If the delta bar doesn't show immediately, it is because it doesn't have a clean reference lap to compare against yet. It will show up once you complete a full lap without incident.*
+> If the delta bar doesn't show immediately, it is because it doesn't have a clean reference lap to compare against yet. It will show up once you complete a full lap without incident.
 
 <p align="center">
   <img src="Images/Screenshots/Delta-Red.png" width="400"/>
@@ -140,7 +140,7 @@ This overlay shows information about the currently spectated driver when spectat
 
 ## Dash Overlay
 
-This overlay shows various in-car settings and statuses. Useful when the in-game steering wheel is not visible in your FOV. The green boxes typically show statuses about "going faster" such as **DRS**, **ERS**, **P2P**, **OT** (Super Formula), and **Fuel Mix**. 
+This overlay shows various in-car settings and statuses. Useful when the in-game steering wheel is not visible in your FOV. The green boxes typically show statuses about "going faster" such as **DRS**, **ERS**, **P2P**, **OT** (Super Formula), and **Fuel Mix**.
 
 <p align="center">
   <img src="Images/Screenshots/Dash-ERS-Green.png" width="350"/>
@@ -203,7 +203,7 @@ Thanks to **Wotever** for making [SimHub](https://www.simhubdash.com/download-2/
 
 Thanks to **Romainrob** for making the excellent [iRacing Extra Properties](https://www.simhubdash.com/community-2/dashboard-templates/romainrobs-collection/) plugin and his collection of overlays which was a great inspiration.
 
-The overlays in this collection are made by **benofficial2**. 
+The overlays in this collection are made by **benofficial2**.
 If you like them, consider following me on [Twitch](https://www.twitch.tv/benofficial2), [YouTube](https://www.youtube.com/@benofficial2?sub_confirmation=1), [Bluesky](https://bsky.app/profile/benofficial2.bsky.social) or making a [donation](https://streamelements.com/benofficial2/tip).
 
 And thank *you* for using them!
