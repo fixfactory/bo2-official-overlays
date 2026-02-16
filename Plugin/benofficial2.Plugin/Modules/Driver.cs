@@ -858,8 +858,7 @@ namespace benofficial2.Plugin
                             _driversByClass[driver.CarClassId] = list;
                         }
 
-                        if (!list.Contains(driver))
-                            list.Add(driver);
+                        list.Add(driver);
                     }
                 }
             }
