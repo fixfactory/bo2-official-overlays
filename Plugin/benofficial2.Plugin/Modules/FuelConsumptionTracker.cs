@@ -94,8 +94,16 @@ namespace benofficial2.Plugin
             if (_allConsumptions.Count == 0 || lastLaps <= 0)
                 return 0.0;
 
-            var recent = _allConsumptions.Skip(Math.Max(0, _allConsumptions.Count - lastLaps));
-            return recent.Average();
+            int count = Math.Min(lastLaps, _allConsumptions.Count);
+            int startIndex = _allConsumptions.Count - count;
+
+            double sum = 0.0;
+            for (int i = startIndex; i < _allConsumptions.Count; i++)
+            {
+                sum += _allConsumptions[i];
+            }
+
+            return sum / count;
         }
 
         /// <summary>
