@@ -1,0 +1,23 @@
+{
+  "ScreenCount": 1.0,
+  "InGameScreensIndexs": [
+    0
+  ],
+  "IdleScreensIndexs": [
+    0
+  ],
+  "MainPreviewIndex": 0,
+  "IsOverlay": true,
+  "OverlaySizeWarning": false,
+  "MetadataVersion": 2.0,
+  "EnableOnDashboardMessaging": true,
+  "PitScreensIndexs": [],
+  "SimHubVersion": "9.11.2",
+  "Category": null,
+  "Title": "benofficial2 - ABS",
+  "Description": null,
+  "Author": "twitch.tv/benofficial2",
+  "Width": 200.0,
+  "Height": 200.0,
+  "DashboardVersion": ""
+}
