@@ -381,7 +381,7 @@ namespace benofficial2.Plugin
             if (currentTrackPosPct < otherTrackPosPct)
             {
                 if (otherTrackPosPct - currentTrackPosPct < 0.5)
-                    return (otherTrackPosPct - currentTrackPosPct) * -1;
+                    return (otherTrackPosPct - currentTrackPosPct) * -1.0;
                 else
                     return 1.0 - otherTrackPosPct + currentTrackPosPct;
             }
@@ -390,7 +390,7 @@ namespace benofficial2.Plugin
                 if (currentTrackPosPct - otherTrackPosPct <= 0.5)
                     return currentTrackPosPct - otherTrackPosPct;
                 else
-                    return (1.0 - currentTrackPosPct + otherTrackPosPct) * -1;
+                    return (1.0 - currentTrackPosPct + otherTrackPosPct) * -1.0;
 
             }
         }

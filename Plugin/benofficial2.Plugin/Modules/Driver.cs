@@ -752,7 +752,7 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetValue<string>(drivers, out string userName, i, "UserName");
                 RawDataHelper.TryGetValue<string>(drivers, out string teamName, i, "TeamName");
                 RawDataHelper.TryGetValue<int>(drivers, out int carIsPaceCar, i, "CarIsPaceCar");
-                RawDataHelper.TryGetValue<float>(drivers, out float carClassEstLapTime, i, "CarClassEstLapTime");
+                RawDataHelper.TryGetValue<double>(drivers, out double carClassEstLapTime, i, "CarClassEstLapTime");
 
                 RawDataHelper.TryGetTelemetryData<float>(ref data, out float lastLapTime, "CarIdxLastLapTime", carIdx);
                 RawDataHelper.TryGetTelemetryData<float>(ref data, out float bestLapTime, "CarIdxBestLapTime", carIdx);
@@ -878,9 +878,9 @@ namespace benofficial2.Plugin
                 if (driver == null)
                     continue;
 
-                RawDataHelper.TryGetTelemetryData<float>(ref data, out float estTime, "CarIdxEstTime", driver.CarIdx);
+                RawDataHelper.TryGetTelemetryData<double>(ref data, out double estTime, "CarIdxEstTime", driver.CarIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int lap, "CarIdxLap", driver.CarIdx);
-                RawDataHelper.TryGetTelemetryData<float>(ref data, out float lapDistPct, "CarIdxLapDistPct", driver.CarIdx);
+                RawDataHelper.TryGetTelemetryData<double>(ref data, out double lapDistPct, "CarIdxLapDistPct", driver.CarIdx);
 
                 driver.EstTime = estTime;
                 driver.Lap = lap;
@@ -892,7 +892,7 @@ namespace benofficial2.Plugin
                 }
                 else
                 {
-                    driver.CurrentLapHighPrecisionRaw = -1;
+                    driver.CurrentLapHighPrecisionRaw = -1.0;
                 }
             }
         }
