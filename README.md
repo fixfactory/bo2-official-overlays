@@ -13,7 +13,8 @@ Completely free and supported by [donations](https://streamelements.com/benoffic
 </p>
 </a>
 
-To see them in action, click the image above for a video demo.
+> [!NOTE]
+> To see them in action, click the image above for a video demo.
 
 ### Included in the collection
 
@@ -36,7 +37,8 @@ To see them in action, click the image above for a video demo.
 
 [Download benofficial2's Official Overlays](https://github.com/fixfactory/bo2-official-overlays/releases) from the releases page and run the installer. Choose your Sim Hub folder as your installation folder.
 
-See the [Installation Guide](https://github.com/fixfactory/bo2-official-overlays/wiki/Installation-Guide) for a detailed walkthrough on how to install and setup the overlays the first time.
+> [!TIP]
+> See the [Installation Guide](https://github.com/fixfactory/bo2-official-overlays/wiki/Installation-Guide) for a detailed walkthrough on how to install and setup the overlays the first time.
 
 ## Inputs Telemetry
 
@@ -54,7 +56,8 @@ This overlay shows the live **Leaderboard** for up to 4 car classes. Optional co
   <img src="Images/Screenshots/Standings-IR18.png" width="450"/>
 </p>
 
-*Note: The old **Standings** overlay has been deprecated and will not be supported anymore. Please use the **Multi-Class Standings** overlay instead, which can be configured to look the same with only the player's car class.*
+> [!NOTE]
+> The old **Standings** overlay has been deprecated and will not be supported anymore. Please use the **Multi-Class Standings** overlay instead, which can be configured to look the same with only the player's car class.*
 
 ## Relative
 
@@ -120,7 +123,8 @@ This delta bar can help you improve your lap times by giving you on-the-spot fee
   <img src="Images/Screenshots/Delta-White.png" width="400"/>
 </p>
 
-*Note: if the delta bar doesn't show immediately, it is because it doesn't have a clean reference lap to compare against yet. It will show up once you complete a full lap without incident.*
+> [!NOTE]
+> If the delta bar doesn't show immediately, it is because it doesn't have a clean reference lap to compare against yet. It will show up once you complete a full lap without incident.*
 
 <p align="center">
   <img src="Images/Screenshots/Delta-Red.png" width="400"/>
@@ -162,8 +166,6 @@ A blinking **Fuel Warning** lights up when you're about to grid with an under-fu
   <img src="Images/Screenshots/Fuel-Warning.png" width="200"/>
 </p>
 
-*Beta Warning: use at your own risk. I might have missed an edge case but so far so good in my tests. Please report any issue or feedback in my [Discord](https://discord.gg/s2834nmdYx).*
-
 ## Setup Cover
 
 For streamers, this overlay shows an animation that hides your car setup values when entering the garage.
@@ -180,11 +182,12 @@ For streamers, this overlay shows your chat on-screen so you can keep up with ch
 
 When stopped, this overlay shows precise pedal input bars to help you consistently hold a desired value. For example with the F1 W13, you set your clutch bitepoint to ~60% and hold 50% throttle. At 52% you might spin out, so this overlay helps you be consistent.
 
-There's some randomness to the clutch bitepoint in iRacing, so make sure to experiment to find a safe value.
-
 <p align="center">
   <img src="Images/Screenshots/Launch-Assist.png" width="80"/>
 </p>
+
+> [!TIP]
+> There's some randomness to the clutch bitepoint in iRacing, so make sure to experiment to find a safe value.
 
 ## Help & Feedback
 
