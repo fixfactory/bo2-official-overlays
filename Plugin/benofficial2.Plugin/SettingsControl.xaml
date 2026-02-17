@@ -370,14 +370,13 @@
                             Include cars on pit lane
                         </styles:SHToggleCheckbox>
 
-                        <!--
                         <styles:SHToggleCheckbox 
+                            Visibility="{Binding DebugVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             ToolTip="Use slightly more CPU resources to compute more precise gaps." 
                             HorizontalAlignment="Left" Margin="0,0,4,8"
                             IsChecked="{Binding Plugin.Modules[RelativeModule].Settings.UseHighPrecisionGaps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             Use high-precision gaps
                         </styles:SHToggleCheckbox>
-                        -->
 
                         <styles:SHToggleCheckbox 
                             ToolTip="Show the country flag corresponding to the driver's flair" 

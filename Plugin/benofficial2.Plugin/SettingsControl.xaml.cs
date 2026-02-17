@@ -45,6 +45,18 @@ namespace benofficial2.Plugin
     /// </summary>
     public partial class SettingsControl : UserControl
     {
+        public Visibility DebugVisibility
+        {
+            get
+            {
+#if DEBUG
+                return Visibility.Visible;
+#else
+                return Visibility.Collapsed;
+#endif
+            }
+        }
+
         public benofficial2 Plugin { get; }
 
         public SettingsControl()
