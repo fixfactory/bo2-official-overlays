@@ -74,6 +74,7 @@ namespace benofficial2.Plugin
         public SessionState State { get; internal set; } = new SessionState();
         public bool Race { get; internal set; } = false;
         public bool Qual { get; internal set; } = false;
+        public bool LoneQual { get; internal set; } = false;
         public bool Practice { get; internal set; } = false;
         public bool Offline { get; internal set; } = false;
         public bool ReplayPlaying { get; internal set; } = false;
@@ -99,6 +100,7 @@ namespace benofficial2.Plugin
         {
             plugin.AttachDelegate(name: "Session.Race", valueProvider: () => Race);
             plugin.AttachDelegate(name: "Session.Qual", valueProvider: () => Qual);
+            plugin.AttachDelegate(name: "Session.LoneQual", valueProvider: () => LoneQual);
             plugin.AttachDelegate(name: "Session.Practice", valueProvider: () => Practice);
             plugin.AttachDelegate(name: "Session.Offline", valueProvider: () => Offline);
             plugin.AttachDelegate(name: "Session.ReplayPlaying", valueProvider: () => ReplayPlaying);
@@ -123,6 +125,7 @@ namespace benofficial2.Plugin
             {
                 Race = data.NewData.SessionTypeName.IndexOf("Race") != -1;
                 Qual = data.NewData.SessionTypeName.IndexOf("Qual") != -1;
+                LoneQual = data.NewData.SessionTypeName.IndexOf("Lone Qual") != -1;
 
                 Practice = data.NewData.SessionTypeName.IndexOf("Practice") != -1 ||
                     data.NewData.SessionTypeName.IndexOf("Warmup") != -1 ||

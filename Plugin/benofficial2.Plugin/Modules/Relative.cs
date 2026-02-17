@@ -104,6 +104,7 @@ namespace benofficial2.Plugin
 
         private DriverModule _driverModule = null;
         private TrackModule _trackModule = null;
+        private SessionModule _sessionModule = null;
 
         public RelativeSettings Settings { get; set; }
 
@@ -124,6 +125,7 @@ namespace benofficial2.Plugin
         {
             _driverModule = plugin.GetModule<DriverModule>();
             _trackModule = plugin.GetModule<TrackModule>();
+            _sessionModule = plugin.GetModule<SessionModule>();
 
             Settings = plugin.ReadCommonSettings<RelativeSettings>("RelativeSettings", () => new RelativeSettings());
             plugin.AttachDelegate(name: "Relative.HideInReplay", valueProvider: () => Settings.HideInReplay);
@@ -315,7 +317,7 @@ namespace benofficial2.Plugin
             if (highlightedDriver == null)
                 return;
 
-            bool isLoneQual = data.NewData.SessionTypeName.IndexOf("Lone Qual") != -1;
+            bool isLoneQual = _sessionModule.LoneQual;
 
             foreach (Driver driver in _driverModule.Drivers.Values)
             {
