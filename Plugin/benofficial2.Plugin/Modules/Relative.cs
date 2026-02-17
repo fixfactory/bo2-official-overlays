@@ -34,7 +34,7 @@ namespace benofficial2.Plugin
         public bool HeaderVisible { get; set; } = true;
         public int HeaderOpacity { get; set; } = 90;
         public bool FooterVisible { get; set; } = false;
-        public bool IncludeCarsOnPitLane { get; set; } = false;
+        public bool IncludeCarsOnPitLane { get; set; } = true;
         public bool CarLogoVisible { get; set; } = true;
         public bool CountryFlagVisible { get; set; } = true;
         public bool SafetyRatingVisible { get; set; } = true;
