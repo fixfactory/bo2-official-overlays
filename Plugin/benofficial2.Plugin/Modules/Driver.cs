@@ -1079,14 +1079,14 @@ namespace benofficial2.Plugin
                     }
                 }
 
-                var results = IRatingCalculator.Calculate(_cachedRaceResults);
-                for (int i = 0; i < results.Count; i++)
+                IRatingCalculator.Calculate(_cachedRaceResults);
+                for (int i = 0; i < _cachedRaceResults.Count; i++)
                 {
-                    var result = results[i];
-                    int change = (int)result.NewIRating - (int)result.RaceResult.StartIRating;
-                    result.RaceResult.Driver.IRatingChange = change;
+                    var raceResult = _cachedRaceResults[i];
+                    int change = (int)raceResult.NewIRating - (int)raceResult.StartIRating;
+                    raceResult.Driver.IRatingChange = change;
 
-                    if (result.RaceResult.Driver.CarIdx == PlayerDriver.CarIdx)
+                    if (raceResult.Driver.CarIdx == PlayerDriver.CarIdx)
                     {
                         PlayerDriver.IRatingChange = change;
                     }

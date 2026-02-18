@@ -32,21 +32,18 @@ namespace benofficial2.Plugin
         public uint FinishRank { get; set; }
         public uint StartIRating { get; set; }
         public bool Started { get; set; }
+        public float IRatingChange { get; set; }
+        public uint NewIRating { get; set; }
 
-        public RaceResult(T driver, uint finishRank, uint startIRating, bool started)
+        public RaceResult(T driver, uint finishRank, uint startIRating, bool started, float iRatingChange = 0f, uint newIRating = 0)
         {
             Driver = driver;
             FinishRank = finishRank;
             StartIRating = startIRating;
             Started = started;
+            IRatingChange = iRatingChange;
+            NewIRating = newIRating == 0 ? startIRating : newIRating;
         }
-    }
-
-    public class CalculationResult<T>
-    {
-        public RaceResult<T> RaceResult { get; set; }
-        public float IRatingChange { get; set; }
-        public uint NewIRating { get; set; }
     }
 
     public static class IRatingCalculator
@@ -56,11 +53,11 @@ namespace benofficial2.Plugin
         private static readonly float[] s_preallocatedFudgeFactors = new float[MaxPreallocatedSize];
         private static readonly float[] s_preallocatedChanges = new float[MaxPreallocatedSize];
 
-        public static List<CalculationResult<T>> Calculate<T>(List<RaceResult<T>> raceResults)
+        public static void Calculate<T>(List<RaceResult<T>> raceResults)
         {
             int numRegistrations = raceResults.Count;
             if (numRegistrations == 0)
-                return new List<CalculationResult<T>>();
+                return;
 
             float br1 = 1600f / (float)Math.Log(2);
 
@@ -150,18 +147,11 @@ namespace benofficial2.Plugin
                 }
             }
 
-            var results = new List<CalculationResult<T>>(numRegistrations);
             for (int i = 0; i < numRegistrations; i++)
             {
-                results.Add(new CalculationResult<T>
-                {
-                    RaceResult = raceResults[i],
-                    IRatingChange = changes[i],
-                    NewIRating = (uint)Math.Round(raceResults[i].StartIRating + changes[i])
-                });
+                raceResults[i].IRatingChange = changes[i];
+                raceResults[i].NewIRating = (uint)Math.Round(raceResults[i].StartIRating + changes[i]);
             }
-
-            return results;
         }
 
         private static float Chance(float a, float b, float factor)
