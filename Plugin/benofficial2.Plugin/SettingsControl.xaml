@@ -356,9 +356,21 @@
                             <ui:TitledSlider Width="400" Title="Header Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[RelativeModule].Settings.HeaderOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
+                        <Label Content="Header Clock" Margin="0,0,0,0"/>
+                        <ComboBox Width="200" HorizontalAlignment="Left" Margin="0,0,4,10"
+                            SelectedValue="{Binding Plugin.Modules[RelativeModule].Settings.ClockType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedValuePath="Tag"
+                            ToolTip="Select whether to display computer time or in-sim track time">
+                            <ComboBoxItem Content="Computer Time" Tag="{x:Static local:RelativeClockType.ComputerTime}"/>
+                            <ComboBoxItem Content="Track Time (In-Sim)" Tag="{x:Static local:RelativeClockType.TrackTime}"/>
+                        </ComboBox>
+                        
                         <StackPanel Orientation="Horizontal">
                             <ui:TitledSlider HorizontalAlignment="Left" Width="400" Title="Width" Maximum="475" Minimum="200" Value="{Binding Plugin.Modules[RelativeModule].Settings.WidthPixels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="Minimum width of the overlay in pixels. Actual width might be larger if selected data fields don't fit."/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
                             <ui:TitledSlider HorizontalAlignment="Left" Width="400" Title="Max Row Count (Ahead and Behind)" Maximum="5" Minimum="1" Value="{Binding Plugin.Modules[RelativeModule].Settings.MaxRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="Maximum number of visible rows ahead and behind the player"/>
                         </StackPanel>

@@ -26,6 +26,12 @@ using System.Security.Policy;
 
 namespace benofficial2.Plugin
 {
+    public enum RelativeClockType
+    {
+        ComputerTime,
+        TrackTime
+    }
+    
     public class RelativeSettings : ModuleSettings
     {
         public bool HideInReplay { get; set; } = true;
@@ -34,6 +40,7 @@ namespace benofficial2.Plugin
         public bool HeaderVisible { get; set; } = true;
         public int HeaderOpacity { get; set; } = 90;
         public bool FooterVisible { get; set; } = false;
+        public RelativeClockType ClockType { get; set; } = RelativeClockType.ComputerTime;
         public bool IncludeCarsOnPitLane { get; set; } = true;
         public bool CarLogoVisible { get; set; } = true;
         public bool CountryFlagVisible { get; set; } = true;
@@ -134,6 +141,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Relative.HeaderVisible", valueProvider: () => Settings.HeaderVisible);
             plugin.AttachDelegate(name: "Relative.HeaderOpacity", valueProvider: () => Settings.HeaderOpacity);
             plugin.AttachDelegate(name: "Relative.FooterVisible", valueProvider: () => Settings.FooterVisible);
+            plugin.AttachDelegate(name: "Relative.ClockType", valueProvider: () => Settings.ClockType);
             plugin.AttachDelegate(name: "Relative.IncludeCarsOnPitLane", valueProvider: () => Settings.IncludeCarsOnPitLane);
             plugin.AttachDelegate(name: "Relative.CarLogoVisible", valueProvider: () => Settings.CarLogoVisible);
             plugin.AttachDelegate(name: "Relative.CountryFlagVisible", valueProvider: () => Settings.CountryFlagVisible);
