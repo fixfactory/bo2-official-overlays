@@ -42,6 +42,14 @@ namespace benofficial2.Plugin
         // Key: Car ID, Value: Car Brand
         private Dictionary<string, string> _carBrands = new Dictionary<string, string>();
 
+        private static readonly List<object[]> _brakeBiasPaths = new List<object[]>
+        {
+            new object[] { "CarSetup", "Chassis", "Front", "BrakeBias" },
+            new object[] { "CarSetup", "Chassis", "Front", "FrontBrakeBias" },
+            new object[] { "CarSetup", "DriveBrake", "BrakeSystemConfig", "BaseBrakeBias" },
+            new object[] { "CarSetup", "Suspension", "Front", "BrakeBias" }
+        };
+
         public Dictionary<int, string> TireCompounds = null;
 
         public string Brand { get; set; } = string.Empty;
@@ -231,18 +239,8 @@ namespace benofficial2.Plugin
         {
             brakeBias = 0.0;
 
-            var paths = new List<object[]>
-            {
-                new object[] { "CarSetup", "Chassis", "Front", "BrakeBias" },
-                new object[] { "CarSetup", "Chassis", "Front", "FrontBrakeBias" },
-                new object[] { "CarSetup", "DriveBrake", "BrakeSystemConfig", "BaseBrakeBias" },
-                new object[] { "CarSetup", "Suspension", "Front", "BrakeBias" }
-            };
-
-            if (!RawDataHelper.TryGetFirstSessionData<string>(ref data, out string setupBB, paths))
-            {
+            if (!RawDataHelper.TryGetFirstSessionData<string>(ref data, out string setupBB, _brakeBiasPaths))
                 return false;
-            }
 
             return TryParseBrakeBias(setupBB, out brakeBias);
         }
@@ -250,12 +248,14 @@ namespace benofficial2.Plugin
         public bool TryParseBrakeBias(string brakeBiasString, out double brakeBias)
         {
             brakeBias = 0.0;
-            if (string.IsNullOrWhiteSpace(brakeBiasString)) return false;
+            if (string.IsNullOrWhiteSpace(brakeBiasString)) 
+                return false;
 
             // Matches the start of the string (^), skips optional whitespace (\s*), and captures a number that may contain a decimal point.
             // Examples: "52.0% (BBAL)", "57.0% front"
             var match = Regex.Match(brakeBiasString, @"^\s*(\d+(\.\d+)?)");
-            if (!match.Success) return false;
+            if (!match.Success) 
+                return false;
 
             return double.TryParse(match.Groups[1].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out brakeBias);
         }
