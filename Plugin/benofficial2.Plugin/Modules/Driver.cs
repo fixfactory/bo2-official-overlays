@@ -254,6 +254,15 @@ namespace benofficial2.Plugin
         // Cached mapping from car class id -> list of drivers in that class to avoid LINQ GroupBy allocations
         private Dictionary<int, List<Driver>> _driversByClass = new Dictionary<int, List<Driver>>();
 
+        // Cached lists for UpdateIRatingChange to avoid allocations
+        private List<RaceResult<Driver>> _cachedRaceResults = new List<RaceResult<Driver>>(MaxDrivers);
+        private List<Driver> _cachedWithPosition = new List<Driver>(MaxDrivers);
+        private List<Driver> _cachedNoPosition = new List<Driver>(MaxDrivers);
+
+        // Pre-allocated pool of RaceResult objects to avoid allocations
+        private List<RaceResult<Driver>> _raceResultPool = new List<RaceResult<Driver>>(MaxDrivers);
+        private int _raceResultPoolIndex = 0;
+
         public HighlightedDriverSettings HighlightedDriverSettings { get; set; }
 
         public PlayerDriver PlayerDriver { get; private set; } = new PlayerDriver();
@@ -988,13 +997,16 @@ namespace benofficial2.Plugin
             if (!_standingsModule.Settings.IRatingChangeVisible && !_relativeModule.Settings.IRatingChangeVisible)
                 return;
 
+            // Reset pool index for reuse across all classes
+            _raceResultPoolIndex = 0;
+
             // Iterate cached drivers-by-class map to avoid allocations caused by LINQ GroupBy
             foreach (var kvp in _driversByClass)
             {
                 int carClassId = kvp.Key;
                 var group = kvp.Value;
                 int countInClass = group.Count;
-                var raceResults = new List<RaceResult<Driver>>(group.Count);
+                _cachedRaceResults.Clear();
 
                 if (!_sessionModule.RaceStarted)
                 {
@@ -1004,18 +1016,19 @@ namespace benofficial2.Plugin
                         if (driver.IsPaceCar)
                             continue;
 
-                        raceResults.Add(new RaceResult<Driver>(
-                         driver,
-                         (uint)driver.QualPositionInClass,
-                         (uint)driver.IRating,
-                         true));
+                        var raceResult = GetOrCreateRaceResult();
+                        raceResult.Driver = driver;
+                        raceResult.FinishRank = (uint)driver.QualPositionInClass;
+                        raceResult.StartIRating = (uint)driver.IRating;
+                        raceResult.Started = true;
+                        _cachedRaceResults.Add(raceResult);
                     }
                 }
                 else
                 {
                     // Build lists without LINQ to avoid allocations
-                    var withPosition = new List<Driver>(group.Count);
-                    var noPosition = new List<Driver>(group.Count);
+                    _cachedWithPosition.Clear();
+                    _cachedNoPosition.Clear();
 
                     foreach (var driver in group)
                     {
@@ -1023,15 +1036,15 @@ namespace benofficial2.Plugin
                             continue;
 
                         if (driver.PositionInClass != 0)
-                            withPosition.Add(driver);
+                            _cachedWithPosition.Add(driver);
                         else
-                            noPosition.Add(driver);
+                            _cachedNoPosition.Add(driver);
                     }
 
                     // Consider drivers with an official position first. They are considered as started.
                     // TODO: Should DQ drivers be considered as not started?
                     // TODO: How much of the first lap should be completed to be considered started?
-                    foreach (var driver in withPosition)
+                    foreach (var driver in _cachedWithPosition)
                     {
                         int positionInClass = driver.LivePositionInClass;
                         if (positionInClass <= 0)
@@ -1040,31 +1053,33 @@ namespace benofficial2.Plugin
                             positionInClass = driver.PositionInClass;
                         }
 
-                        raceResults.Add(new RaceResult<Driver>(
-                         driver,
-                         (uint)positionInClass,
-                         (uint)driver.IRating,
-                         true));
+                        var raceResult = GetOrCreateRaceResult();
+                        raceResult.Driver = driver;
+                        raceResult.FinishRank = (uint)positionInClass;
+                        raceResult.StartIRating = (uint)driver.IRating;
+                        raceResult.Started = true;
+                        _cachedRaceResults.Add(raceResult);
                     }
 
                     // Assign positions for drivers without an official position by sorting them by IRating (descending)
-                    if (noPosition.Count > 1)
+                    if (_cachedNoPosition.Count > 1)
                     {
-                        noPosition.Sort((a, b) => b.IRating.CompareTo(a.IRating));
+                        _cachedNoPosition.Sort((a, b) => b.IRating.CompareTo(a.IRating));
                     }
 
-                    int nextPosition = withPosition.Count + 1;
-                    foreach (var driver in noPosition)
+                    int nextPosition = _cachedWithPosition.Count + 1;
+                    foreach (var driver in _cachedNoPosition)
                     {
-                        raceResults.Add(new RaceResult<Driver>(
-                         driver,
-                         (uint)nextPosition++,
-                         (uint)driver.IRating,
-                         false));
+                        var raceResult = GetOrCreateRaceResult();
+                        raceResult.Driver = driver;
+                        raceResult.FinishRank = (uint)nextPosition++;
+                        raceResult.StartIRating = (uint)driver.IRating;
+                        raceResult.Started = false;
+                        _cachedRaceResults.Add(raceResult);
                     }
                 }
 
-                var results = IRatingCalculator.Calculate(raceResults);
+                var results = IRatingCalculator.Calculate(_cachedRaceResults);
                 for (int i = 0; i < results.Count; i++)
                 {
                     var result = results[i];
@@ -1077,6 +1092,19 @@ namespace benofficial2.Plugin
                     }
                 }
             }
+        }
+
+        private RaceResult<Driver> GetOrCreateRaceResult()
+        {
+            // Reuse from pool if available
+            if (_raceResultPoolIndex < _raceResultPool.Count)
+                return _raceResultPool[_raceResultPoolIndex++];
+
+            // Expand pool if needed
+            var newResult = new RaceResult<Driver>(null, 0, 0, false);
+            _raceResultPool.Add(newResult);
+            _raceResultPoolIndex++;
+            return newResult;
         }
 
         private void BlankPlayerDriver()
