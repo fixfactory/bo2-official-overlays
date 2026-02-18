@@ -454,14 +454,28 @@ namespace benofficial2.Plugin
                         row.SafetyRating = driver.SafetyRating;
                         row.CurrentLap = Math.Max(0, driver.Lap > 0 ? driver.Lap : (int)Math.Ceiling(driver.CurrentLapHighPrecision));
                         row.StintLap = driver.StintLap;
-                        row.LapsToClassLeader = driver.LapsToClassLeader;
-                        row.GapToClassLeader = driver.GapToClassLeader;
-                        row.LapsToClassOpponentAhead = driver.LapsToClassOpponentAhead;
-                        row.GapToClassOpponentAhead = driver.GapToClassOpponentAhead;
                         row.TireCompound = driver.TireCompound;
                         row.TireCompoundVisible = row.TireCompound.Length > 0;
-                        row.BestLapTime = driver.BestLapTime;
-                        row.LastLapTime = driver.LastLapTime;
+
+                        if (_sessionModule.Race && !_sessionModule.RaceStarted)
+                        {
+                            row.BestLapTime = driver.QualLapTime;
+                            row.LastLapTime = TimeSpan.Zero;
+                            row.LapsToClassLeader = 0;
+                            row.GapToClassLeader = 0.0;
+                            row.LapsToClassOpponentAhead = 0;
+                            row.GapToClassOpponentAhead = 0.0;
+                        }
+                        else
+                        {
+                            row.BestLapTime = driver.BestLapTime;
+                            row.LastLapTime = driver.LastLapTime;
+                            row.LapsToClassLeader = driver.LapsToClassLeader;
+                            row.GapToClassLeader = driver.GapToClassLeader;
+                            row.LapsToClassOpponentAhead = driver.LapsToClassOpponentAhead;
+                            row.GapToClassOpponentAhead = driver.GapToClassOpponentAhead;
+                        }
+
                         row.JokerLapsComplete = driver.JokerLapsCompleted;
 
                         if (_sessionModule.Race)

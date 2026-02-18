@@ -58,10 +58,12 @@ function getLapTimingVisible(classIdx, rowIdx)
 {
     if (isRace())
     {
+        // Show timing before race starts so that we can see the qual times
         if (!isRaceStarted())
-            return false;
+            return true;
 
         // Wait until driver completed 1 lap before showing lap timing (best / last lap)
+        // Avoids showing stale data (bug in iRacing SDK)
         const lap = isnull(getStandingsProp(classIdx, rowIdx, 'CurrentLap'), 0);
         if(lap == 1) 
             return false;
