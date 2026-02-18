@@ -658,10 +658,16 @@ namespace benofficial2.Plugin
                         }
 
                         RawDataHelper.TryGetValue<int>(qualPositions, out int positionInClass, i, "ClassPosition");
+                        RawDataHelper.TryGetValue<int>(qualPositions, out int fastestLap, i, "FastestLap");
                         RawDataHelper.TryGetValue<double>(qualPositions, out double fastestTime, i, "FastestTime");
 
                         driver.QualPositionInClass = positionInClass + 1;
-                        driver.QualLapTime = fastestTime > 0 ? TimeSpan.FromSeconds(fastestTime) : TimeSpan.Zero;
+
+                        // In Consolation and Feature race, fastestLap = 0 and fastestTime is wrong.
+                        if (fastestLap > 0)
+                            driver.QualLapTime = fastestTime > 0 ? TimeSpan.FromSeconds(fastestTime) : TimeSpan.Zero;
+                        else
+                            driver.QualLapTime = TimeSpan.Zero;
                     }
 
                     QualResultsUpdated = true;
