@@ -457,9 +457,10 @@ namespace benofficial2.Plugin
                         row.TireCompound = driver.TireCompound;
                         row.TireCompoundVisible = row.TireCompound.Length > 0;
 
+                        row.BestLapTime = GetBestLapTime(driver);
+
                         if (_sessionModule.Race && !_sessionModule.RaceStarted)
                         {
-                            row.BestLapTime = driver.QualLapTime;
                             row.LastLapTime = TimeSpan.Zero;
                             row.LapsToClassLeader = 0;
                             row.GapToClassLeader = 0.0;
@@ -468,7 +469,6 @@ namespace benofficial2.Plugin
                         }
                         else
                         {
-                            row.BestLapTime = driver.BestLapTime;
                             row.LastLapTime = driver.LastLapTime;
                             row.LapsToClassLeader = driver.LapsToClassLeader;
                             row.GapToClassLeader = driver.GapToClassLeader;
@@ -531,13 +531,6 @@ namespace benofficial2.Plugin
                             {
                                 row.DeltaToPlayer = null;
                             }
-                        }
-
-                        // Make sure we have a best lap time for the first lap of a race
-                        // iRacing often doesn't provide a valid best lap time for lap 1
-                        if (_sessionModule.Race && row.BestLapTime <= TimeSpan.Zero && row.LastLapTime > TimeSpan.Zero)
-                        {
-                            row.BestLapTime = row.LastLapTime;
                         }
 
                         visibleRowCount++;
@@ -963,14 +956,32 @@ namespace benofficial2.Plugin
             return skipRowCount;
         }
 
+        public TimeSpan GetBestLapTime(Driver driver)
+        {
+            if (_sessionModule.Race)
+            {
+                // Show qualification times before the start of the race.
+                if (!_sessionModule.RaceStarted)
+                    return driver.QualLapTime;
+
+                // Make sure we have a best lap time for the first lap of a race.
+                // iRacing often doesn't provide a valid best lap time for lap 1.
+                if (driver.BestLapTime <= TimeSpan.Zero)
+                    return driver.LastLapTime;
+            }
+
+            return driver.BestLapTime;
+        }
+
         public TimeSpan FindBestLapTime(List<Driver> drivers)
         {
             TimeSpan bestLapTime = TimeSpan.MaxValue;
             foreach (Driver driver in drivers)
             {
-                if (driver.BestLapTime > TimeSpan.Zero && driver.BestLapTime < bestLapTime)
+                TimeSpan driverBestLapTime = GetBestLapTime(driver);
+                if (driverBestLapTime > TimeSpan.Zero && driverBestLapTime < bestLapTime)
                 {
-                    bestLapTime = driver.BestLapTime;
+                    bestLapTime = driverBestLapTime;
                 }
             }
             return bestLapTime < TimeSpan.MaxValue ? bestLapTime : TimeSpan.Zero;
