@@ -49,6 +49,7 @@ namespace benofficial2.Plugin
         public bool IRatingChangeVisible { get; set; } = false;
         public bool LastLapTimeVisible { get; set; } = true;
         public bool TireCompoundVisible { get; set; } = true;
+        public bool StintLapVisible { get; set; } = false;
         public int AlternateRowBackgroundColor { get; set; } = 15;
         public bool HighlightPlayerRow { get; set; } = true;
         public bool UseHighPrecisionGaps { get; set; } = true;
@@ -70,6 +71,7 @@ namespace benofficial2.Plugin
         public string CountryCode { get; set; } = string.Empty;
         public bool OutLap { get; set; } = false;
         public bool InPit { get; set; } = false;
+        public bool Towing { get; set; } = false;
         public int iRating { get; set; } = 0;
         public float iRatingChange { get; set; } = 0;
         public string License { get; set; } = string.Empty;
@@ -79,6 +81,7 @@ namespace benofficial2.Plugin
         public TimeSpan LastLapTime { get; set; } = TimeSpan.Zero;
         public int SessionFlags { get; set; } = 0;
         public string TireCompound { get; set; } = string.Empty;
+        public int StintLap { get; set; } = 0;
         public int PushToPassCount { get; set; } = 0;
         public bool PushToPassActivated { get; set; } = false;
     }
@@ -150,6 +153,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Relative.iRatingChangeVisible", valueProvider: () => Settings.IRatingChangeVisible);
             plugin.AttachDelegate(name: "Relative.LastLapTimeVisible", valueProvider: () => Settings.LastLapTimeVisible);
             plugin.AttachDelegate(name: "Relative.TireCompoundVisible", valueProvider: () => Settings.TireCompoundVisible);
+            plugin.AttachDelegate(name: "Relative.StintLapVisible", valueProvider: () => Settings.StintLapVisible);
             plugin.AttachDelegate(name: "Relative.AlternateRowBackgroundColor", valueProvider: () => Settings.AlternateRowBackgroundColor);
             plugin.AttachDelegate(name: "Relative.HighlightPlayerRow", valueProvider: () => Settings.HighlightPlayerRow);
             plugin.AttachDelegate(name: "Relative.BackgroundOpacity", valueProvider: () => Settings.BackgroundOpacity);
@@ -173,6 +177,7 @@ namespace benofficial2.Plugin
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CountryCode", valueProvider: () => row.CountryCode);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.OutLap", valueProvider: () => row.OutLap);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.InPit", valueProvider: () => row.InPit);
+                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.Towing", valueProvider: () => row.Towing);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.iRating", valueProvider: () => row.iRating);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.iRatingChange", valueProvider: () => row.iRatingChange);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.License", valueProvider: () => row.License);
@@ -182,6 +187,7 @@ namespace benofficial2.Plugin
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.LastLapTime", valueProvider: () => row.LastLapTime);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.SessionFlags", valueProvider: () => row.SessionFlags);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.TireCompound", valueProvider: () => row.TireCompound);
+                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.StintLap", valueProvider: () => row.StintLap);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.PushToPassCount", valueProvider: () => row.PushToPassCount);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.PushToPassActivated", valueProvider: () => row.PushToPassActivated);
             }
@@ -234,6 +240,7 @@ namespace benofficial2.Plugin
                 row.CountryCode = driver.CountryCode;
                 row.OutLap = driver.OutLap;
                 row.InPit = driver.InPit;
+                row.Towing = driver.Towing;
                 row.iRating = driver.IRating;
                 row.iRatingChange = driver.IRatingChange;
                 row.License = driver.License;
@@ -243,6 +250,7 @@ namespace benofficial2.Plugin
                 row.LastLapTime = driver.LastLapTime;
                 row.SessionFlags = driver.SessionFlags;
                 row.TireCompound = driver.TireCompound;
+                row.StintLap = driver.StintLap;
                 row.PushToPassCount = driver.PushToPassCount;
                 row.PushToPassActivated = driver.PushToPassActivated;
             }

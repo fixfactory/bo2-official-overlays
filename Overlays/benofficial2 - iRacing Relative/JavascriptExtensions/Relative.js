@@ -103,6 +103,18 @@ function getRelativeTextColor(index)
     return inPit ? whiteInPit : white
 }
 
+function getTireCompoundVisible(index)
+{
+    if (isnull(getRelativeProp(index, 'TireCompound'), '') == '')
+        return false
+
+    // Hide before the race start
+    //if (isRace()) 
+    //    return isRaceStarted()
+
+    return true
+}
+
 function getClassSof(classIdx)
 {
     return isnull(getStandingsClassProp(classIdx, 'Sof'), 0);
