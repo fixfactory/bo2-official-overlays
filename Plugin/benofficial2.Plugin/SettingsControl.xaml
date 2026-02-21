@@ -213,7 +213,7 @@
                             Use time in pit box instead of total time in pit lane
                         </styles:SHToggleCheckbox>
 
-                        <Label Content="Columns to show in race:" Margin="0,4,4,0" Width="180" HorizontalAlignment="Left"/>
+                        <Label Content="Columns to show (Race):" Margin="0,4,4,0" Width="180" HorizontalAlignment="Left"/>
                         
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <styles:SHToggleCheckbox 
@@ -266,7 +266,7 @@
                             </styles:SHToggleCheckbox>
                         </StackPanel>
 
-                        <Label Content="Columns to show in practice and quali:" Margin="0,4,4,8" Width="250" HorizontalAlignment="Left"/>
+                        <Label Content="Columns to show (Practice and Quali):" Margin="0,4,4,8" Width="250" HorizontalAlignment="Left"/>
                         <StackPanel Orientation="Horizontal">
                             <styles:SHToggleCheckbox 
                                 ToolTip="Car brand logo when available" 
@@ -324,24 +324,29 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <ui:TitledSlider MinWidth="400" Title="Max Row Count (Player Class)" Maximum="25" Minimum="1" Value="{Binding Plugin.Modules[StandingsModule].Settings.MaxRowsPlayerClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             ToolTip="Maximum number of visible rows in the Standings leaderboard for the player's class"/>
+                                ToolTip="Maximum number of visible rows in the Standings leaderboard for the player's class"/>
 
-                            <ui:TitledSlider MinWidth="400" Title="Lead Focused Rows (Player Class)" Maximum="10" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.LeadFocusedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             ToolTip="Number of leader rows to always show when there are too many rows, 0 to disable"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal">
                             <ui:TitledSlider MinWidth="400" Title="Max Row Count (Other Classes)" Maximum="5" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.MaxRowsOtherClasses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            ToolTip="Maximum number of visible rows in the Standings leaderboard for other classes"/>
-
-                            <ui:TitledSlider MinWidth="400" Title="Alternate row background color (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.AlternateRowBackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            ToolTip="Use a different background color to make alternate rows easier to read. 100% for maximum contrast, 0% to disable."/>
+                                ToolTip="Maximum number of visible rows in the Standings leaderboard for other classes"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <ui:TitledSlider Width="400" Title="Width" Maximum="690" Minimum="250" Value="{Binding Plugin.Modules[StandingsModule].Settings.WidthPixels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             ToolTip="Minimum width of the overlay in pixels. Actual width might be larger if selected data fields don't fit."/>
+                            <ui:TitledSlider MinWidth="400" Title="Lead Focused Rows (Player Class)" Maximum="10" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.LeadFocusedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ToolTip="Number of leader rows to always show when there are too many rows, 0 to disable"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TitledSlider Width="400" Title="Width (Race)" Maximum="690" Minimum="250" Value="{Binding Plugin.Modules[StandingsModule].Settings.WidthPixelsInRace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ToolTip="Minimum width of the overlay in pixels. Actual width might be larger if selected data fields don't fit."/>
+
+                            <ui:TitledSlider Width="400" Title="Width (Practice and Quali)" Maximum="690" Minimum="250" Value="{Binding Plugin.Modules[StandingsModule].Settings.WidthPixels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ToolTip="Minimum width of the overlay in pixels. Actual width might be larger if selected data fields don't fit."/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
                             <ui:TitledSlider Width="400" Title="Background Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.BackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <ui:TitledSlider MinWidth="400" Title="Alternate row background color (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.AlternateRowBackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="Use a different background color to make alternate rows easier to read. 100% for maximum contrast, 0% to disable."/>
                         </StackPanel>
                     </StackPanel>
                 </styles:SHSection>

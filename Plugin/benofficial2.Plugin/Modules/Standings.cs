@@ -28,7 +28,8 @@ namespace benofficial2.Plugin
     public class StandingsSettings : ModuleSettings
     {
         public int HeaderWidth { get; set; } = 10;
-        public int WidthPixels { get; set; } = 593;
+        public int WidthPixels { get; set; } = 600;
+        public int WidthPixelsInRace { get; set; } = 600;
         public bool HideInReplay { get; set; } = true;
         public bool HeaderVisible { get; set; } = true;
         public bool CarClassHeaderVisible { get; set; } = true;
@@ -166,6 +167,7 @@ namespace benofficial2.Plugin
         public int TotalDriverCount { get; internal set; } = 0;
         public int TotalSoF { get; internal set; } = 0;
         public int HighlightedCarClassIdx { get; internal set; } = 0;
+        public int WidthPixels { get; set; } = 600;
         public bool CarLogoVisible { get; internal set; } = true;
         public bool GapVisible { get; internal set; } = true;
         public bool IntervalVisible { get; internal set; } = true;
@@ -203,7 +205,7 @@ namespace benofficial2.Plugin
             Settings = plugin.ReadCommonSettings<StandingsSettings>("StandingsSettings", () => new StandingsSettings());
             plugin.AttachDelegate(name: $"Standings.HeaderVisible", valueProvider: () => Settings.HeaderVisible);
             plugin.AttachDelegate(name: $"Standings.HeaderWidth", valueProvider: () => Settings.HeaderWidth);
-            plugin.AttachDelegate(name: $"Standings.Width", valueProvider: () => Settings.WidthPixels);
+            plugin.AttachDelegate(name: $"Standings.Width", valueProvider: () => WidthPixels);
             plugin.AttachDelegate(name: $"Standings.CarClassHeaderVisible", valueProvider: () => Settings.CarClassHeaderVisible);
             plugin.AttachDelegate(name: $"Standings.VisibleClassCount", valueProvider: () => VisibleClassCount);
             plugin.AttachDelegate(name: $"Standings.TotalDriverCount", valueProvider: () => TotalDriverCount);
@@ -306,6 +308,7 @@ namespace benofficial2.Plugin
 
             if (_sessionModule.Race)
             {
+                WidthPixels = Settings.WidthPixelsInRace;
                 CarLogoVisible = Settings.CarLogoVisibleInRace;
                 GapVisible = Settings.GapVisibleInRace;
                 IntervalVisible = Settings.IntervalVisibleInRace;
@@ -316,6 +319,7 @@ namespace benofficial2.Plugin
             }
             else
             {
+                WidthPixels = Settings.WidthPixels;
                 CarLogoVisible = Settings.CarLogoVisible;
                 GapVisible = false;
                 IntervalVisible = false;
