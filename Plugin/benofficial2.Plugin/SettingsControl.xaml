@@ -147,13 +147,6 @@
                         </styles:SHToggleCheckbox>
 
                         <styles:SHToggleCheckbox 
-                            ToolTip="Show the lap number of the current stint instead of the lap number when the driver pitted" 
-                            HorizontalAlignment="Left" Margin="0,0,4,8"
-                            IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.ShowStintLapInRace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            Show Stint Lap instead of Pit Lap in race
-                        </styles:SHToggleCheckbox>
-
-                        <styles:SHToggleCheckbox 
                             ToolTip="Show the country flag corresponding to the driver's flair" 
                             HorizontalAlignment="Left" Margin="0,0,4,8"
                             IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.CountryFlagVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -190,6 +183,13 @@
                             Show position gain/loss in race
                         </styles:SHToggleCheckbox>
 
+                        <styles:SHToggleCheckbox 
+                            ToolTip="Show the lap number of the current stint instead of the lap number when the driver pitted" 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.ShowStintLapInRace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Use Stint Lap instead of Pit Lap in race
+                        </styles:SHToggleCheckbox>
+                        
                         <StackPanel Orientation="Horizontal">
                             <styles:SHToggleCheckbox 
                                 ToolTip="The delta column will be relative to the player's time rather than the class leader's time" 
@@ -206,9 +206,16 @@
                             </styles:SHToggleCheckbox>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <Label Content="Columns to show in race:" Margin="0,0,4,8" Width="180"/>
+                        <styles:SHToggleCheckbox 
+                            ToolTip="The Pit Time column will be time spent in the pit box only" 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.UsePitStopDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Use time in pit box instead of total time in pit lane
+                        </styles:SHToggleCheckbox>
 
+                        <Label Content="Columns to show in race:" Margin="0,4,4,0" Width="180" HorizontalAlignment="Left"/>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <styles:SHToggleCheckbox 
                                 ToolTip="Car brand logo when available" 
                                 HorizontalAlignment="Left" Margin="0,0,4,8"
@@ -251,11 +258,16 @@
                                 Delta
                             </styles:SHToggleCheckbox>
 
+                            <styles:SHToggleCheckbox 
+                                ToolTip="Time spent in the pit" 
+                                HorizontalAlignment="Left" Margin="0,0,4,8"
+                                IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.PitDurationVisibleInRace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                Pit Time
+                            </styles:SHToggleCheckbox>
                         </StackPanel>
 
+                        <Label Content="Columns to show in practice and quali:" Margin="0,4,4,8" Width="250" HorizontalAlignment="Left"/>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Columns to show not-in-race:" Margin="0,0,4,8" Width="180"/>
-
                             <styles:SHToggleCheckbox 
                                 ToolTip="Car brand logo when available" 
                                 HorizontalAlignment="Left" Margin="0,0,4,8"
@@ -301,6 +313,13 @@
                                 Delta
                             </styles:SHToggleCheckbox>
 
+                            <styles:SHToggleCheckbox 
+                                IsEnabled="False"
+                                ToolTip="Time spent in the pit" 
+                                HorizontalAlignment="Left" Margin="0,0,4,8"
+                                IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.PitDurationVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                Pit Time
+                            </styles:SHToggleCheckbox>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
@@ -320,7 +339,7 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <ui:TitledSlider Width="400" Title="Width" Maximum="680" Minimum="250" Value="{Binding Plugin.Modules[StandingsModule].Settings.WidthPixels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <ui:TitledSlider Width="400" Title="Width" Maximum="690" Minimum="250" Value="{Binding Plugin.Modules[StandingsModule].Settings.WidthPixels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              ToolTip="Minimum width of the overlay in pixels. Actual width might be larger if selected data fields don't fit."/>
                             <ui:TitledSlider Width="400" Title="Background Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[StandingsModule].Settings.BackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>

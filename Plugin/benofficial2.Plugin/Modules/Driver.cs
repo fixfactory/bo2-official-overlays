@@ -131,6 +131,7 @@ namespace benofficial2.Plugin
         public bool InPitBox { get; set; } = false;
         public DateTime InPitBoxSince { get; set; } = DateTime.MinValue;
         public TimeSpan LastPitStopDuration { get; set; } = TimeSpan.Zero;
+        public TimeSpan LastPitDuration { get; set; } = TimeSpan.Zero;
         public int StintLap { get; set; } = 0;
         public int Position { get; set; } = 0;
         public int PositionInClass { get; set; } = 0;
@@ -420,6 +421,8 @@ namespace benofficial2.Plugin
                         driver.OutLap = false;
                         driver.ExitPitLap = -1;
                         driver.StintLap = 0;
+
+                        driver.LastPitDuration = data.FrameTime - driver.InPitSince;
 
                         if (driver.InPitBox)
                         {

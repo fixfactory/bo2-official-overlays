@@ -53,6 +53,9 @@ namespace benofficial2.Plugin
         public bool UseDeltaToPlayer { get; set; } = false;
         public bool InvertDeltaToPlayer { get; set; } = false;
         public bool ShowStintLapInRace { get; set; } = true;
+        public bool PitDurationVisible { get; set; } = false;
+        public bool PitDurationVisibleInRace { get; set; } = false;
+        public bool UsePitStopDuration { get; set; } = false;
         public int AlternateRowBackgroundColor { get; set; } = 15;
         public bool HighlightPlayerRow { get; set; } = true;
         public int HeaderOpacity { get; set; } = 90;
@@ -82,6 +85,7 @@ namespace benofficial2.Plugin
         public bool OutLap { get; set; } = false;
         public int EnterPitLap { get; set; } = 0;
         public TimeSpan LastPitStopDuration { get; set; } = TimeSpan.Zero;
+        public TimeSpan LastPitDuration { get; set; } = TimeSpan.Zero;
         public int iRating { get; set; } = 0;
         public float iRatingChange { get; set; } = 0;
         public string License {  get; set; } = string.Empty;
@@ -168,6 +172,7 @@ namespace benofficial2.Plugin
         public bool BestVisible { get; internal set; } = true;
         public bool LastVisible { get; internal set; } = true;
         public bool DeltaVisible { get; internal set; } = true;
+        public bool PitDurationVisible { get; internal set; } = false;
         public bool LeadingClassDoingExtraLap { get; internal set; } = false;
 
         public List<ClassLeaderboard> LiveClassLeaderboards { get; private set; } = new List<ClassLeaderboard>();
@@ -221,6 +226,8 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: $"Standings.DeltaVisible", valueProvider: () => DeltaVisible);
             plugin.AttachDelegate(name: $"Standings.UseDeltaToPlayer", valueProvider: () => Settings.UseDeltaToPlayer);
             plugin.AttachDelegate(name: $"Standings.ShowStintLapInRace", valueProvider: () => Settings.ShowStintLapInRace);
+            plugin.AttachDelegate(name: $"Standings.PitDurationVisible", valueProvider: () => PitDurationVisible);
+            plugin.AttachDelegate(name: $"Standings.UsePitStopDuration", valueProvider: () => Settings.UsePitStopDuration);
             plugin.AttachDelegate(name: "Standings.AlternateRowBackgroundColor", valueProvider: () => Settings.AlternateRowBackgroundColor);
             plugin.AttachDelegate(name: "Standings.HighlightPlayerRow", valueProvider: () => Settings.HighlightPlayerRow);
             plugin.AttachDelegate(name: "Standings.HeaderOpacity", valueProvider: () => Settings.HeaderOpacity);
@@ -261,6 +268,7 @@ namespace benofficial2.Plugin
                     plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.OutLap", valueProvider: () => row.OutLap);
                     plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.EnterPitLap", valueProvider: () => row.EnterPitLap);
                     plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.LastPitStopDuration", valueProvider: () => row.LastPitStopDuration);
+                    plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.LastPitDuration", valueProvider: () => row.LastPitDuration);
                     plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.iRating", valueProvider: () => row.iRating);
                     plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.iRatingChange", valueProvider: () => row.iRatingChange);
                     plugin.AttachDelegate(name: $"Standings.Class{carClassIdx:00}.Row{rowIdx:00}.License", valueProvider: () => row.License);
@@ -304,6 +312,7 @@ namespace benofficial2.Plugin
                 BestVisible = Settings.BestVisibleInRace;
                 LastVisible = Settings.LastVisibleInRace;
                 DeltaVisible = Settings.DeltaVisibleInRace;
+                PitDurationVisible = Settings.PitDurationVisibleInRace;
             }
             else
             {
@@ -313,6 +322,7 @@ namespace benofficial2.Plugin
                 BestVisible = Settings.BestVisible;
                 LastVisible = Settings.LastVisible;
                 DeltaVisible = Settings.DeltaVisible;
+                PitDurationVisible = Settings.PitDurationVisible;
             }
 
             int visibleClassCount = 0;
@@ -448,6 +458,7 @@ namespace benofficial2.Plugin
                         row.OutLap = driver.OutLap;
                         row.EnterPitLap = driver.EnterPitLap;
                         row.LastPitStopDuration = driver.LastPitStopDuration;
+                        row.LastPitDuration = driver.LastPitDuration;
                         row.iRating = driver.IRating;
                         row.iRatingChange = driver.IRatingChange;
                         row.License = driver.License;
@@ -600,6 +611,7 @@ namespace benofficial2.Plugin
             row.OutLap = false;
             row.EnterPitLap = 0;
             row.LastPitStopDuration = TimeSpan.Zero;
+            row.LastPitDuration = TimeSpan.Zero;
             row.iRating = 0;
             row.iRatingChange = 0;
             row.License = string.Empty;
