@@ -301,29 +301,35 @@ namespace benofficial2.Plugin
             int aheadCount = Math.Min(maxRows, DriversAheadOnTrack.Count);
             for (int i = 0; i < aheadCount; i++)
             {
-                Driver opponentDriver = DriversAheadOnTrack[i];
-                double opponentEstTime = GetEstTimeAtOpponentPos(opponentDriver, highlightedDriver);
-                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTime, highlightedDriver.EstTime);
+                // The gap is how much time it will take for the car behind to drive to the position of the car ahead.
+                // EstTimes must be in the time domain of the car behind.
+                Driver driverAhead = DriversAheadOnTrack[i];
+                Driver driverBehind = highlightedDriver;
+                double estTimeAtAheadPos = GetEstTimeAtOpponentPos(driverAhead, driverBehind);
+                double timeDiff = GetEstTimeDiff(driverBehind.CarClassEstLapTime, estTimeAtAheadPos, driverBehind.EstTime);
 
                 // Make sure timeDiff is positive
                 while (timeDiff < 0.0)
-                    timeDiff += highlightedDriver.CarClassEstLapTime;
+                    timeDiff += driverBehind.CarClassEstLapTime;
 
-                opponentDriver.RelativeGapToPlayer = timeDiff;
+                driverAhead.RelativeGapToPlayer = timeDiff;
             }
 
             int behindCount = Math.Min(maxRows, DriversBehindOnTrack.Count);
             for (int i = 0; i < behindCount; i++)
             {
-                Driver opponentDriver = DriversBehindOnTrack[i];
-                double opponentEstTime = GetEstTimeAtOpponentPos(opponentDriver, highlightedDriver);
-                double timeDiff = GetEstTimeDiff(highlightedDriver.CarClassEstLapTime, opponentEstTime, highlightedDriver.EstTime);
+                // The gap is how much time it took the car ahead to drive away from the position of the car behind to its own position.
+                // EstTimes must be in the time domain of the car ahead.
+                Driver driverAhead = highlightedDriver;
+                Driver driverBehind = DriversBehindOnTrack[i];
+                double estTimeAtBehindPos = GetEstTimeAtOpponentPos(driverBehind, driverAhead);
+                double timeDiff = GetEstTimeDiff(driverAhead.CarClassEstLapTime, estTimeAtBehindPos, driverAhead.EstTime);
 
                 // Make sure timeDiff is negative
                 while (timeDiff > 0.0)
-                    timeDiff -= highlightedDriver.CarClassEstLapTime;
+                    timeDiff -= driverAhead.CarClassEstLapTime;
 
-                opponentDriver.RelativeGapToPlayer = timeDiff;
+                driverBehind.RelativeGapToPlayer = timeDiff;
             }
         }
 
