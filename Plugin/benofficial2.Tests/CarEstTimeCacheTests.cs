@@ -76,9 +76,17 @@ namespace benofficial2.Tests
             var estNearEnd = cache.GetEstTime("car2", 0.99);
             Assert.AreEqual(120.0, estNearEnd, 1e-6);
 
+            // Query at 1.0 should give the estLapTime of 140
+            var estAtEnd = cache.GetEstTime("car2", 1.00);
+            Assert.AreEqual(140.0, estAtEnd, 1e-6);
+
             // Query just before the first bucket pos, e.g., 0.01 is halfway between 0.0 and 0.02 -> expect half of 10
             var estNearStart = cache.GetEstTime("car2", 0.01);
             Assert.AreEqual(5.0, estNearStart, 1e-6);
+
+            // Query at 0.0 should give 0.0 as the est time at the start of the lap
+            var estAtStart = cache.GetEstTime("car2", 0.00);
+            Assert.AreEqual(0.0, estAtStart, 1e-6);
         }
     }
 }

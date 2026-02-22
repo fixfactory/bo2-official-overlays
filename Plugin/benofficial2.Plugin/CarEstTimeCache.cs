@@ -156,7 +156,7 @@ namespace benofficial2.Plugin
                     if (t < 0.0) t = 0.0;
                     else if (t > 1.0) t = 1.0;
 
-                    return bucket0.EstTime * (1.0 - t);
+                    return bucket0.EstTime * t;
                 }
 
                 // Use previous bucket.
