@@ -35,21 +35,21 @@ namespace benofficial2.Plugin
     public class RelativeSettings : ModuleSettings
     {
         public bool HideInReplay { get; set; } = true;
-        public int WidthPixels { get; set; } = 430;
+        public int WidthPixels { get; set; } = 480;
         public int MaxRows { get; set; } = 4;
         public bool HeaderVisible { get; set; } = true;
         public int HeaderOpacity { get; set; } = 90;
         public bool FooterVisible { get; set; } = false;
-        public RelativeClockType ClockType { get; set; } = RelativeClockType.ComputerTime;
+        public RelativeClockType ClockType { get; set; } = RelativeClockType.TrackTime;
         public bool IncludeCarsOnPitLane { get; set; } = true;
         public bool CarLogoVisible { get; set; } = true;
         public bool CountryFlagVisible { get; set; } = true;
         public bool SafetyRatingVisible { get; set; } = true;
         public bool IRatingVisible { get; set; } = true;
-        public bool IRatingChangeVisible { get; set; } = false;
+        public bool IRatingChangeVisible { get; set; } = true;
         public bool LastLapTimeVisible { get; set; } = true;
         public bool TireCompoundVisible { get; set; } = true;
-        public bool StintLapVisible { get; set; } = false;
+        public bool StintLapVisible { get; set; } = true;
         public int AlternateRowBackgroundColor { get; set; } = 15;
         public bool HighlightPlayerRow { get; set; } = true;
         public bool UseHighPrecisionGaps { get; set; } = true;

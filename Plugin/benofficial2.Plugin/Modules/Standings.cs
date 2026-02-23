@@ -29,13 +29,13 @@ namespace benofficial2.Plugin
     {
         public int HeaderWidth { get; set; } = 10;
         public int WidthPixels { get; set; } = 600;
-        public int WidthPixelsInRace { get; set; } = 600;
+        public int WidthPixelsInRace { get; set; } = 640;
         public bool HideInReplay { get; set; } = true;
         public bool HeaderVisible { get; set; } = true;
         public bool CarClassHeaderVisible { get; set; } = true;
         public int LeadFocusedRows { get; set; } = 3;
         public int MaxRowsOtherClasses { get; set; } = 3;
-        public int MaxRowsPlayerClass { get; set; } = 10;
+        public int MaxRowsPlayerClass { get; set; } = 15;
         public bool PositionChangeVisible { get; set; } = true;
         public bool CountryFlagVisible { get; set; } = true;
         public bool CarLogoVisible { get; set; } = true;
@@ -45,13 +45,13 @@ namespace benofficial2.Plugin
         public bool CarLogoVisibleInRace { get; set; } = true;
         public bool GapVisibleInRace { get; set; } = true;
         public bool IntervalVisibleInRace { get; set; } = true;
-        public bool BestVisibleInRace { get; set; } = false;
+        public bool BestVisibleInRace { get; set; } = true;
         public bool LastVisibleInRace { get; set; } = true;
         public bool DeltaVisibleInRace { get; set; } = true;
         public bool BestVisible { get; set; } = true;
         public bool LastVisible { get; set; } = true;
         public bool DeltaVisible { get; set; } = true;
-        public bool UseDeltaToPlayer { get; set; } = false;
+        public bool UseDeltaToPlayer { get; set; } = true;
         public bool InvertDeltaToPlayer { get; set; } = false;
         public bool ShowStintLapInRace { get; set; } = true;
         public bool PitDurationVisible { get; set; } = false;
