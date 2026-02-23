@@ -15,7 +15,7 @@ Name "${PRODUCT_NAME}"
 !define PRODUCT_PUBLISHER "benofficial2"
 !define PRODUCT_WEB_SITE "https://twitch.tv/benofficial2"
 !define PRODUCT_DIR_REGKEY "Software\bo2-official-overlays"
-!define SIMHUB_VERSION "9.11.1"
+!define SIMHUB_VERSION "9.11.3"
 
 ; Include Modern User Interface
 !include "MUI2.nsh"
