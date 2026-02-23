@@ -29,7 +29,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d">
     <ScrollViewer>
-        <Grid Height="6200">
+        <Grid Height="6400">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="44*"/>
                 <ColumnDefinition Width="377*"/>
