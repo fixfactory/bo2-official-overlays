@@ -314,7 +314,6 @@
                             </styles:SHToggleCheckbox>
 
                             <styles:SHToggleCheckbox 
-                                IsEnabled="False"
                                 ToolTip="Time spent in the pit" 
                                 HorizontalAlignment="Left" Margin="0,0,4,8"
                                 IsChecked="{Binding Plugin.Modules[StandingsModule].Settings.PitDurationVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
