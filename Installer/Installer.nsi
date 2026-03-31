@@ -56,10 +56,11 @@ Page Custom DependenciesPage DependenciesPageLeave
 Function .onInit
     ${nsProcess::FindProcess} "SimHubWPF.exe" $R0
     ${If} $R0 == "0"
-        MessageBox MB_ICONEXCLAMATION|MB_RETRYCANCEL "SimHub is running. Please close it before continuing." IDRETRY retry
+        MessageBox MB_ICONEXCLAMATION|MB_ABORTRETRYIGNORE "SimHub is running. Please close it before continuing." IDRETRY retry IDIGNORE ignore
         Quit
         retry:
         Call .onInit ; Retry the check
+        ignore:
     ${EndIf}
 FunctionEnd
 
