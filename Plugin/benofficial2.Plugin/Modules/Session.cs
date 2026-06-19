@@ -136,6 +136,13 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetSessionData<string>(ref data, out string category, "WeekendInfo", "Category");
                 Oval = category == "Oval" || category == "DirtOval";
 
+                // Edge-case for hosted/league races.
+                // The "Category" can be set manually to "Formula" even though the race is taking place on an oval track.
+                // Fallback to using full course cautions as a way to test if this is an oval race.
+                RawDataHelper.TryGetSessionData<string>(ref data, out string courseCautions, "WeekendInfo", "WeekendOptions", "CourseCautions");
+                if (courseCautions == "full")
+                    Oval = true;
+
                 RawDataHelper.TryGetSessionData<int>(ref data, out int standingStart, "WeekendInfo", "WeekendOptions", "StandingStart");
                 StandingStart = standingStart == 1;
 
