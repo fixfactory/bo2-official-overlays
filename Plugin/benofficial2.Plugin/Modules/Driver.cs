@@ -248,7 +248,7 @@ namespace benofficial2.Plugin
 
         private SessionState _sessionState = new SessionState();
 
-        public const int MaxDrivers = 64;
+        public const int MaxDrivers = 128;
 
         public bool QualResultsUpdated { get; private set; } = false;       
 

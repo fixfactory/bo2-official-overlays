@@ -181,7 +181,7 @@ namespace benofficial2.Plugin
 
         // Reusable buffers to avoid per-frame allocations
         private readonly Dictionary<int, ClassLeaderboard> _classMapBuffer = new Dictionary<int, ClassLeaderboard>(MaxCarClasses);
-        private readonly List<Driver> _scoredDriversBuffer = new List<Driver>(64);
+        private readonly List<Driver> _scoredDriversBuffer = new List<Driver>(128);
         private readonly List<ClassLeaderboard> _leaderboardPool = new List<ClassLeaderboard>();
 
         public override int UpdatePriority => 80;

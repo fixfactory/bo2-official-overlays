@@ -48,7 +48,7 @@ namespace benofficial2.Plugin
 
     public static class IRatingCalculator
     {
-        private const int MaxPreallocatedSize = 64;
+        private const int MaxPreallocatedSize = 128;
         private static readonly float[] s_preallocatedExpectedScores = new float[MaxPreallocatedSize];
         private static readonly float[] s_preallocatedFudgeFactors = new float[MaxPreallocatedSize];
         private static readonly float[] s_preallocatedChanges = new float[MaxPreallocatedSize];
