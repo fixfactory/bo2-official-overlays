@@ -33,5 +33,32 @@
     {
         "name": "SB F2000"
     }
+  },
+  "car_class_colors": 
+  {
+    "ffffff": 
+    {
+        "color": "FFCC00"
+    },
+    "ffda59": 
+    {
+        "color": "FFCC00"
+    },
+    "33ceff": 
+    {
+        "color": "0159CE"
+    },
+    "ae6bff": 
+    {
+        "color": "33D5D5"
+    },
+    "ff5888": 
+    {
+        "color": "B41F19"
+    },
+    "53ff77": 
+    {
+        "color": "FF81BE"
+    }
   }
 }
