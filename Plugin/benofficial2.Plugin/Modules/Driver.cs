@@ -1218,7 +1218,7 @@ namespace benofficial2.Plugin
             return GetDriver(highlightedCarIdx);
         }
 
-        public static string ConvertColorString(string input)
+        public string ConvertColorString(string input)
         {
             if (string.IsNullOrEmpty(input))
                 return string.Empty;
@@ -1228,6 +1228,9 @@ namespace benofficial2.Plugin
             {
                 input = input.Substring(2);
             }
+
+            // Convert old SDK class colors to new UI colors.
+            input = _carModule.GetCarClassColor(input.ToLower());
 
             // Return in #RRGGBB format, uppercase
             return "#" + input.ToUpper();
