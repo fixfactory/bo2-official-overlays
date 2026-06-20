@@ -694,7 +694,10 @@ namespace benofficial2.Plugin
                 }
                 else
                 {
-                    scored = driver.Position > 0 || driver.IsConnected;
+                    // Show all drivers. Drivers who recently connected and neither are in-car or have set a lap
+                    // will be considered "disconnected". 
+                    scored = true;
+                    //scored = driver.Position > 0 || driver.IsConnected;
                 }
 
                 if (driver.IsPaceCar)
