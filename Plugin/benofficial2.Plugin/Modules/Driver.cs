@@ -390,6 +390,9 @@ namespace benofficial2.Plugin
                 BlankHighlightedDriver();
             }
 
+            bool caution = _sessionModule.Oval && data.NewData.Flag_Yellow == 1;
+            bool paceLap = _sessionModule.Race && !_sessionModule.RaceStarted;
+
             for (int i = 0; i < MaxDrivers; i++)
             {
                 Driver driver = _driversByCarIdx[i];
@@ -399,6 +402,9 @@ namespace benofficial2.Plugin
                 // Update the average lap time for the driver
                 int currentLap = driver.Lap;
                 driver.AvgLapTime.AddLapTime(currentLap - 1, driver.LastLapTime);
+
+                if (caution || paceLap)
+                    driver.AvgLapTime.InvalidateLap(currentLap);
 
                 // Evaluate the lap when they entered the pit lane
                 if (driver.InPit)
