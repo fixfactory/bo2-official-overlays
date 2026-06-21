@@ -174,6 +174,7 @@ namespace benofficial2.Plugin
     {
         public int CarIdx { get; set; } = -1;
         public bool OutLap { get; internal set; } = false;
+        public int EnterPitLap { get; set; } = 0;
         public bool InPit { get; set; } = false;
         public bool Towing { get; set; } = false;
         public int StintLap { get; internal set; } = 0;
@@ -207,6 +208,7 @@ namespace benofficial2.Plugin
     {
         public int CarIdx { get; set; } = -1;
         public bool OutLap { get; internal set; } = false;
+        public int EnterPitLap { get; set; } = 0;
         public bool InPit { get; set; } = false;
         public bool Towing { get; set; } = false;
         public int StintLap { get; internal set; } = 0;
@@ -292,6 +294,7 @@ namespace benofficial2.Plugin
 
             plugin.AttachDelegate(name: "Player.CarIdx", valueProvider: () => PlayerDriver.CarIdx);
             plugin.AttachDelegate(name: "Player.OutLap", valueProvider: () => PlayerDriver.OutLap);
+            plugin.AttachDelegate(name: "Player.EnterPitLap", valueProvider: () => PlayerDriver.EnterPitLap);
             plugin.AttachDelegate(name: "Player.InPit", valueProvider: () => PlayerDriver.InPit);
             plugin.AttachDelegate(name: "Player.Towing", valueProvider: () => PlayerDriver.Towing);
             plugin.AttachDelegate(name: "Player.StintLap", valueProvider: () => PlayerDriver.StintLap);
@@ -325,6 +328,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Highlighted.BackgroundOpacity", valueProvider: () => HighlightedDriverSettings.BackgroundOpacity);
             plugin.AttachDelegate(name: "Highlighted.CarIdx", valueProvider: () => HighlightedDriver.CarIdx);
             plugin.AttachDelegate(name: "Highlighted.OutLap", valueProvider: () => HighlightedDriver.OutLap);
+            plugin.AttachDelegate(name: "Highlighted.EnterPitLap", valueProvider: () => HighlightedDriver.EnterPitLap);
             plugin.AttachDelegate(name: "Highlighted.InPit", valueProvider: () => HighlightedDriver.InPit);
             plugin.AttachDelegate(name: "Highlighted.Towing", valueProvider: () => HighlightedDriver.Towing);
             plugin.AttachDelegate(name: "Highlighted.StintLap", valueProvider: () => HighlightedDriver.StintLap);
@@ -561,6 +565,7 @@ namespace benofficial2.Plugin
                 if (driver.IsPlayer)
                 {
                     PlayerDriver.OutLap = driver.OutLap;
+                    PlayerDriver.EnterPitLap = driver.EnterPitLap;
                     PlayerDriver.InPit = driver.InPit;
                     PlayerDriver.Towing = driver.Towing;
                     PlayerDriver.StintLap = driver.StintLap;
@@ -602,6 +607,7 @@ namespace benofficial2.Plugin
                     else
                     {
                         HighlightedDriver.OutLap = driver.OutLap;
+                        HighlightedDriver.EnterPitLap = driver.EnterPitLap;
                         HighlightedDriver.InPit = driver.InPit;
                         HighlightedDriver.Towing = driver.Towing;
                         HighlightedDriver.StintLap = driver.StintLap;
@@ -1143,6 +1149,7 @@ namespace benofficial2.Plugin
         {
             PlayerDriver.CarIdx = -1;
             PlayerDriver.OutLap = false;
+            PlayerDriver.EnterPitLap = 0;
             PlayerDriver.InPit = false;
             PlayerDriver.Towing = false;
             PlayerDriver.StintLap = 0;
@@ -1175,6 +1182,7 @@ namespace benofficial2.Plugin
         {
             HighlightedDriver.CarIdx = -1;
             HighlightedDriver.OutLap = false;
+            HighlightedDriver.EnterPitLap = 0;
             HighlightedDriver.InPit = false;
             HighlightedDriver.Towing = false;
             HighlightedDriver.StintLap = 0;

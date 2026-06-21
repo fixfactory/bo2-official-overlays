@@ -50,6 +50,7 @@ namespace benofficial2.Plugin
         public bool LastLapTimeVisible { get; set; } = true;
         public bool TireCompoundVisible { get; set; } = true;
         public bool StintLapVisible { get; set; } = true;
+        public bool ShowStintLapInRace { get; set; } = true;
         public int AlternateRowBackgroundColor { get; set; } = 15;
         public bool HighlightPlayerRow { get; set; } = true;
         public bool UseHighPrecisionGaps { get; set; } = true;
@@ -70,6 +71,7 @@ namespace benofficial2.Plugin
         public string CarBrand { get; set; } = string.Empty;
         public string CountryCode { get; set; } = string.Empty;
         public bool OutLap { get; set; } = false;
+        public int EnterPitLap { get; set; } = 0;
         public bool InPit { get; set; } = false;
         public bool Towing { get; set; } = false;
         public int iRating { get; set; } = 0;
@@ -154,6 +156,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Relative.LastLapTimeVisible", valueProvider: () => Settings.LastLapTimeVisible);
             plugin.AttachDelegate(name: "Relative.TireCompoundVisible", valueProvider: () => Settings.TireCompoundVisible);
             plugin.AttachDelegate(name: "Relative.StintLapVisible", valueProvider: () => Settings.StintLapVisible);
+            plugin.AttachDelegate(name: "Relative.ShowStintLapInRace", valueProvider: () => Settings.ShowStintLapInRace);
             plugin.AttachDelegate(name: "Relative.AlternateRowBackgroundColor", valueProvider: () => Settings.AlternateRowBackgroundColor);
             plugin.AttachDelegate(name: "Relative.HighlightPlayerRow", valueProvider: () => Settings.HighlightPlayerRow);
             plugin.AttachDelegate(name: "Relative.BackgroundOpacity", valueProvider: () => Settings.BackgroundOpacity);
@@ -176,6 +179,7 @@ namespace benofficial2.Plugin
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CarBrand", valueProvider: () => row.CarBrand);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.CountryCode", valueProvider: () => row.CountryCode);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.OutLap", valueProvider: () => row.OutLap);
+                plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.EnterPitLap", valueProvider: () => row.EnterPitLap);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.InPit", valueProvider: () => row.InPit);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.Towing", valueProvider: () => row.Towing);
                 plugin.AttachDelegate(name: $"Relative.{aheadBehind}{rowIdx:00}.iRating", valueProvider: () => row.iRating);
@@ -239,6 +243,7 @@ namespace benofficial2.Plugin
                 row.CarBrand = driver.CarBrand;
                 row.CountryCode = driver.CountryCode;
                 row.OutLap = driver.OutLap;
+                row.EnterPitLap = driver.EnterPitLap;
                 row.InPit = driver.InPit;
                 row.Towing = driver.Towing;
                 row.iRating = driver.IRating;
@@ -476,6 +481,7 @@ namespace benofficial2.Plugin
             row.CarBrand = string.Empty;
             row.CountryCode = string.Empty;
             row.OutLap = false;
+            row.EnterPitLap = 0;
             row.InPit = false;
             row.iRating = 0;
             row.iRatingChange = 0;

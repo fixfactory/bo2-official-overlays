@@ -464,12 +464,21 @@
                             Show Tire Compound
                         </styles:SHToggleCheckbox>
 
-                        <styles:SHToggleCheckbox 
-                            ToolTip="Show the driver's current stint lap number" 
-                            HorizontalAlignment="Left" Margin="0,0,4,8"
-                            IsChecked="{Binding Plugin.Modules[RelativeModule].Settings.StintLapVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            Show Stint Lap
-                        </styles:SHToggleCheckbox>
+                        <StackPanel Orientation="Horizontal">
+                            <styles:SHToggleCheckbox 
+                                ToolTip="Show the driver's current stint lap number" 
+                                HorizontalAlignment="Left" Margin="0,0,4,8"
+                                IsChecked="{Binding Plugin.Modules[RelativeModule].Settings.StintLapVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                Show Stint Lap
+                            </styles:SHToggleCheckbox>
+
+                            <styles:SHToggleCheckbox 
+                                ToolTip="Show the lap number of the current stint instead of the lap number when the driver pitted" 
+                                HorizontalAlignment="Left" Margin="4,0,4,8"
+                                IsChecked="{Binding Plugin.Modules[RelativeModule].Settings.ShowStintLapInRace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                Use Stint Lap instead of Pit Lap in race
+                            </styles:SHToggleCheckbox>
+                        </StackPanel>
 
                         <styles:SHToggleCheckbox 
                             ToolTip="Highlight the player row with a bright background color" 
