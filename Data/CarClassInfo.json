@@ -36,35 +36,35 @@
   },
   "car_class_colors": 
   {
-    "ffffff": 
+    "#FFFFFF": 
     {
-        "color": "FFCC00",
-        "text_color": "000000"
+        "color": "#FFCC00",
+        "text_color": "#000000"
     },
-    "ffda59": 
+    "#FFDA59": 
     {
-        "color": "FFCC00",
-        "text_color": "000000"
+        "color": "#FFCC00",
+        "text_color": "#000000"
     },
-    "33ceff": 
+    "#33CEFF": 
     {
-        "color": "0159CE",
-        "text_color": "FFFFFF"
+        "color": "#0159CE",
+        "text_color": "#FFFFFF"
     },
-    "ae6bff": 
+    "#AE6BFF": 
     {
-        "color": "33D5D5",
-        "text_color": "000000"
+        "color": "#33D5D5",
+        "text_color": "#000000"
     },
-    "ff5888": 
+    "#FF5888": 
     {
-        "color": "B41F19",
-        "text_color": "FFFFFF"
+        "color": "#B41F19",
+        "text_color": "#FFFFFF"
     },
-    "53ff77": 
+    "#53FF77": 
     {
-        "color": "FF81BE",
-        "text_color": "000000"
+        "color": "#FF81BE",
+        "text_color": "#000000"
     }
   }
 }
