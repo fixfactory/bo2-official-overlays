@@ -181,7 +181,8 @@ namespace benofficial2.Plugin
         public List<ClassLeaderboard> LiveClassLeaderboards { get; private set; } = new List<ClassLeaderboard>();
 
         // Reusable buffers to avoid per-frame allocations
-        private readonly Dictionary<int, ClassLeaderboard> _classMapBuffer = new Dictionary<int, ClassLeaderboard>(MaxCarClasses);
+        private const int MaxLiveClassLeaderboards = 5;
+        private readonly Dictionary<int, ClassLeaderboard> _classMapBuffer = new Dictionary<int, ClassLeaderboard>(MaxLiveClassLeaderboards);
         private readonly List<Driver> _scoredDriversBuffer = new List<Driver>(128);
         private readonly List<ClassLeaderboard> _leaderboardPool = new List<ClassLeaderboard>();
 
@@ -724,6 +725,9 @@ namespace benofficial2.Plugin
                 LiveClassLeaderboards.Add(leaderboard);
             }
 
+
+            int highlightedLeaderboardCarClassId = 0;
+
             // Sort drivers inside each leaderboard using in-place Sort to avoid LINQ
             foreach (var leaderboard in LiveClassLeaderboards)
             {
@@ -793,6 +797,7 @@ namespace benofficial2.Plugin
                         _driverModule.HighlightedDriver.LivePositionInClass = driver.LivePositionInClass;
                         _driverModule.HighlightedDriver.CarClassColor = driver.CarClassColor;
                         _driverModule.HighlightedDriver.CarClassTextColor = driver.CarClassTextColor;
+                        highlightedLeaderboardCarClassId = driver.CarClassId;
                     }
 
                     if (driver.Position > 0 && (leaderboard.LeaderPosition == 0 || driver.Position < leaderboard.LeaderPosition))
@@ -809,6 +814,18 @@ namespace benofficial2.Plugin
 
             // Sort the class leaderboards in-place on the estimated lap time (fastest first).
             LiveClassLeaderboards.Sort((a, b) => a.EstLapTime.CompareTo(b.EstLapTime));
+
+            // Make sure the highlighted driver's leaderboard is always within the top MaxCarClasses leaderboards so it remains visible.
+            if (_driverModule.HighlightedDriver.CarIdx >= 0)
+            {
+                int highlightedLeaderboardIdx = LiveClassLeaderboards.FindIndex(lb => lb.CarClassId == highlightedLeaderboardCarClassId);
+                if (highlightedLeaderboardIdx >= MaxCarClasses)
+                {
+                    var highlightedLeaderboard = LiveClassLeaderboards[highlightedLeaderboardIdx];
+                    LiveClassLeaderboards.RemoveAt(highlightedLeaderboardIdx);
+                    LiveClassLeaderboards.Insert(MaxCarClasses - 1, highlightedLeaderboard);
+                }
+            }
 
             TotalDriverCount = scoredDriversAllClasses.Count;
             TotalSoF = CalculateSof(scoredDriversAllClasses);
