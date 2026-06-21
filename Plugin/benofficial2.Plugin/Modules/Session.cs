@@ -70,6 +70,8 @@ namespace benofficial2.Plugin
         private bool _raceFinishedForPlayer = false;
         private double? _lastTrackPct = null;
         private TimeSpan _raceStartedTime = TimeSpan.Zero;
+        private TimeSpan _lastSessionTimeLeft = TimeSpan.Zero;
+        private bool _raceTimeLeftHitZero = false;
 
         public SessionState State { get; internal set; } = new SessionState();
         public bool Race { get; internal set; } = false;
@@ -85,6 +87,7 @@ namespace benofficial2.Plugin
         public TimeSpan SessionTimeTotal { get; internal set; } = TimeSpan.Zero;
         public int SessionLapsTotal { get; internal set; } = 0;
         public double RaceTimer { get; internal set; } = 0;
+        public TimeSpan RaceTimeRemaining { get; internal set; } = TimeSpan.Zero;
         public bool JoinedRaceInProgress { get; internal set; } = false;
         public bool Oval { get; internal set; } = false;
         public bool StandingStart { get; internal set; } = false;
@@ -173,7 +176,11 @@ namespace benofficial2.Plugin
                 SessionTimeTotal = TimeSpan.FromSeconds(sessionTimeTotal);
 
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int totalLaps, "SessionLapsTotal");
-                SessionLapsTotal = (totalLaps > 0) && (totalLaps < 20000) ? totalLaps : 0;               
+                SessionLapsTotal = (totalLaps > 0) && (totalLaps < 20000) ? totalLaps : 0;
+
+                _raceStartedTime = TimeSpan.Zero;
+                _lastSessionTimeLeft = TimeSpan.Zero;
+                _raceTimeLeftHitZero = false;
             }
 
             // Determine if replay is playing.
@@ -246,13 +253,27 @@ namespace benofficial2.Plugin
             // Update race timer
             if (RaceStarted)
             {
+                if (JoinedRaceInProgress && _raceStartedTime <= TimeSpan.Zero)
+                    _raceStartedTime = State.SessionTime - SessionTimeTotal + data.NewData.SessionTimeLeft;
+
+                // Detect if the time left hits zero during the race.
+                // Handle the case when the time left is slightly negative when the green flag drops.
+                // Handle the case when the time left timer jumps forward as it hits zero.
+                if (RaceTimer > 5.0 && 
+                    (data.NewData.SessionTimeLeft <= TimeSpan.Zero ||
+                     (_lastSessionTimeLeft > TimeSpan.Zero &&
+                      _lastSessionTimeLeft < TimeSpan.FromSeconds(5) && 
+                      _lastSessionTimeLeft < data.NewData.SessionTimeLeft)))
+                    _raceTimeLeftHitZero = true;
+
+                _lastSessionTimeLeft = data.NewData.SessionTimeLeft;
+                RaceTimeRemaining = _raceTimeLeftHitZero ? TimeSpan.Zero : data.NewData.SessionTimeLeft;
+
                 // Freeze timer when race is finished
                 if (!RaceFinished)
                 {
                     if (_raceStartedTime <= TimeSpan.Zero)
-                    {
                         _raceStartedTime = State.SessionTime;
-                    }
 
                     RaceTimer = (State.SessionTime - _raceStartedTime).TotalSeconds;
                 }
@@ -261,6 +282,7 @@ namespace benofficial2.Plugin
             {
                 RaceTimer = 0;
                 _raceStartedTime = TimeSpan.Zero;
+                RaceTimeRemaining = Race ? SessionTimeTotal : TimeSpan.Zero;
             }
         }
 

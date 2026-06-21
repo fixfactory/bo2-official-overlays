@@ -1082,7 +1082,7 @@ namespace benofficial2.Plugin
                     return;
                 }
 
-                double sessionTimeRemain = Math.Max(0.0, _sessionModule.SessionTimeTotal.TotalSeconds - _sessionModule.RaceTimer);
+                double sessionTimeRemain = Math.Max(0.0, _sessionModule.RaceTimeRemaining.TotalSeconds);
                 TimeSpan avgLapTime = carClass.LeaderAvgLapTime;
                 if (avgLapTime <= TimeSpan.Zero)
                     avgLapTime = carClass.BestLapTime;
