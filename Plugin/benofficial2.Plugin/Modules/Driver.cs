@@ -220,6 +220,7 @@ namespace benofficial2.Plugin
         public int IRatingChange { get; set; } = 0;
         public string License { get; set; } = string.Empty;
         public double SafetyRating { get; set; } = 0.0;
+        public int LapsToClassLeader { get; set; } = 0;
         public int Position { get; set; } = 0;
         public int LivePositionInClass { get; set; } = 0;
         public int CurrentLap { get; set; } = 0;
@@ -617,6 +618,7 @@ namespace benofficial2.Plugin
                         HighlightedDriver.IRatingChange = driver.IRatingChange;
                         HighlightedDriver.License = driver.License;
                         HighlightedDriver.SafetyRating = driver.SafetyRating;
+                        HighlightedDriver.LapsToClassLeader = driver.LapsToClassLeader;
                         HighlightedDriver.CurrentLap = Math.Max(0, driver.Lap > 0 ? driver.Lap : (int)Math.Ceiling(driver.CurrentLapHighPrecision));
                         HighlightedDriver.CurrentLapHighPrecision = driver.CurrentLapHighPrecision;
                         HighlightedDriver.TeamIncidentCount = driver.TeamIncidentCount;
@@ -1186,6 +1188,7 @@ namespace benofficial2.Plugin
             HighlightedDriver.IRatingChange = 0;
             HighlightedDriver.License = string.Empty;
             HighlightedDriver.SafetyRating = 0.0;
+            HighlightedDriver.LapsToClassLeader = 0;
             HighlightedDriver.Position = 0;
             HighlightedDriver.LivePositionInClass = 0;
             HighlightedDriver.CurrentLap = 0;

@@ -579,8 +579,10 @@ namespace benofficial2.Plugin
 
         private void UpdateFuelCalculations(ref GameData data)
         {
+            // Get the estimated total laps for the current driver.
+            // Handle the case where the driver is 1 or more laps down to the class leader so we don't overfuel.
             if (_standingsModule.HighlightedCarClassIdx >= 0 && _standingsModule.HighlightedCarClassIdx < StandingsModule.MaxCarClasses)
-                EstimatedTotalLaps = _standingsModule.CarClasses[_standingsModule.HighlightedCarClassIdx].EstimatedTotalLaps;
+                EstimatedTotalLaps = Math.Max(0, _standingsModule.CarClasses[_standingsModule.HighlightedCarClassIdx].EstimatedTotalLaps - _driverModule.HighlightedDriver.LapsToClassLeader);
             else
                 EstimatedTotalLaps = 0;
 
