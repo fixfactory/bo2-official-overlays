@@ -117,6 +117,7 @@ namespace benofficial2.Plugin
         public int CarClassId { get; set; } = 0;
         public string CarClassName { get; set; } = string.Empty;
         public string CarClassColor { get; set; } = string.Empty;
+        public string CarClassTextColor { get; set; } = string.Empty;
         public double CarClassEstLapTime { get; set; } = 0.0;
         public bool IsPlayer { get; set; } = false;
         public bool IsConnected { get; set; } = false;
@@ -196,6 +197,7 @@ namespace benofficial2.Plugin
         public int CurrentLap { get; set; } = 0;
         public int TeamIncidentCount { get; set; } = 0;
         public string CarClassColor { get; set; } = string.Empty;
+        public string CarClassTextColor { get; set; } = string.Empty;
         public string TireCompound { get; set; } = string.Empty;
         public int PushToPassCount { get; set; } = 0;
         public bool PushToPassActivated { get; set; } = false;
@@ -307,6 +309,7 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Player.CurrentLap", valueProvider: () => PlayerDriver.CurrentLap);
             plugin.AttachDelegate(name: "Player.TeamIncidentCount", valueProvider: () => PlayerDriver.TeamIncidentCount);
             plugin.AttachDelegate(name: "Player.CarClassColor", valueProvider: () => PlayerDriver.CarClassColor);
+            plugin.AttachDelegate(name: "Player.CarClassTextColor", valueProvider: () => PlayerDriver.CarClassTextColor);
             plugin.AttachDelegate(name: "Player.IRating", valueProvider: () => PlayerDriver.IRating);
             plugin.AttachDelegate(name: "Player.iRatingChange", valueProvider: () => PlayerDriver.IRatingChange);
             plugin.AttachDelegate(name: "Player.License", valueProvider: () => PlayerDriver.License);
@@ -564,6 +567,7 @@ namespace benofficial2.Plugin
                     PlayerDriver.Name = driver.Name;
                     PlayerDriver.CarBrand = driver.CarBrand;
                     PlayerDriver.CarClassColor = driver.CarClassColor;
+                    PlayerDriver.CarClassTextColor = driver.CarClassTextColor;
                     PlayerDriver.CountryCode = driver.CountryCode;
                     PlayerDriver.SessionFlags = driver.SessionFlags;
                     PlayerDriver.Position = driver.Position;
@@ -605,6 +609,7 @@ namespace benofficial2.Plugin
                         HighlightedDriver.CarBrand = driver.CarBrand;
                         HighlightedDriver.CarName = driver.CarName;
                         HighlightedDriver.CarClassColor = driver.CarClassColor;
+                        HighlightedDriver.CarClassTextColor = driver.CarClassTextColor;
                         HighlightedDriver.CountryCode = driver.CountryCode;
                         HighlightedDriver.SessionFlags = driver.SessionFlags;
                         HighlightedDriver.Position = driver.Position;
@@ -849,7 +854,8 @@ namespace benofficial2.Plugin
                 driver.IsPaceCar = carIsPaceCar == 1;
                 driver.CarClassId = carClassId;
                 driver.CarClassName = carClassShortName;
-                driver.CarClassColor = ConvertColorString(carClassColor);
+                driver.CarClassColor = _carModule.GetCarClassColor(ConvertColorString(carClassColor));
+                driver.CarClassTextColor = _carModule.GetCarClassTextColor(ConvertColorString(carClassColor));
                 driver.CarClassEstLapTime = carClassEstLapTime;
                 driver.TeamIncidentCount = teamIncidentCount;
                 driver.IRating = iRating;
@@ -1158,6 +1164,7 @@ namespace benofficial2.Plugin
             PlayerDriver.CurrentLap = 0;
             PlayerDriver.TeamIncidentCount = 0;
             PlayerDriver.CarClassColor = string.Empty;
+            PlayerDriver.CarClassTextColor = string.Empty;
             PlayerDriver.TireCompound = string.Empty;
             PlayerDriver.PushToPassCount = 0;
             PlayerDriver.PushToPassActivated = false;
@@ -1224,7 +1231,7 @@ namespace benofficial2.Plugin
             return GetDriver(highlightedCarIdx);
         }
 
-        public string ConvertColorString(string input)
+        public static string ConvertColorString(string input)
         {
             if (string.IsNullOrEmpty(input))
                 return string.Empty;
@@ -1234,9 +1241,6 @@ namespace benofficial2.Plugin
             {
                 input = input.Substring(2);
             }
-
-            // Convert old SDK class colors to new UI colors.
-            input = _carModule.GetCarClassColor(input.ToLower());
 
             // Return in #RRGGBB format, uppercase
             return "#" + input.ToUpper();

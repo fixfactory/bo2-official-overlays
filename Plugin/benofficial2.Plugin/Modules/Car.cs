@@ -435,6 +435,23 @@ namespace benofficial2.Plugin
             return sdkColor;
         }
 
+        public string GetCarClassTextColor(string sdkColor)
+        {
+            // Check if the class text color is in the CarClassInfo JSON
+            if (_carClassInfo.Json != null && sdkColor != null)
+            {
+                if (_carClassInfo.Json["car_class_colors"] is JObject carClasses)
+                {
+                    JToken carClass = carClasses[sdkColor];
+                    if (carClass != null)
+                    {
+                        return carClass["text_color"]?.Value<string>() ?? "#000000";
+                    }
+                }
+            }
+            return "#000000";
+        }
+
         public string GetTireCompoundLetter(int tireCompoundIdx)
         {
             if (TireCompounds == null)

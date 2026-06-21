@@ -139,6 +139,7 @@ namespace benofficial2.Plugin
         public int CarClassId { get; set; } = 0;
         public string CarClassName { get; set; } = string.Empty;
         public string CarClassColor { get; set; } = string.Empty;
+        public string CarClassTextColor { get; set; } = string.Empty;
         public List<Driver> Drivers { get; set; } = new List<Driver>();
         public HashSet<string> CarNames { get; } = new HashSet<string>();
         public int LeaderPosition { get; set; } = 0;
@@ -339,7 +340,7 @@ namespace benofficial2.Plugin
                     ClassLeaderboard leaderboard = LiveClassLeaderboards[carClassIdx];
                     carClass.IsLeadingClass = (carClassIdx == 0);
                     carClass.Color = leaderboard.CarClassColor;
-                    carClass.TextColor = "#000000";
+                    carClass.TextColor = leaderboard.CarClassTextColor;
 
                     if ((leaderboard.CarClassName == null || leaderboard.CarClassName.Length == 0 || leaderboard.CarClassName == "Hosted All Cars"))
                     {
@@ -455,7 +456,7 @@ namespace benofficial2.Plugin
                         row.CarId = driver.CarId;
                         row.CarBrand = driver.CarBrand;
                         row.CarClassColor = driver.CarClassColor;
-                        row.CarClassTextColor = "#000000";
+                        row.CarClassTextColor = driver.CarClassTextColor;
                         row.CountryCode = driver.CountryCode;
                         row.InPitLane = driver.InPit;
                         row.Towing = driver.Towing;
@@ -643,6 +644,7 @@ namespace benofficial2.Plugin
                 leaderboard.CarClassId = 0;
                 leaderboard.CarClassName = string.Empty;
                 leaderboard.CarClassColor = string.Empty;
+                leaderboard.CarClassTextColor = string.Empty;
                 leaderboard.Drivers.Clear();
                 leaderboard.CarNames.Clear();
                 leaderboard.LeaderPosition = 0;
@@ -676,6 +678,7 @@ namespace benofficial2.Plugin
                     leaderboard = GetLeaderboardFromPool(poolIndex++);
                     leaderboard.CarClassId = carClassId;
                     leaderboard.CarClassColor = driver.CarClassColor;
+                    leaderboard.CarClassTextColor = driver.CarClassTextColor;
                     leaderboard.CarClassName = driver.CarClassName;
                     newLeaderboard = true;
                 }
@@ -789,7 +792,7 @@ namespace benofficial2.Plugin
                     {
                         _driverModule.HighlightedDriver.LivePositionInClass = driver.LivePositionInClass;
                         _driverModule.HighlightedDriver.CarClassColor = driver.CarClassColor;
-                        _driverModule.HighlightedDriver.CarClassTextColor = "#000000";
+                        _driverModule.HighlightedDriver.CarClassTextColor = driver.CarClassTextColor;
                     }
 
                     if (driver.Position > 0 && (leaderboard.LeaderPosition == 0 || driver.Position < leaderboard.LeaderPosition))
