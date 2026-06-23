@@ -320,5 +320,10 @@
         "hasTC": true,
         "hasABS": true,
         "hasThrottleShaping": true
+    },
+    "bmwm2g87": {
+        "hasTC": true,
+        "hasABS": true,
+        "hasThrottleShaping": true
     }
 }
