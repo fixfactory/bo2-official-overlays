@@ -889,11 +889,19 @@ namespace benofficial2.Plugin
 
                 if (carPath == "superformulasf23 toyota" || carPath == "superformulasf23 honda")
                 {
-                    // Special case for Super Formula SF23 where p2pCount is reported as a float.
                     driver.LastPushToPassCount = driver.PushToPassCount;
 
-                    float p2pCountFloat = BitConverter.ToSingle(BitConverter.GetBytes(p2pCount), 0) * 10f;
-                    driver.PushToPassCount = (int)p2pCountFloat;
+                    if (driver.IsPlayer)
+                    {
+                        RawDataHelper.TryGetTelemetryData<int>(ref data, out int playerP2pCount, "P2P_Count");
+                        driver.PushToPassCount = playerP2pCount;
+                    }
+                    else
+                    {
+                        // Special case for Super Formula SF23 where p2pCount is reported as a float.
+                        float p2pCountFloat = BitConverter.ToSingle(BitConverter.GetBytes(p2pCount), 0) * 10f;
+                        driver.PushToPassCount = (int)p2pCountFloat;
+                    }
 
                     // The status isn't reported in p2pStatus, so we must infer it from the count changing.
                     if (p2pStatus > 0)
