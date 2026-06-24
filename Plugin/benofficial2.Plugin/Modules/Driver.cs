@@ -167,6 +167,8 @@ namespace benofficial2.Plugin
         public int TireCompoundIdx { get; set; } = -1;
         public string TireCompound { get; set; } = string.Empty;
         public int PushToPassCount { get; set; } = 0;
+        public int LastPushToPassCount { get; set; } = 0;
+        public DateTime LastPushToPassChangeTime { get; set; } = DateTime.MinValue;
         public bool PushToPassActivated { get; set; } = false;
     }
 
@@ -885,9 +887,39 @@ namespace benofficial2.Plugin
                 if (prevTireCompoundIdx != driver.TireCompoundIdx)
                     driver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
 
-                driver.PushToPassCount = p2pCount;
-                driver.PushToPassActivated = p2pStatus > 0;
+                if (carPath == "superformulasf23 toyota" || carPath == "superformulasf23 honda")
+                {
+                    // Special case for Super Formula SF23 where p2pCount is reported as a float.
+                    driver.LastPushToPassCount = driver.PushToPassCount;
 
+                    float p2pCountFloat = BitConverter.ToSingle(BitConverter.GetBytes(p2pCount), 0) * 10f;
+                    driver.PushToPassCount = (int)p2pCountFloat;
+
+                    // The status isn't reported in p2pStatus, so we must infer it from the count changing.
+                    if (p2pStatus > 0)
+                        driver.PushToPassActivated = true;
+                    else
+                    {
+                        if (driver.LastPushToPassCount != driver.PushToPassCount)
+                        {
+                            driver.PushToPassActivated = true;
+                            driver.LastPushToPassChangeTime = DateTime.Now;
+                        }
+                        else
+                        {
+                            if (DateTime.Now - driver.LastPushToPassChangeTime > TimeSpan.FromSeconds(2))
+                            {
+                                driver.PushToPassActivated = false;
+                            }
+                        }
+                    }                    
+                }
+                else
+                {
+                    driver.PushToPassCount = p2pCount;
+                    driver.PushToPassActivated = p2pStatus > 0;
+                }
+                
                 // Maintain cached drivers-by-class mapping when class membership changes or new driver added
                 if (prevCarClassId != driver.CarClassId)
                 {
