@@ -178,6 +178,8 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int totalLaps, "SessionLapsTotal");
                 SessionLapsTotal = (totalLaps > 0) && (totalLaps < 20000) ? totalLaps : 0;
 
+                RaceTimer = 0;
+                RaceTimeRemaining = TimeSpan.Zero;
                 _raceStartedTime = TimeSpan.Zero;
                 _lastSessionTimeLeft = TimeSpan.Zero;
                 _raceTimeLeftHitZero = false;
