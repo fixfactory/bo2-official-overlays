@@ -120,6 +120,10 @@
     "SkipBarber": 
     {
         "tokens": ["rt2000"]
+    },
+    "Ram": 
+    {
+        "tokens": ["ram"]
     }
   }
 }
