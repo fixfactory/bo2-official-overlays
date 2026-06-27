@@ -4,7 +4,7 @@ Name "${PRODUCT_NAME}"
 !define PRODUCT_VERSION "5.1"
 
 ; Enable this define for beta builds (uncomment to activate)
-!define PRODUCT_BETA_VERSION "1"
+;!define PRODUCT_BETA_VERSION "1"
 
 !ifdef PRODUCT_BETA_VERSION
   !define PRODUCT_VERSION_FULL "${PRODUCT_VERSION} (beta${PRODUCT_BETA_VERSION})"
