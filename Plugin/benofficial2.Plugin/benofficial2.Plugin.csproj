@@ -122,6 +122,7 @@
     <Compile Include="Modules\FuelConsumptionTracker.cs" />
     <Compile Include="Modules\General.cs" />
     <Compile Include="Modules\LaunchAssist.cs" />
+    <Compile Include="Modules\PitlaneHelper.cs" />
     <Compile Include="Modules\Precipitation.cs" />
     <Compile Include="Modules\RejoinHelper.cs" />
     <Compile Include="Modules\Relative.cs" />

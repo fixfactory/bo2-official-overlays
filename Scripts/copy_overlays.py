@@ -48,7 +48,8 @@ overlays_to_copy = [
     "benofficial2 - iRacing Relative Humidity",
     "benofficial2 - iRacing Multi-Class Standings",
     "benofficial2 - iRacing Highlighted Driver",
-    "benofficial2 - iRacing ABS"]
+    "benofficial2 - iRacing ABS",
+    "benofficial2 - iRacing Pitlane Helper"]
 
 def copy_overlays_from_simhub():
     for overlay_name in overlays_to_copy:

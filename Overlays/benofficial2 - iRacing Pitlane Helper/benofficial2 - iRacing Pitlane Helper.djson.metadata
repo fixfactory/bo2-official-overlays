@@ -10,17 +10,15 @@
   "IsOverlay": true,
   "OverlaySizeWarning": false,
   "MetadataVersion": 2.0,
-  "EnableOnDashboardMessaging": false,
-  "PitScreensIndexs": [
-    0
-  ],
+  "EnableOnDashboardMessaging": true,
+  "PitScreensIndexs": [],
   "PreferredTouchMode": 0,
-  "SimHubVersion": "9.11.21",
-  "Category": "benofficial2",
-  "Title": "benofficial2 - Input Telemetry",
-  "Description": "",
+  "SimHubVersion": "9.11.22",
+  "Category": null,
+  "Title": "benofficial2 - iRacing Pitlane Helper",
+  "Description": null,
   "Author": "twitch.tv/benofficial2",
-  "Width": 760.0,
-  "Height": 128.0,
+  "Width": 650.0,
+  "Height": 500.0,
   "DashboardVersion": ""
 }

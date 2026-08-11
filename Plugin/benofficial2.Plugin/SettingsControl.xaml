@@ -29,7 +29,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d">
     <ScrollViewer>
-        <Grid Height="6400">
+        <Grid Height="6600">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="44*"/>
                 <ColumnDefinition Width="377*"/>
@@ -1229,6 +1229,35 @@
                         <StackPanel Orientation="Horizontal">
                             <ui:TitledSlider Width="400" Title="Width (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[DriverModule].HighlightedDriverSettings.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <ui:TitledSlider Width="400" Title="Background Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[DriverModule].HighlightedDriverSettings.BackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </StackPanel>
+                </styles:SHSection>
+
+                <styles:SHSection Title="PITLANE HELPER OVERLAY OPTIONS" ShowSeparator="True">
+                    <StackPanel HorizontalAlignment="Left">
+                        <styles:SHToggleCheckbox 
+                            ToolTip="Show the progress bar with the distance information." 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[PitlaneHelperModule].Settings.DistanceVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Show distance
+                        </styles:SHToggleCheckbox>
+
+                        <styles:SHToggleCheckbox 
+                            ToolTip="Show the colored bar with the speed information." 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[PitlaneHelperModule].Settings.SpeedVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Show speed bar
+                        </styles:SHToggleCheckbox>
+
+                        <styles:SHToggleCheckbox 
+                            ToolTip="Show the speed dials." 
+                            HorizontalAlignment="Left" Margin="0,0,4,8"
+                            IsChecked="{Binding Plugin.Modules[PitlaneHelperModule].Settings.DialsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Show speed dials
+                        </styles:SHToggleCheckbox>
+
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TitledSlider Width="400" Title="Background Opacity (%)" Maximum="100" Minimum="0" Value="{Binding Plugin.Modules[PitlaneHelperModule].Settings.BackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </StackPanel>
                 </styles:SHSection>

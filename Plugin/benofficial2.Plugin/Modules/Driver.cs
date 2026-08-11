@@ -121,13 +121,18 @@ namespace benofficial2.Plugin
         public double CarClassEstLapTime { get; set; } = 0.0;
         public bool IsPlayer { get; set; } = false;
         public bool IsConnected { get; set; } = false;
+        public bool IsMovingForward { get; set; } = false;
         public bool IsPaceCar { get; set; } = false;
         public int Lap { get; set; } = 0;
         public int EnterPitLapUnconfirmed { get; set; } = -1;
         public int EnterPitLap { get; set; } = -1;
         public int ExitPitLap { get; set; } = -1;
         public bool OutLap { get; set; } = false;
+        public bool AproachingPits { get; set; } = false;
+        public bool LastAproachingPits { get; set; } = false;
+        public bool LeavingPits { get; set; } = false;
         public bool InPit { get; set; } = false;
+        public bool LastInPit { get; set; } = false;
         public DateTime InPitSince { get; set; } = DateTime.MinValue;
         public bool InPitBox { get; set; } = false;
         public DateTime InPitBoxSince { get; set; } = DateTime.MinValue;
@@ -138,7 +143,7 @@ namespace benofficial2.Plugin
         public int PositionInClass { get; set; } = 0;
         public int QualPositionInClass { get; set; } = 0;
         public int LivePositionInClass { get; set; } = 0;
-        public double LastCurrentLapHighPrecision { get; set; } = -1;
+        public double LastCurrentLapHighPrecisionRaw { get; set; } = -1;
         public double CurrentLapHighPrecision { get; set; } = -1;
         public double CurrentLapHighPrecisionRaw { get; set; } = -1;
         public double TrackPositionPercent { get; set; } = -1;
@@ -177,7 +182,9 @@ namespace benofficial2.Plugin
         public int CarIdx { get; set; } = -1;
         public bool OutLap { get; internal set; } = false;
         public int EnterPitLap { get; set; } = 0;
+        public bool AproachingPits { get; set; } = false;
         public bool InPit { get; set; } = false;
+        public bool InPitBox { get; set; } = false;
         public bool Towing { get; set; } = false;
         public int StintLap { get; internal set; } = 0;
         public string Number { get; internal set; } = "";
@@ -252,6 +259,8 @@ namespace benofficial2.Plugin
         private FlairModule _flairModule = null;
         private StandingsModule _standingsModule = null;
         private RelativeModule _relativeModule = null;
+        private TrackModule _trackModule = null;
+        private PitlaneHelperModule _pitlaneHelperModule = null;
 
         private SessionState _sessionState = new SessionState();
 
@@ -291,13 +300,17 @@ namespace benofficial2.Plugin
             _flairModule = plugin.GetModule<FlairModule>();
             _standingsModule = plugin.GetModule<StandingsModule>();
             _relativeModule = plugin.GetModule<RelativeModule>();
+            _trackModule = plugin.GetModule<TrackModule>();
+            _pitlaneHelperModule = plugin.GetModule<PitlaneHelperModule>();
 
             HighlightedDriverSettings = plugin.ReadCommonSettings<HighlightedDriverSettings>("HighlightedDriverSettings", () => new HighlightedDriverSettings());
 
             plugin.AttachDelegate(name: "Player.CarIdx", valueProvider: () => PlayerDriver.CarIdx);
             plugin.AttachDelegate(name: "Player.OutLap", valueProvider: () => PlayerDriver.OutLap);
             plugin.AttachDelegate(name: "Player.EnterPitLap", valueProvider: () => PlayerDriver.EnterPitLap);
+            plugin.AttachDelegate(name: "Player.AproachingPits", valueProvider: () => PlayerDriver.AproachingPits);
             plugin.AttachDelegate(name: "Player.InPit", valueProvider: () => PlayerDriver.InPit);
+            plugin.AttachDelegate(name: "Player.InPitBox", valueProvider: () => PlayerDriver.InPitBox);
             plugin.AttachDelegate(name: "Player.Towing", valueProvider: () => PlayerDriver.Towing);
             plugin.AttachDelegate(name: "Player.StintLap", valueProvider: () => PlayerDriver.StintLap);
             plugin.AttachDelegate(name: "Player.Number", valueProvider: () => PlayerDriver.Number);
@@ -522,16 +535,10 @@ namespace benofficial2.Plugin
                     {
                         // iRacing doesn't provide a tow time for other drivers, so we have to estimate it.
                         // Consider towing done if the car starts moving forward from a valid position
-                        double smallDistancePct = 0.05 / data.NewData.TrackLength; // 0.05m is roughly the distance you cover at 10km/h in 16ms.
-
-                        bool movingForward = driver.CurrentLapHighPrecisionRaw > -1 &&
-                            driver.LastCurrentLapHighPrecision > -1 &&
-                            driver.CurrentLapHighPrecisionRaw > driver.LastCurrentLapHighPrecision + smallDistancePct;
-
                         bool done = driver.CurrentLapHighPrecisionRaw == -1;
                         bool towEnded = !driver.IsPlayer && data.FrameTime > driver.TowingEndTime;
                         bool playerNotTowing = driver.IsPlayer && playerCarTowTime <= 0;
-                        if (playerNotTowing || towEnded || movingForward || done)
+                        if (playerNotTowing || towEnded || driver.IsMovingForward || done)
                         {
                             driver.Towing = false;
                             driver.TowingEndTime = DateTime.MinValue;
@@ -556,8 +563,6 @@ namespace benofficial2.Plugin
                     {
                         driver.CurrentLapHighPrecision = driver.LapsCompleted + Constants.LapEpsilon;
                     }
-
-                    driver.LastCurrentLapHighPrecision = driver.CurrentLapHighPrecisionRaw;
                 }
                 else
                 {
@@ -568,7 +573,6 @@ namespace benofficial2.Plugin
                 {
                     PlayerDriver.OutLap = driver.OutLap;
                     PlayerDriver.EnterPitLap = driver.EnterPitLap;
-                    PlayerDriver.InPit = driver.InPit;
                     PlayerDriver.Towing = driver.Towing;
                     PlayerDriver.StintLap = driver.StintLap;
                     PlayerDriver.Number = driver.CarNumber;
@@ -813,8 +817,6 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int sessionFlags, "CarIdxSessionFlags", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int position, "CarIdxPosition", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int classPosition, "CarIdxClassPosition", carIdx);
-                RawDataHelper.TryGetTelemetryData<bool>(ref data, out bool onPitRoad, "CarIdxOnPitRoad", carIdx);
-                RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "CarIdxTrackSurface", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int lapCompleted, "CarIdxLapCompleted", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int tireCompoundIdx, "CarIdxTireCompound", carIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int p2pCount, "CarIdxP2P_Count", carIdx);
@@ -860,7 +862,6 @@ namespace benofficial2.Plugin
                      driver.CountryCode = _flairModule.GetCountryCode(driver.FlairId);
 
                 driver.IsPlayer = carIdx == playerCarIdx;
-                driver.IsConnected = trackSurface > (int)TrackLoc.NotInWorld;
                 driver.IsPaceCar = carIsPaceCar == 1;
                 driver.CarClassId = carClassId;
                 driver.CarClassName = carClassShortName;
@@ -879,8 +880,6 @@ namespace benofficial2.Plugin
                 driver.SessionFlags = sessionFlags;
                 driver.Position = position;
                 driver.PositionInClass = classPosition;
-                driver.InPit = onPitRoad;
-                driver.InPitBox = trackSurface == (int)TrackLoc.InPitStall;
                 driver.LapsCompleted = lapCompleted;
                 driver.TireCompoundIdx = tireCompoundIdx;
 
@@ -964,6 +963,9 @@ namespace benofficial2.Plugin
 
             _lastUpdateTimeHighFreq = data.FrameTime;
 
+            // 0.05m is roughly the distance you cover at 10km/h in 16ms.
+            double smallDistancePct = 0.05 / data.NewData.TrackLength;
+
             for (int i = 0; i < MaxDrivers; i++)
             {
                 Driver driver = _driversByCarIdx[i];
@@ -973,10 +975,20 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<double>(ref data, out double estTime, "CarIdxEstTime", driver.CarIdx);
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int lap, "CarIdxLap", driver.CarIdx);
                 RawDataHelper.TryGetTelemetryData<double>(ref data, out double lapDistPct, "CarIdxLapDistPct", driver.CarIdx);
+                RawDataHelper.TryGetTelemetryData<bool>(ref data, out bool onPitRoad, "CarIdxOnPitRoad", driver.CarIdx);
+                RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "CarIdxTrackSurface", driver.CarIdx);
 
                 driver.EstTime = estTime;
                 driver.Lap = lap;
                 driver.TrackPositionPercent = lapDistPct;
+                driver.InPit = onPitRoad;
+                driver.IsConnected = trackSurface > (int)TrackLoc.NotInWorld;
+                driver.InPitBox = trackSurface == (int)TrackLoc.InPitStall;
+
+                // The iRacing AproachingPits flag is true when approaching, in pit, and leaving the pit. We want to separate these states.
+                bool leftPits = !driver.InPit && driver.LastInPit;
+                driver.LeavingPits = (trackSurface == (int)TrackLoc.AproachingPits) && (leftPits || driver.LeavingPits);
+                driver.AproachingPits = (trackSurface == (int)TrackLoc.AproachingPits) && !(driver.InPit || driver.LeavingPits);
 
                 if (driver.Lap > -1 && driver.TrackPositionPercent > -Constants.LapEpsilon)
                 {
@@ -986,6 +998,44 @@ namespace benofficial2.Plugin
                 {
                     driver.CurrentLapHighPrecisionRaw = -1.0;
                 }
+
+                driver.IsMovingForward = driver.CurrentLapHighPrecisionRaw > -1 &&
+                    driver.LastCurrentLapHighPrecisionRaw > -1 &&
+                    driver.CurrentLapHighPrecisionRaw > driver.LastCurrentLapHighPrecisionRaw + smallDistancePct;
+
+                UpdateDriverPitEntryExitHighFreq(ref data, driver);
+
+                if (driver.IsPlayer)
+                {
+                    PlayerDriver.AproachingPits = driver.AproachingPits;
+                    PlayerDriver.InPit = driver.InPit;
+                    PlayerDriver.InPitBox = driver.InPitBox;
+                }
+
+                driver.LastCurrentLapHighPrecisionRaw = driver.CurrentLapHighPrecisionRaw;
+                driver.LastAproachingPits = driver.AproachingPits;
+                driver.LastInPit = driver.InPit;
+            }
+        }
+
+        private void UpdateDriverPitEntryExitHighFreq(ref GameData data, Driver driver)
+        {
+            if (!driver.IsConnected || !driver.IsMovingForward)
+                return;
+
+            if (driver.InPit && !driver.LastInPit)
+            {
+                _trackModule.SetMeasuredPitEntryTrackPct((float)driver.TrackPositionPercent);
+            }
+
+            if (!driver.InPit && driver.LastInPit)
+            {
+                _trackModule.SetMeasuredPitExitTrackPct((float)driver.TrackPositionPercent);
+            }
+
+            if (driver.IsPlayer && driver.AproachingPits && !driver.LastAproachingPits)
+            {
+                _pitlaneHelperModule.ApproachingPitsFromTrackPct = (float)driver.TrackPositionPercent;
             }
         }
 
@@ -1190,7 +1240,9 @@ namespace benofficial2.Plugin
             PlayerDriver.CarIdx = -1;
             PlayerDriver.OutLap = false;
             PlayerDriver.EnterPitLap = 0;
+            PlayerDriver.AproachingPits = false;
             PlayerDriver.InPit = false;
+            PlayerDriver.InPitBox = false;
             PlayerDriver.Towing = false;
             PlayerDriver.StintLap = 0;
             PlayerDriver.Number = "";

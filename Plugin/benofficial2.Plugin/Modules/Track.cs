@@ -32,7 +32,12 @@ namespace benofficial2.Plugin
         private RemoteJsonFile _trackInfo = new RemoteJsonFile("https://raw.githubusercontent.com/fixfactory/bo2-official-overlays/main/Data/TrackInfo.json");
         private string _lastTrackId = string.Empty;
 
+        private float _measuredPitExitTrackPct = -1.0f;
+        private float _measuredPitEntryTrackPct = -1.0f;
+
         public int PushToPassCooldown { get; set; } = 0;
+        public float PitExitTrackPct { get; set; } = -1.0f;
+        public float PitEntryTrackPct { get; set; } = -1.0f;
         public float QualStartTrackPct { get; set; } = 0.0f;
         public float RaceStartTrackPct { get; set; } = 0.0f;
         public string TrackType { get; set; } = string.Empty;
@@ -43,8 +48,10 @@ namespace benofficial2.Plugin
         {
             _trackInfo.LoadAsync();
 
+            plugin.AttachDelegate(name: "Track.PitExitTrackPct", valueProvider: () => PitExitTrackPct);
+            plugin.AttachDelegate(name: "Track.PitEntryTrackPct", valueProvider: () => PitEntryTrackPct);
             plugin.AttachDelegate(name: "Track.QualStartTrackPct", valueProvider: () => QualStartTrackPct);
-            plugin.AttachDelegate(name: "Track.RaceStartTrackPct", valueProvider: () => RaceStartTrackPct);
+            plugin.AttachDelegate(name: "Track.RaceStartTrackPct", valueProvider: () => RaceStartTrackPct);            
         }
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
@@ -59,7 +66,11 @@ namespace benofficial2.Plugin
 
             if (data.NewData.TrackId.Length == 0)
             {
+                _measuredPitEntryTrackPct = -1.0f;
+                _measuredPitExitTrackPct = -1.0f;
                 PushToPassCooldown = 0;
+                PitEntryTrackPct = -1.0f;
+                PitExitTrackPct = -1.0f;
                 QualStartTrackPct = 0.0f;
                 RaceStartTrackPct = 0.0f;
                 TrackType = string.Empty;
@@ -94,6 +105,28 @@ namespace benofficial2.Plugin
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
         {
+        }
+
+        public void SetMeasuredPitExitTrackPct(float value)
+        {
+            if (value < 0.0f || value > 1.0f)
+                return;
+
+            _measuredPitExitTrackPct = value;
+
+            if (PitExitTrackPct < 0.0f)
+                PitExitTrackPct = _measuredPitExitTrackPct;
+        }
+
+        public void SetMeasuredPitEntryTrackPct(float value)
+        {
+            if (value < 0.0f || value > 1.0f)
+                return;
+
+            _measuredPitEntryTrackPct = value;
+
+            if (PitEntryTrackPct < 0.0f)
+                PitEntryTrackPct = _measuredPitEntryTrackPct;
         }
     }
 }
