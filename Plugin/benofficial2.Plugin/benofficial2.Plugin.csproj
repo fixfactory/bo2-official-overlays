@@ -109,6 +109,7 @@
     <Compile Include="BroadcastMessage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CarEstTimeCache.cs" />
+    <Compile Include="Modules\TrackDataPersistence.cs" />
     <Compile Include="IRatingCalculator.cs" />
     <Compile Include="ModuleSetting.cs" />
     <Compile Include="Modules\AirTemperature.cs" />

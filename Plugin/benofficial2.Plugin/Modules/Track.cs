@@ -32,8 +32,9 @@ namespace benofficial2.Plugin
         private RemoteJsonFile _trackInfo = new RemoteJsonFile("https://raw.githubusercontent.com/fixfactory/bo2-official-overlays/main/Data/TrackInfo.json");
         private string _lastTrackId = string.Empty;
 
-        private float _measuredPitExitTrackPct = -1.0f;
-        private float _measuredPitEntryTrackPct = -1.0f;
+        // Persistence
+        private TrackDataPersistence _trackDataPersistence = new TrackDataPersistence();
+        private PersistentTrackData _trackData = new PersistentTrackData();
 
         public int PushToPassCooldown { get; set; } = 0;
         public float PitExitTrackPct { get; set; } = -1.0f;
@@ -47,6 +48,7 @@ namespace benofficial2.Plugin
         public override void Init(PluginManager pluginManager, benofficial2 plugin)
         {
             _trackInfo.LoadAsync();
+            _ = _trackDataPersistence.LoadAsync();
 
             plugin.AttachDelegate(name: "Track.PitExitTrackPct", valueProvider: () => PitExitTrackPct);
             plugin.AttachDelegate(name: "Track.PitEntryTrackPct", valueProvider: () => PitEntryTrackPct);
@@ -56,18 +58,20 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
-            if (_trackInfo.Json == null) 
+            if (_trackInfo.Json == null || !_trackDataPersistence.IsLoaded()) 
                 return;
 
             if (data.NewData.TrackId == _lastTrackId) 
                 return;
 
+            if (!string.IsNullOrEmpty(_lastTrackId))
+                _ = _trackDataPersistence.SaveAsync(_lastTrackId, _trackData);
+
             _lastTrackId = data.NewData.TrackId;
 
             if (data.NewData.TrackId.Length == 0)
             {
-                _measuredPitEntryTrackPct = -1.0f;
-                _measuredPitExitTrackPct = -1.0f;
+                _trackData = new PersistentTrackData();
                 PushToPassCooldown = 0;
                 PitEntryTrackPct = -1.0f;
                 PitExitTrackPct = -1.0f;
@@ -101,32 +105,39 @@ namespace benofficial2.Plugin
                 TrackLength = value;
             else
                 TrackLength = 0.0;
+
+            // Try to restore previously saved values for this track if current public properties are unset
+            _trackData = _trackDataPersistence.GetData(data.NewData.TrackId);
+            PitEntryTrackPct = _trackData.PitEntryTrackPct;
+            PitExitTrackPct = _trackData.PitExitTrackPct;
         }
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
         {
+            // Wait for any pending save to complete to avoid losing data on shutdown
+            _trackDataPersistence?.WaitForPendingSave();
         }
 
         public void SetMeasuredPitExitTrackPct(float value)
         {
-            if (value < 0.0f || value > 1.0f)
+            if (value < 0.0f || value > 1.0f || _trackData.PitExitTrackPct >= 0.0f)
                 return;
 
-            _measuredPitExitTrackPct = value;
+            _trackData.PitExitTrackPct = value;
 
             if (PitExitTrackPct < 0.0f)
-                PitExitTrackPct = _measuredPitExitTrackPct;
+                PitExitTrackPct = value;
         }
 
         public void SetMeasuredPitEntryTrackPct(float value)
         {
-            if (value < 0.0f || value > 1.0f)
+            if (value < 0.0f || value > 1.0f || _trackData.PitEntryTrackPct >= 0.0f)
                 return;
 
-            _measuredPitEntryTrackPct = value;
+            _trackData.PitEntryTrackPct = value;
 
             if (PitEntryTrackPct < 0.0f)
-                PitEntryTrackPct = _measuredPitEntryTrackPct;
+                PitEntryTrackPct = value;
         }
     }
 }
