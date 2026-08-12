@@ -83,6 +83,7 @@ namespace benofficial2.Plugin
             }
 
             JToken track = _trackInfo.Json[data.NewData.TrackId];
+            _trackData = _trackDataPersistence.GetData(data.NewData.TrackId);
 
             if (data.NewData.CarId == "superformulasf23 toyota" || data.NewData.CarId == "superformulasf23 honda")
             {
@@ -96,6 +97,9 @@ namespace benofficial2.Plugin
             QualStartTrackPct = track?["qualStartTrackPct"]?.Value<float>() ?? 0.0f;
             RaceStartTrackPct = track?["raceStartTrackPct"]?.Value<float>() ?? 0.0f;
 
+            PitEntryTrackPct = track?["pitEntryTrackPct"]?.Value<float>() ?? _trackData.PitEntryTrackPct;
+            PitExitTrackPct = track?["pitExitTrackPct"]?.Value<float>() ?? _trackData.PitExitTrackPct;
+
             RawDataHelper.TryGetSessionData<string>(ref data, out string trackType, "WeekendInfo", "TrackType");
             TrackType = trackType;
 
@@ -105,11 +109,6 @@ namespace benofficial2.Plugin
                 TrackLength = value;
             else
                 TrackLength = 0.0;
-
-            // Try to restore previously saved values for this track if current public properties are unset
-            _trackData = _trackDataPersistence.GetData(data.NewData.TrackId);
-            PitEntryTrackPct = _trackData.PitEntryTrackPct;
-            PitExitTrackPct = _trackData.PitExitTrackPct;
         }
 
         public override void End(PluginManager pluginManager, benofficial2 plugin)
