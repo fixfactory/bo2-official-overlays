@@ -1,9 +1,7 @@
 {
     "nurburgring nordschleife": {
         "qualStartTrackPct": 0.93,
-        "raceStartTrackPct": 0.93,
-        "pitEntryTrackPct": 0.993,
-        "pitExitTrackPct": 0.006
+        "raceStartTrackPct": 0.93
     },
     "nurburgring combinedshorta": {
         "qualStartTrackPct": 0.93,
@@ -11,9 +9,7 @@
     },
     "nurburgring combined": {
         "qualStartTrackPct": 0.93,
-        "raceStartTrackPct": 0.88,
-        "pitEntryTrackPct": 0.99,
-        "pitExitTrackPct": 0.012
+        "raceStartTrackPct": 0.88
     },
     "nurburgring combinedshortb": {
         "qualStartTrackPct": 0.93,
@@ -25,324 +21,24 @@
     },
     "lemans full": {
         "qualStartTrackPct": 0.94,
-        "raceStartTrackPct": 0.79,
-        "pitEntryTrackPct": 0.962,
-        "pitExitTrackPct": 0.03
+        "raceStartTrackPct": 0.79
     },
     "lemans nochicane": {
         "qualStartTrackPct": 0.94,
-        "raceStartTrackPct": 0.78,
-        "pitEntryTrackPct": 0.962,
-        "pitExitTrackPct": 0.03
+        "raceStartTrackPct": 0.78
     },
     "talladega": {
-        "qualStartTrackPct": 0.0,
+        "qualStartTrackPct": 0.00,
         "raceStartTrackPct": 0.49
     },
     "silverstone 2019 gp": {
-        "qualStartTrackPct": 0.0,
-        "raceStartTrackPct": 0.84,
-        "pitEntryTrackPct": 0.905,
-        "pitExitTrackPct": 0.02
+        "qualStartTrackPct": 0.00,
+        "raceStartTrackPct": 0.84
     },
     "twinring fullrc": {
-        "pushToPassCooldown_SF23": 120,
-        "pitEntryTrackPct": 0.911,
-        "pitExitTrackPct": 0.02
+        "pushToPassCooldown_SF23" : 120
     },
     "fuji gp": {
-        "pushToPassCooldown_SF23": 120
-    },
-    "adelaide": {
-        "pitEntryTrackPct": 0.995,
-        "pitExitTrackPct": 0.001
-    },
-    "algarve gp": {
-        "pitEntryTrackPct": 0.95,
-        "pitExitTrackPct": 0.09
-    },
-    "barcelona gp": {
-        "pitEntryTrackPct": 0.915,
-        "pitExitTrackPct": 0.098
-    },
-    "barcelona historic": {
-        "pitEntryTrackPct": 0.922,
-        "pitExitTrackPct": 0.098
-    },
-    "bathurst": {
-        "pitEntryTrackPct": 0.95,
-        "pitExitTrackPct": 0.072
-    },
-    "brandshatch grandprix": {
-        "pitEntryTrackPct": 0.902,
-        "pitExitTrackPct": 0.025
-    },
-    "charlotte 2018 2019 roval": {
-        "pitEntryTrackPct": 0.91,
-        "pitExitTrackPct": 0.11
-    },
-    "donington gp": {
-        "pitEntryTrackPct": 0.96,
-        "pitExitTrackPct": 0.05
-    },
-    "donington national": {
-        "pitEntryTrackPct": 0.95,
-        "pitExitTrackPct": 0.054
-    },
-    "hockenheim gp": {
-        "pitEntryTrackPct": 0.92,
-        "pitExitTrackPct": 0.068
-    },
-    "imola gp": {
-        "pitEntryTrackPct": 0.908,
-        "pitExitTrackPct": 0.068
-    },
-    "indianapolis 2022 road": {
-        "pitEntryTrackPct": 0.833,
-        "pitExitTrackPct": 0.107
-    },
-    "interlagos gp": {
-        "pitEntryTrackPct": 0.95,
-        "pitExitTrackPct": 0.195
-    },
-    "jerez gp": {
-        "pitEntryTrackPct": 0.884,
-        "pitExitTrackPct": 0.055
-    },
-    "jerez moto": {
-        "pitEntryTrackPct": 0.884,
-        "pitExitTrackPct": 0.055
-    },
-    "lagunaseca school": {
-        "pitEntryTrackPct": 0.87,
-        "pitExitTrackPct": 0.154
-    },
-    "lagunaseca": {
-        "pitEntryTrackPct": 0.87,
-        "pitExitTrackPct": 0.154
-    },
-    "ledenon": {
-        "pitEntryTrackPct": 0.891,
-        "pitExitTrackPct": 0.062
-    },
-    "limerock 2019 classic": {
-        "pitEntryTrackPct": 0.9,
-        "pitExitTrackPct": 0.046
-    },
-    "limerock 2019 gp": {
-        "pitEntryTrackPct": 0.9,
-        "pitExitTrackPct": 0.046
-    },
-    "magnycours gp": {
-        "pitEntryTrackPct": 0.983,
-        "pitExitTrackPct": 0.13
-    },
-    "misano gp": {
-        "pitEntryTrackPct": 0.905,
-        "pitExitTrackPct": 0.117
-    },
-    "montreal": {
-        "pitEntryTrackPct": 0.896,
-        "pitExitTrackPct": 0.073
-    },
-    "monza full": {
-        "pitEntryTrackPct": 0.966,
-        "pitExitTrackPct": 0.061
-    },
-    "mugello gp": {
-        "pitEntryTrackPct": 0.912,
-        "pitExitTrackPct": 0.06
-    },
-    "mugello short": {
-        "pitEntryTrackPct": 0.771,
-        "pitExitTrackPct": 0.212
-    },
-    "navarra speedlong": {
-        "pitEntryTrackPct": 0.802,
-        "pitExitTrackPct": 0.029
-    },
-    "nurburgring gp": {
-        "pitEntryTrackPct": 0.912,
-        "pitExitTrackPct": 0.112
-    },
-    "nurburgring gpnochicane": {
-        "pitEntryTrackPct": 0.91,
-        "pitExitTrackPct": 0.112
-    },
-    "nurburgring gpshort": {
-        "pitEntryTrackPct": 0.901,
-        "pitExitTrackPct": 0.125
-    },
-    "okayama full": {
-        "pitEntryTrackPct": 0.824,
-        "pitExitTrackPct": 0.006
-    },
-    "oran gp": {
-        "pitEntryTrackPct": 0.965,
-        "pitExitTrackPct": 0.138
-    },
-    "oschersleben alt": {
-        "pitEntryTrackPct": 0.895,
-        "pitExitTrackPct": 0.169
-    },
-    "oschersleben bcourse": {
-        "pitEntryTrackPct": 0.841,
-        "pitExitTrackPct": 0.249
-    },
-    "oschersleben ccourse": {
-        "pitEntryTrackPct": 0.721,
-        "pitExitTrackPct": 0.764
-    },
-    "oschersleben gp": {
-        "pitEntryTrackPct": 0.89,
-        "pitExitTrackPct": 0.144
-    },
-    "oulton international": {
-        "pitEntryTrackPct": 0.968,
-        "pitExitTrackPct": 0.081
-    },
-    "oulton inthislop": {
-        "pitEntryTrackPct": 0.971,
-        "pitExitTrackPct": 0.081
-    },
-    "phillipisland": {
-        "pitEntryTrackPct": 0.834,
-        "pitExitTrackPct": 0.024
-    },
-    "roadamerica bend": {
-        "pitEntryTrackPct": 0.926,
-        "pitExitTrackPct": 0.055
-    },
-    "roadamerica full": {
-        "pitEntryTrackPct": 0.925,
-        "pitExitTrackPct": 0.056
-    },
-    "roadatlanta full": {
-        "pitEntryTrackPct": 0.94,
-        "pitExitTrackPct": 0.131
-    },
-    "rudskogen": {
-        "pitEntryTrackPct": 0.907,
-        "pitExitTrackPct": 0.132
-    },
-    "sachsenring": {
-        "pitEntryTrackPct": 0.974,
-        "pitExitTrackPct": 0.147
-    },
-    "sebring club": {
-        "pitEntryTrackPct": 0.981,
-        "pitExitTrackPct": 0.168
-    },
-    "sebring international": {
-        "pitEntryTrackPct": 0.962,
-        "pitExitTrackPct": 0.08
-    },
-    "sebring modified": {
-        "pitEntryTrackPct": 0.921,
-        "pitExitTrackPct": 0.143
-    },
-    "snetterton 300": {
-        "pitEntryTrackPct": 0.94,
-        "pitExitTrackPct": 0.02
-    },
-    "spa 2024 combined": {
-        "pitEntryTrackPct": 0.971,
-        "pitExitTrackPct": 0.212
-    },
-    "spa 2024 low": {
-        "pitEntryTrackPct": 0.966,
-        "pitExitTrackPct": 0.212
-    },
-    "spa 2024 up": {
-        "pitEntryTrackPct": 0.971,
-        "pitExitTrackPct": 0.065
-    },
-    "spa combined": {
-        "pitEntryTrackPct": 0.971,
-        "pitExitTrackPct": 0.212
-    },
-    "spa low": {
-        "pitEntryTrackPct": 0.966,
-        "pitExitTrackPct": 0.212
-    },
-    "spa up": {
-        "pitEntryTrackPct": 0.971,
-        "pitExitTrackPct": 0.065
-    },
-    "spielberg gp": {
-        "pitEntryTrackPct": 0.89,
-        "pitExitTrackPct": 0.112
-    },
-    "spielberg national": {
-        "pitEntryTrackPct": 0.802,
-        "pitExitTrackPct": 0.244
-    },
-    "speilberg north": {
-        "pitEntryTrackPct": 0.77,
-        "pitExitTrackPct": 0.921
-    },
-    "summit summit raceway": {
-        "pitEntryTrackPct": 0.96,
-        "pitExitTrackPct": 0.02
-    },
-    "suzuka grandprix": {
-        "pitEntryTrackPct": 0.962,
-        "pitExitTrackPct": 0.07
-    },
-    "twinring east": {
-        "pitEntryTrackPct": 0.871,
-        "pitExitTrackPct": 0.029
-    },
-    "twinring oval": {
-        "pitEntryTrackPct": 0.852,
-        "pitExitTrackPct": 0.44
-    },
-    "twinring west": {
-        "pitEntryTrackPct": 0.771,
-        "pitExitTrackPct": 0.079
-    },
-    "virginia 2022 full": {
-        "pitEntryTrackPct": 0.9,
-        "pitExitTrackPct": 0.015
-    },
-    "virginia 2022 grand": {
-        "pitEntryTrackPct": 0.922,
-        "pitExitTrackPct": 0.013
-    },
-    "virginia 2022 north": {
-        "pitEntryTrackPct": 0.859,
-        "pitExitTrackPct": 0.022
-    },
-    "virginia 2022 patriot": {
-        "pitEntryTrackPct": 0.986,
-        "pitExitTrackPct": 0.095
-    },
-    "virginia 2022 south": {
-        "pitEntryTrackPct": 0.948,
-        "pitExitTrackPct": 0.058
-    },
-    "watkinsglen 2021 cupcircuit": {
-        "pitEntryTrackPct": 0.928,
-        "pitExitTrackPct": 0.107
-    },
-    "watkinsglen 2021 fullcourse": {
-        "pitEntryTrackPct": 0.947,
-        "pitExitTrackPct": 0.078
-    },
-    "winton national": {
-        "pitEntryTrackPct": 0.868,
-        "pitExitTrackPct": 0.038
-    },
-    "zandvoort 2023 gp": {
-        "pitEntryTrackPct": 0.965,
-        "pitExitTrackPct": 0.095
-    },
-    "zolder alt": {
-        "pitEntryTrackPct": 0.897,
-        "pitExitTrackPct": 0.147
-    },
-    "zolder gp": {
-        "pitEntryTrackPct": 0.906,
-        "pitExitTrackPct": 0.124
+        "pushToPassCooldown_SF23" : 120
     }
 }
