@@ -28,17 +28,21 @@
         "raceStartTrackPct": 0.78
     },
     "talladega": {
-        "qualStartTrackPct": 0.00,
+        "qualStartTrackPct": 0.0,
         "raceStartTrackPct": 0.49
     },
     "silverstone 2019 gp": {
-        "qualStartTrackPct": 0.00,
+        "qualStartTrackPct": 0.0,
         "raceStartTrackPct": 0.84
     },
     "twinring fullrc": {
-        "pushToPassCooldown_SF23" : 120
+        "pushToPassCooldown_SF23": 120
     },
     "fuji gp": {
-        "pushToPassCooldown_SF23" : 120
+        "pushToPassCooldown_SF23": 120
+    },
+    "tsukuba 2kfull": {
+        "pitlaneEntryTrackPct": 0.9533785,
+        "pitlaneExitTrackPct": 0.0609911345
     }
 }
