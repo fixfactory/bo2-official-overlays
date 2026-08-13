@@ -1025,12 +1025,12 @@ namespace benofficial2.Plugin
 
             if (driver.InPit && !driver.LastInPit)
             {
-                _trackModule.SetMeasuredPitEntryTrackPct((float)driver.TrackPositionPercent);
+                _trackModule.SetMeasuredPitlaneEntryTrackPct((float)driver.TrackPositionPercent);
             }
 
             if (!driver.InPit && driver.LastInPit)
             {
-                _trackModule.SetMeasuredPitExitTrackPct((float)driver.TrackPositionPercent);
+                _trackModule.SetMeasuredPitlaneExitTrackPct((float)driver.TrackPositionPercent);
             }
 
             if (driver.IsPlayer && driver.AproachingPits && !driver.LastAproachingPits)

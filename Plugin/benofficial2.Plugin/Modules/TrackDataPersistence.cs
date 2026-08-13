@@ -161,6 +161,8 @@ namespace benofficial2.Plugin
 
     public class PersistentTrackData
     {
+        public float PitlaneEntryTrackPct { get; set; } = -1.0f;
+        public float PitlaneExitTrackPct { get; set; } = -1.0f;
         public float PitEntryTrackPct { get; set; } = -1.0f;
         public float PitExitTrackPct { get; set; } = -1.0f;
     }

@@ -35,8 +35,11 @@ namespace benofficial2.Plugin
         // Persistence
         private TrackDataPersistence _trackDataPersistence = new TrackDataPersistence();
         private PersistentTrackData _trackData = new PersistentTrackData();
+        private bool _trackDataChanged = false;
 
         public int PushToPassCooldown { get; set; } = 0;
+        public float PitlaneExitTrackPct { get; set; } = -1.0f;
+        public float PitlaneEntryTrackPct { get; set; } = -1.0f;
         public float PitExitTrackPct { get; set; } = -1.0f;
         public float PitEntryTrackPct { get; set; } = -1.0f;
         public float QualStartTrackPct { get; set; } = 0.0f;
@@ -50,6 +53,8 @@ namespace benofficial2.Plugin
             _trackInfo.LoadAsync();
             _ = _trackDataPersistence.LoadAsync();
 
+            plugin.AttachDelegate(name: "Track.PitlaneExitTrackPct", valueProvider: () => PitlaneExitTrackPct);
+            plugin.AttachDelegate(name: "Track.PitlaneEntryTrackPct", valueProvider: () => PitlaneEntryTrackPct);
             plugin.AttachDelegate(name: "Track.PitExitTrackPct", valueProvider: () => PitExitTrackPct);
             plugin.AttachDelegate(name: "Track.PitEntryTrackPct", valueProvider: () => PitEntryTrackPct);
             plugin.AttachDelegate(name: "Track.QualStartTrackPct", valueProvider: () => QualStartTrackPct);
@@ -61,11 +66,14 @@ namespace benofficial2.Plugin
             if (_trackInfo.Json == null || !_trackDataPersistence.IsLoaded()) 
                 return;
 
+            if (_trackDataChanged && !string.IsNullOrEmpty(_lastTrackId))
+            {
+                _ = _trackDataPersistence.SaveAsync(_lastTrackId, _trackData);
+                _trackDataChanged = false;
+            }
+
             if (data.NewData.TrackId == _lastTrackId) 
                 return;
-
-            if (!string.IsNullOrEmpty(_lastTrackId))
-                _ = _trackDataPersistence.SaveAsync(_lastTrackId, _trackData);
 
             _lastTrackId = data.NewData.TrackId;
 
@@ -97,6 +105,8 @@ namespace benofficial2.Plugin
             QualStartTrackPct = track?["qualStartTrackPct"]?.Value<float>() ?? 0.0f;
             RaceStartTrackPct = track?["raceStartTrackPct"]?.Value<float>() ?? 0.0f;
 
+            PitlaneEntryTrackPct = track?["pitlaneEntryTrackPct"]?.Value<float>() ?? _trackData.PitlaneEntryTrackPct;
+            PitlaneExitTrackPct = track?["pitlaneExitTrackPct"]?.Value<float>() ?? _trackData.PitlaneExitTrackPct;
             PitEntryTrackPct = track?["pitEntryTrackPct"]?.Value<float>() ?? _trackData.PitEntryTrackPct;
             PitExitTrackPct = track?["pitExitTrackPct"]?.Value<float>() ?? _trackData.PitExitTrackPct;
 
@@ -117,26 +127,28 @@ namespace benofficial2.Plugin
             _trackDataPersistence?.WaitForPendingSave();
         }
 
-        public void SetMeasuredPitExitTrackPct(float value)
+        public void SetMeasuredPitlaneExitTrackPct(float value)
         {
-            if (value < 0.0f || value > 1.0f || _trackData.PitExitTrackPct >= 0.0f)
+            if (value < 0.0f || value > 1.0f || _trackData.PitlaneExitTrackPct >= 0.0f)
                 return;
 
-            _trackData.PitExitTrackPct = value;
+            _trackData.PitlaneExitTrackPct = value;
+            _trackDataChanged = true;
 
-            if (PitExitTrackPct < 0.0f)
-                PitExitTrackPct = value;
+            if (PitlaneExitTrackPct < 0.0f)
+                PitlaneExitTrackPct = value;
         }
 
-        public void SetMeasuredPitEntryTrackPct(float value)
+        public void SetMeasuredPitlaneEntryTrackPct(float value)
         {
-            if (value < 0.0f || value > 1.0f || _trackData.PitEntryTrackPct >= 0.0f)
-                return;
+            if (value < 0.0f || value > 1.0f || _trackData.PitlaneEntryTrackPct >= 0.0f)
+                return; 
 
-            _trackData.PitEntryTrackPct = value;
+            _trackData.PitlaneEntryTrackPct = value;
+            _trackDataChanged = true;
 
-            if (PitEntryTrackPct < 0.0f)
-                PitEntryTrackPct = value;
+            if (PitlaneEntryTrackPct < 0.0f)
+                PitlaneEntryTrackPct = value;
         }
     }
 }
