@@ -40,8 +40,6 @@ namespace benofficial2.Plugin
         public int PushToPassCooldown { get; set; } = 0;
         public float PitlaneExitTrackPct { get; set; } = -1.0f;
         public float PitlaneEntryTrackPct { get; set; } = -1.0f;
-        public float PitExitTrackPct { get; set; } = -1.0f;
-        public float PitEntryTrackPct { get; set; } = -1.0f;
         public float QualStartTrackPct { get; set; } = 0.0f;
         public float RaceStartTrackPct { get; set; } = 0.0f;
         public string TrackType { get; set; } = string.Empty;
@@ -55,8 +53,6 @@ namespace benofficial2.Plugin
 
             plugin.AttachDelegate(name: "Track.PitlaneExitTrackPct", valueProvider: () => PitlaneExitTrackPct);
             plugin.AttachDelegate(name: "Track.PitlaneEntryTrackPct", valueProvider: () => PitlaneEntryTrackPct);
-            plugin.AttachDelegate(name: "Track.PitExitTrackPct", valueProvider: () => PitExitTrackPct);
-            plugin.AttachDelegate(name: "Track.PitEntryTrackPct", valueProvider: () => PitEntryTrackPct);
             plugin.AttachDelegate(name: "Track.QualStartTrackPct", valueProvider: () => QualStartTrackPct);
             plugin.AttachDelegate(name: "Track.RaceStartTrackPct", valueProvider: () => RaceStartTrackPct);            
         }
@@ -81,8 +77,8 @@ namespace benofficial2.Plugin
             {
                 _trackData = new PersistentTrackData();
                 PushToPassCooldown = 0;
-                PitEntryTrackPct = -1.0f;
-                PitExitTrackPct = -1.0f;
+                PitlaneEntryTrackPct = -1.0f;
+                PitlaneExitTrackPct = -1.0f;
                 QualStartTrackPct = 0.0f;
                 RaceStartTrackPct = 0.0f;
                 TrackType = string.Empty;
@@ -107,8 +103,6 @@ namespace benofficial2.Plugin
 
             PitlaneEntryTrackPct = track?["pitlaneEntryTrackPct"]?.Value<float>() ?? _trackData.PitlaneEntryTrackPct;
             PitlaneExitTrackPct = track?["pitlaneExitTrackPct"]?.Value<float>() ?? _trackData.PitlaneExitTrackPct;
-            PitEntryTrackPct = track?["pitEntryTrackPct"]?.Value<float>() ?? _trackData.PitEntryTrackPct;
-            PitExitTrackPct = track?["pitExitTrackPct"]?.Value<float>() ?? _trackData.PitExitTrackPct;
 
             RawDataHelper.TryGetSessionData<string>(ref data, out string trackType, "WeekendInfo", "TrackType");
             TrackType = trackType;
