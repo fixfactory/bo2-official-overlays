@@ -1428,263 +1428,270 @@
       "seq": 205
     },
     {
+      "flair_id": 243,
+      "flair_name": "Syria",
+      "flair_shortname": "SYR",
+      "country_code": "SY",
+      "seq": 206
+    },
+    {
       "flair_id": 200,
       "flair_name": "Suriname",
       "flair_shortname": "SUR",
       "country_code": "SR",
-      "seq": 206
+      "seq": 207
     },
     {
       "flair_id": 201,
       "flair_name": "Svalbard",
       "flair_shortname": "SJM",
       "country_code": "SJ",
-      "seq": 207
+      "seq": 208
     },
     {
       "flair_id": 203,
       "flair_name": "Sweden",
       "flair_shortname": "SWE",
       "country_code": "SE",
-      "seq": 208
+      "seq": 209
     },
     {
       "flair_id": 204,
       "flair_name": "Switzerland",
       "flair_shortname": "CHE",
       "country_code": "CH",
-      "seq": 209
+      "seq": 210
     },
     {
       "flair_id": 205,
       "flair_name": "Taiwan",
       "flair_shortname": "TWN",
       "country_code": "TW",
-      "seq": 210
+      "seq": 211
     },
     {
       "flair_id": 206,
       "flair_name": "Tajikistan",
       "flair_shortname": "TJK",
       "country_code": "TJ",
-      "seq": 211
+      "seq": 212
     },
     {
       "flair_id": 207,
       "flair_name": "Tanzania",
       "flair_shortname": "TZA",
       "country_code": "TZ",
-      "seq": 212
+      "seq": 213
     },
     {
       "flair_id": 208,
       "flair_name": "Thailand",
       "flair_shortname": "THA",
       "country_code": "TH",
-      "seq": 213
+      "seq": 214
     },
     {
       "flair_id": 209,
       "flair_name": "Timor-Leste",
       "flair_shortname": "TLS",
       "country_code": "TL",
-      "seq": 214
+      "seq": 215
     },
     {
       "flair_id": 210,
       "flair_name": "Togo",
       "flair_shortname": "TGO",
       "country_code": "TG",
-      "seq": 215
+      "seq": 216
     },
     {
       "flair_id": 211,
       "flair_name": "Tokelau",
       "flair_shortname": "TKL",
       "country_code": "TK",
-      "seq": 216
+      "seq": 217
     },
     {
       "flair_id": 212,
       "flair_name": "Tonga",
       "flair_shortname": "TON",
       "country_code": "TO",
-      "seq": 217
+      "seq": 218
     },
     {
       "flair_id": 213,
       "flair_name": "Trinidad and Tobago",
       "flair_shortname": "TTO",
       "country_code": "TT",
-      "seq": 218
+      "seq": 219
     },
     {
       "flair_id": 214,
       "flair_name": "Tunisia",
       "flair_shortname": "TUN",
       "country_code": "TN",
-      "seq": 219
+      "seq": 220
     },
     {
       "flair_id": 216,
       "flair_name": "Turkmenistan",
       "flair_shortname": "TKM",
       "country_code": "TM",
-      "seq": 220
+      "seq": 221
     },
     {
       "flair_id": 217,
       "flair_name": "Turks and Caicos Islands",
       "flair_shortname": "TCA",
       "country_code": "TC",
-      "seq": 221
+      "seq": 222
     },
     {
       "flair_id": 218,
       "flair_name": "Tuvalu",
       "flair_shortname": "TUV",
       "country_code": "TV",
-      "seq": 222
+      "seq": 223
     },
     {
       "flair_id": 215,
       "flair_name": "T\u00fcrkiye",
       "flair_shortname": "TUR",
       "country_code": "TR",
-      "seq": 223
+      "seq": 224
     },
     {
       "flair_id": 219,
       "flair_name": "Uganda",
       "flair_shortname": "UGA",
       "country_code": "UG",
-      "seq": 224
+      "seq": 225
     },
     {
       "flair_id": 220,
       "flair_name": "Ukraine",
       "flair_shortname": "UKR",
       "country_code": "UA",
-      "seq": 225
+      "seq": 226
     },
     {
       "flair_id": 221,
       "flair_name": "United Arab Emirates",
       "flair_shortname": "ARE",
       "country_code": "AE",
-      "seq": 226
+      "seq": 227
     },
     {
       "flair_id": 222,
       "flair_name": "United Kingdom",
       "flair_shortname": "GBR",
       "country_code": "GB",
-      "seq": 227
+      "seq": 228
     },
     {
       "flair_id": 223,
       "flair_name": "United States",
       "flair_shortname": "USA",
       "country_code": "US",
-      "seq": 228
+      "seq": 229
     },
     {
       "flair_id": 224,
       "flair_name": "Uruguay",
       "flair_shortname": "URY",
       "country_code": "UY",
-      "seq": 229
+      "seq": 230
     },
     {
       "flair_id": 225,
       "flair_name": "Uzbekistan",
       "flair_shortname": "UZB",
       "country_code": "UZ",
-      "seq": 230
+      "seq": 231
     },
     {
       "flair_id": 226,
       "flair_name": "Vanuatu",
       "flair_shortname": "VUT",
       "country_code": "VU",
-      "seq": 231
+      "seq": 232
     },
     {
       "flair_id": 227,
       "flair_name": "Vatican City",
       "flair_shortname": "VAT",
       "country_code": "VA",
-      "seq": 232
+      "seq": 233
     },
     {
       "flair_id": 228,
       "flair_name": "Venezuela",
       "flair_shortname": "VEN",
       "country_code": "VE",
-      "seq": 233
+      "seq": 234
     },
     {
       "flair_id": 229,
       "flair_name": "Vietnam",
       "flair_shortname": "VNM",
       "country_code": "VN",
-      "seq": 234
+      "seq": 235
     },
     {
       "flair_id": 230,
       "flair_name": "Virgin Islands",
       "flair_shortname": "VIR",
       "country_code": "VI",
-      "seq": 235
+      "seq": 236
     },
     {
       "flair_id": 238,
       "flair_name": "Wales",
       "flair_shortname": "WLS",
       "country_code": "WLS",
-      "seq": 236
+      "seq": 237
     },
     {
       "flair_id": 231,
       "flair_name": "Wallis and Futuna",
       "flair_shortname": "WLF",
       "country_code": "WF",
-      "seq": 237
+      "seq": 238
     },
     {
       "flair_id": 232,
       "flair_name": "Western Sahara",
       "flair_shortname": "ESH",
       "country_code": "EH",
-      "seq": 238
+      "seq": 239
     },
     {
       "flair_id": 233,
       "flair_name": "Yemen",
       "flair_shortname": "YEM",
       "country_code": "YE",
-      "seq": 239
+      "seq": 240
     },
     {
       "flair_id": 234,
       "flair_name": "Zambia",
       "flair_shortname": "ZMB",
       "country_code": "ZM",
-      "seq": 240
+      "seq": 241
     },
     {
       "flair_id": 235,
       "flair_name": "Zimbabwe",
       "flair_shortname": "ZWE",
       "country_code": "ZW",
-      "seq": 241
+      "seq": 242
     },
     {
       "flair_id": 4,
       "flair_name": "\u00c5land Islands",
       "flair_shortname": "ALA",
       "country_code": "AX",
-      "seq": 242
+      "seq": 243
     }
   ]
 }
