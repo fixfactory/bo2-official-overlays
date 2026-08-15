@@ -92,8 +92,8 @@ namespace benofficial2.Plugin
 
                 if (_trackModule.PitlaneEntryTrackPct >= 0.0f && ApproachingPitsFromTrackPct >= 0.0f)
                 {
-                    DistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, (_trackModule.PitlaneEntryTrackPct - lapDistPct) * (float)_trackModule.TrackLength));
-                    MaxDistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, (_trackModule.PitlaneEntryTrackPct - ApproachingPitsFromTrackPct) * (float)_trackModule.TrackLength));
+                    DistanceToTarget = Math.Abs(GetTrackDistanceToTarget(lapDistPct, _trackModule.PitlaneEntryTrackPct)) * (float)_trackModule.TrackLength;
+                    MaxDistanceToTarget = Math.Abs(GetTrackDistanceToTarget(ApproachingPitsFromTrackPct, _trackModule.PitlaneEntryTrackPct)) * (float)_trackModule.TrackLength;
                 }
                 else
                 {
@@ -106,17 +106,18 @@ namespace benofficial2.Plugin
 
             if (_driverModule.PlayerDriver.InPit)
             {
-                float distanceToPitBoxTrackPct = (float)RelativeModule.GetRelativeTrackDistance(lapDistPct, driverPitTrkPct);
+                float distanceToPitBoxTrackPct = driverPitTrkPct >= 0.0f ? GetTrackDistanceToTarget(lapDistPct, driverPitTrkPct) : -1.0f;
+                float distanceToPitExitTrackPct = _trackModule.PitlaneExitTrackPct >= 0.0f ? GetTrackDistanceToTarget(lapDistPct, _trackModule.PitlaneExitTrackPct) : -1.0f;
 
-                if (distanceToPitBoxTrackPct < 0.0f)
+                if (distanceToPitBoxTrackPct >= 0.0f && (distanceToPitExitTrackPct < 0.0f || distanceToPitBoxTrackPct < distanceToPitExitTrackPct))
                 {
                     Target = "PitBox";
 
-                    if (_trackModule.PitlaneEntryTrackPct >= 0.0f && driverPitTrkPct >= 0.0f)
+                    if (_trackModule.PitlaneEntryTrackPct >= 0.0f)
                     {
                         DistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, Math.Abs(distanceToPitBoxTrackPct) * (float)_trackModule.TrackLength));
 
-                        float maxDistanceToPitBoxTrackPct = (float)RelativeModule.GetRelativeTrackDistance(_trackModule.PitlaneEntryTrackPct, driverPitTrkPct);
+                        float maxDistanceToPitBoxTrackPct = GetTrackDistanceToTarget(_trackModule.PitlaneEntryTrackPct, driverPitTrkPct);
                         MaxDistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, Math.Abs(maxDistanceToPitBoxTrackPct) * (float)_trackModule.TrackLength));
                     }
                     else
@@ -129,13 +130,24 @@ namespace benofficial2.Plugin
                 {
                     Target = "PitExit";
 
-                    if (_trackModule.PitlaneExitTrackPct >= 0.0f && driverPitTrkPct >= 0.0f)
+                    if (distanceToPitExitTrackPct >= 0.0f)
                     {
-                        float distanceToPitExitTrackPct = (float)RelativeModule.GetRelativeTrackDistance(lapDistPct, _trackModule.PitlaneExitTrackPct);
                         DistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, Math.Abs(distanceToPitExitTrackPct) * (float)_trackModule.TrackLength));
 
-                        float maxDistanceToPitBoxTrackPct = (float)RelativeModule.GetRelativeTrackDistance(driverPitTrkPct, _trackModule.PitlaneExitTrackPct);
-                        MaxDistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, Math.Abs(maxDistanceToPitBoxTrackPct) * (float)_trackModule.TrackLength));
+                        if (driverPitTrkPct >= 0.0f)
+                        {
+                            float maxDistanceToPitExitTrackPct = GetTrackDistanceToTarget(driverPitTrkPct, _trackModule.PitlaneExitTrackPct);
+                            MaxDistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, Math.Abs(maxDistanceToPitExitTrackPct) * (float)_trackModule.TrackLength));
+                        }
+                        else if (_trackModule.PitlaneEntryTrackPct >= 0.0f)
+                        {
+                            float maxDistanceToPitExitTrackPct = GetTrackDistanceToTarget(_trackModule.PitlaneEntryTrackPct, _trackModule.PitlaneExitTrackPct);
+                            MaxDistanceToTarget = Math.Min(1.0f, Math.Max(0.0f, Math.Abs(maxDistanceToPitExitTrackPct) * (float)_trackModule.TrackLength));
+                        }
+                        else
+                        {
+                            MaxDistanceToTarget = 0.0f;
+                        }
                     }
                     else
                     {
@@ -148,6 +160,15 @@ namespace benofficial2.Plugin
             }
 
             Target = string.Empty;
+        }
+
+        public static float GetTrackDistanceToTarget(float trackPct, float targetTrackPct)
+        {
+            float distance = targetTrackPct - trackPct;
+            if (distance < 0)
+                distance += 1.0f;
+
+            return distance;
         }
     }
 }
