@@ -15,7 +15,7 @@ Name "${PRODUCT_NAME}"
 !define PRODUCT_PUBLISHER "benofficial2"
 !define PRODUCT_WEB_SITE "https://twitch.tv/benofficial2"
 !define PRODUCT_DIR_REGKEY "Software\bo2-official-overlays"
-!define SIMHUB_VERSION "9.11.17"
+!define SIMHUB_VERSION "9.11.22"
 
 ; Include Modern User Interface
 !include "MUI2.nsh"
@@ -201,6 +201,11 @@ Section "ABS" SEC_FOLDER23
   File /r "..\Overlays\benofficial2 - iRacing ABS\*.*"
 SectionEnd
 
+Section "Pitlane Helper" SEC_FOLDER24
+  SetOutPath "$INSTDIR\DashTemplates\benofficial2 - iRacing Pitlane Helper"
+  File /r "..\Overlays\benofficial2 - iRacing Pitlane Helper\*.*"
+SectionEnd
+
 Section "Plugin" SEC_PLUGIN
   SectionIn RO
   WriteUninstaller "$INSTDIR\bo2-official-overlays-uninstall.exe"
@@ -251,6 +256,7 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER21} "Install iRacing Track Rubber overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER22} "Install iRacing Track Time overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER23} "Install ABS overlay"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FOLDER24} "Install iRacing Pitlane Helper overlay"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PLUGIN} "Install necessary files such as the plugin, license and uninstaller"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
@@ -279,6 +285,7 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Rubber"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Track Time"
   RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing ABS"
+  RMDir /r "$INSTDIR\DashTemplates\benofficial2 - iRacing Pitlane Helper"
   RMDir /r "$INSTDIR\ImageLibrary\benofficial2"
       
   ; Remove the uninstaller itself
