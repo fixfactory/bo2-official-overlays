@@ -1,15 +1,21 @@
 {
     "nurburgring nordschleife": {
         "qualStartTrackPct": 0.93,
-        "raceStartTrackPct": 0.93
+        "raceStartTrackPct": 0.93,
+        "pitlaneEntryTrackPct": 0.9998203,
+        "pitlaneExitTrackPct": 0.00640208973
     },
     "nurburgring combinedshorta": {
         "qualStartTrackPct": 0.93,
-        "raceStartTrackPct": 0.87
+        "raceStartTrackPct": 0.87,
+        "pitlaneEntryTrackPct": 0.9973964,
+        "pitlaneExitTrackPct": 0.01331289
     },
     "nurburgring combined": {
         "qualStartTrackPct": 0.93,
-        "raceStartTrackPct": 0.88
+        "raceStartTrackPct": 0.88,
+        "pitlaneEntryTrackPct": 0.997609854,
+        "pitlaneExitTrackPct": 0.0125336889
     },
     "nurburgring combinedshortb": {
         "qualStartTrackPct": 0.93,
@@ -21,7 +27,9 @@
     },
     "lemans full": {
         "qualStartTrackPct": 0.94,
-        "raceStartTrackPct": 0.79
+        "raceStartTrackPct": 0.79,
+        "pitlaneEntryTrackPct": 0.9898059,
+        "pitlaneExitTrackPct": 0.0272719525
     },
     "lemans nochicane": {
         "qualStartTrackPct": 0.94,
@@ -29,20 +37,516 @@
     },
     "talladega": {
         "qualStartTrackPct": 0.0,
-        "raceStartTrackPct": 0.49
+        "raceStartTrackPct": 0.49,
+        "pitlaneEntryTrackPct": 0.8612808,
+        "pitlaneExitTrackPct": 0.977792144
     },
     "silverstone 2019 gp": {
         "qualStartTrackPct": 0.0,
-        "raceStartTrackPct": 0.84
+        "raceStartTrackPct": 0.84,
+        "pitlaneEntryTrackPct": 0.942266166,
+        "pitlaneExitTrackPct": 0.06560231
     },
     "twinring fullrc": {
-        "pushToPassCooldown_SF23": 120
+        "pushToPassCooldown_SF23": 120,
+        "pitlaneEntryTrackPct": 0.938526332,
+        "pitlaneExitTrackPct": 0.004468982
     },
     "fuji gp": {
-        "pushToPassCooldown_SF23": 120
+        "pushToPassCooldown_SF23": 120,
+        "pitlaneEntryTrackPct": 0.9922439,
+        "pitlaneExitTrackPct": 0.100533195
     },
     "tsukuba 2kfull": {
         "pitlaneEntryTrackPct": 0.9533785,
         "pitlaneExitTrackPct": 0.0609911345
+    },
+    "tsukuba 2kchicane": {
+        "pitlaneEntryTrackPct": 0.954283237,
+        "pitlaneExitTrackPct": 0.06064024
+    },
+    "tsukuba 2kshort": {
+        "pitlaneEntryTrackPct": 0.9357255,
+        "pitlaneExitTrackPct": 0.08432967
+    },
+    "algarve gp": {
+        "pitlaneEntryTrackPct": 0.985324442,
+        "pitlaneExitTrackPct": 0.08824422
+    },
+    "algarve gpchicane": {
+        "pitlaneEntryTrackPct": 0.9856041,
+        "pitlaneExitTrackPct": 0.088223584
+    },
+    "california oval": {
+        "pitlaneEntryTrackPct": 0.90320003,
+        "pitlaneExitTrackPct": 0.118309721
+    },
+    "mexicocity gp": {
+        "pitlaneEntryTrackPct": 0.9853172,
+        "pitlaneExitTrackPct": 0.07507634
+    },
+    "mugello gp": {
+        "pitlaneEntryTrackPct": 0.9447848,
+        "pitlaneExitTrackPct": 0.0191560183
+    },
+    "imola gp": {
+        "pitlaneEntryTrackPct": 0.932830334,
+        "pitlaneExitTrackPct": 0.0465744771
+    },
+    "interlagos gp": {
+        "pitlaneEntryTrackPct": 0.0006092778,
+        "pitlaneExitTrackPct": 0.0697668344
+    },
+    "monza full": {
+        "pitlaneEntryTrackPct": 0.9824898,
+        "pitlaneExitTrackPct": 0.05779996
+    },
+    "barber 2026": {
+        "pitlaneEntryTrackPct": 0.9302073,
+        "pitlaneExitTrackPct": 0.037371017
+    },
+    "brandshatch grandprix": {
+        "pitlaneEntryTrackPct": 0.9353738,
+        "pitlaneExitTrackPct": 0.00618092343
+    },
+    "bristol fullpit": {
+        "pitlaneEntryTrackPct": 0.372947067,
+        "pitlaneExitTrackPct": 0.1257595
+    },
+    "mosport": {
+        "pitlaneEntryTrackPct": 0.9726581,
+        "pitlaneExitTrackPct": 0.0414630435
+    },
+    "charlotte 2025 oval": {
+        "pitlaneEntryTrackPct": 0.89145714,
+        "pitlaneExitTrackPct": 0.08179335
+    },
+    "charlotte 2025 roval2025": {
+        "pitlaneEntryTrackPct": 0.928976655,
+        "pitlaneExitTrackPct": 0.0676634
+    },
+    "charlotte 2025 roval2019": {
+        "pitlaneEntryTrackPct": 0.9291438,
+        "pitlaneExitTrackPct": 0.06810639
+    },
+    "chicagoland": {
+        "pitlaneEntryTrackPct": 0.8937261,
+        "pitlaneExitTrackPct": 0.113715306
+    },
+    "barcelona gp": {
+        "pitlaneEntryTrackPct": 0.9898614,
+        "pitlaneExitTrackPct": 0.07008491
+    },
+    "barcelona historic": {
+        "pitlaneEntryTrackPct": 0.9901015,
+        "pitlaneExitTrackPct": 0.06856059
+    },
+    "ledenon": {
+        "pitlaneEntryTrackPct": 0.9123176,
+        "pitlaneExitTrackPct": 0.0410824865
+    },
+    "magnycours gp": {
+        "pitlaneEntryTrackPct": 0.990451932,
+        "pitlaneExitTrackPct": 0.048313804
+    },
+    "spa 2024 up": {
+        "pitlaneEntryTrackPct": 0.9879796,
+        "pitlaneExitTrackPct": 0.0408632755
+    },
+    "spa 2024 low": {
+        "pitlaneEntryTrackPct": 0.9748637,
+        "pitlaneExitTrackPct": 0.0267428756
+    },
+    "montreal": {
+        "pitlaneEntryTrackPct": 0.925650835,
+        "pitlaneExitTrackPct": 0.0349887423
+    },
+    "cota gp": {
+        "pitlaneEntryTrackPct": 0.9958976,
+        "pitlaneExitTrackPct": 0.0723837
+    },
+    "zandvoort 2023 gp": {
+        "pitlaneEntryTrackPct": 0.9937133,
+        "pitlaneExitTrackPct": 0.04959088
+    },
+    "zolder gp": {
+        "pitlaneEntryTrackPct": 0.949884355,
+        "pitlaneExitTrackPct": 0.07039671
+    },
+    "jerez gp": {
+        "pitlaneEntryTrackPct": 0.9277974,
+        "pitlaneExitTrackPct": 0.0103887534
+    },
+    "jerez moto": {
+        "pitlaneEntryTrackPct": 0.9279785,
+        "pitlaneExitTrackPct": 0.0103979725
+    },
+    "navarra speedlong": {
+        "pitlaneEntryTrackPct": 0.919694841,
+        "pitlaneExitTrackPct": 0.00682204
+    },
+    "daytona 2011 road": {
+        "pitlaneEntryTrackPct": 0.958737135,
+        "pitlaneExitTrackPct": 0.09875201
+    },
+    "belleisle": {
+        "pitlaneEntryTrackPct": 0.948913038,
+        "pitlaneExitTrackPct": 0.048746217
+    },
+    "donington gp": {
+        "pitlaneEntryTrackPct": 0.9782325,
+        "pitlaneExitTrackPct": 0.04309675
+    },
+    "donington national": {
+        "pitlaneEntryTrackPct": 0.972825348,
+        "pitlaneExitTrackPct": 0.05427303
+    },
+    "fuji nochicane": {
+        "pitlaneEntryTrackPct": 0.9919632,
+        "pitlaneExitTrackPct": 0.100837417
+    },
+    "hockenheim gp": {
+        "pitlaneEntryTrackPct": 0.9876524,
+        "pitlaneExitTrackPct": 0.057309512
+    },
+    "hungaroring": {
+        "pitlaneEntryTrackPct": 0.990945,
+        "pitlaneExitTrackPct": 0.0750979856
+    },
+    "indianapolis 2022 road": {
+        "pitlaneEntryTrackPct": 0.922093868,
+        "pitlaneExitTrackPct": 0.121880814
+    },
+    "knockhill international": {
+        "pitlaneEntryTrackPct": 0.0161907375,
+        "pitlaneExitTrackPct": 0.0914258
+    },
+    "limerock 2019 gp": {
+        "pitlaneEntryTrackPct": 0.9250706,
+        "pitlaneExitTrackPct": 0.03764826
+    },
+    "limerock 2019 classic": {
+        "pitlaneEntryTrackPct": 0.9255031,
+        "pitlaneExitTrackPct": 0.0378428362
+    },
+    "longbeach": {
+        "pitlaneEntryTrackPct": 0.941343248,
+        "pitlaneExitTrackPct": 0.124389276
+    },
+    "miami gp": {
+        "pitlaneEntryTrackPct": 0.98846817,
+        "pitlaneExitTrackPct": 0.04794352
+    },
+    "midohio full": {
+        "pitlaneEntryTrackPct": 0.963321269,
+        "pitlaneExitTrackPct": 0.0577805676
+    },
+    "misano gp": {
+        "pitlaneEntryTrackPct": 0.949558139,
+        "pitlaneExitTrackPct": 0.0737014562
+    },
+    "aragon gp": {
+        "pitlaneEntryTrackPct": 0.998135149,
+        "pitlaneExitTrackPct": 0.07044042
+    },
+    "oschersleben gp": {
+        "pitlaneEntryTrackPct": 0.9833543,
+        "pitlaneExitTrackPct": 0.07397533
+    },
+    "bathurst": {
+        "pitlaneEntryTrackPct": 0.00126353709,
+        "pitlaneExitTrackPct": 0.0504003577
+    },
+    "nurburgring gp": {
+        "pitlaneEntryTrackPct": 0.9882813,
+        "pitlaneExitTrackPct": 0.062419422
+    },
+    "okayama full": {
+        "pitlaneEntryTrackPct": 0.91986835,
+        "pitlaneExitTrackPct": 0.00413610041
+    },
+    "kern oval": {
+        "pitlaneEntryTrackPct": 0.7919536,
+        "pitlaneExitTrackPct": 0.113717355
+    },
+    "concordhalf": {
+        "pitlaneEntryTrackPct": 0.6797087,
+        "pitlaneExitTrackPct": 0.114120513
+    },
+    "daytona 2011 oval": {
+        "pitlaneEntryTrackPct": 0.9417127,
+        "pitlaneExitTrackPct": 0.06945112
+    },
+    "atlanta 2022 oval": {
+        "pitlaneEntryTrackPct": 0.898128569,
+        "pitlaneExitTrackPct": 0.09860342
+    },
+    "homestead oval": {
+        "pitlaneEntryTrackPct": 0.9048498,
+        "pitlaneExitTrackPct": 0.1052624
+    },
+    "indianapolis 2022 oval": {
+        "pitlaneEntryTrackPct": 0.9202212,
+        "pitlaneExitTrackPct": 0.0755438954
+    },
+    "indianapolis 2022 ovalnascar": {
+        "pitlaneEntryTrackPct": 0.8849245,
+        "pitlaneExitTrackPct": 0.0756463557
+    },
+    "iowa 2025 oval": {
+        "pitlaneEntryTrackPct": 0.8706874,
+        "pitlaneExitTrackPct": 0.247417524
+    },
+    "irwindale outer": {
+        "pitlaneEntryTrackPct": 0.6290227,
+        "pitlaneExitTrackPct": 0.416682363
+    },
+    "lacoliseum": {
+        "pitlaneEntryTrackPct": 0.8345886,
+        "pitlaneExitTrackPct": 0.278205156
+    },
+    "langley": {
+        "pitlaneEntryTrackPct": 0.9155076,
+        "pitlaneExitTrackPct": 0.148646772
+    },
+    "lanier": {
+        "pitlaneEntryTrackPct": 0.8174886,
+        "pitlaneExitTrackPct": 0.159901589
+    },
+    "vegas oval": {
+        "pitlaneEntryTrackPct": 0.896403,
+        "pitlaneExitTrackPct": 0.121325381
+    },
+    "irp": {
+        "pitlaneEntryTrackPct": 0.680856466,
+        "pitlaneExitTrackPct": 0.09715466
+    },
+    "martinsville": {
+        "pitlaneEntryTrackPct": 0.653573751,
+        "pitlaneExitTrackPct": 0.341988564
+    },
+    "michigan 2018": {
+        "pitlaneEntryTrackPct": 0.91631645,
+        "pitlaneExitTrackPct": 0.08695074
+    },
+    "twinring oval": {
+        "pitlaneEntryTrackPct": 0.895969152,
+        "pitlaneExitTrackPct": 0.126644716
+    },
+    "nashvilless": {
+        "pitlaneEntryTrackPct": 0.878241658,
+        "pitlaneExitTrackPct": 0.139095083
+    },
+    "newhampshire oval": {
+        "pitlaneEntryTrackPct": 0.8832988,
+        "pitlaneExitTrackPct": 0.141730189
+    },
+    "oxford oval": {
+        "pitlaneEntryTrackPct": 0.8609666,
+        "pitlaneExitTrackPct": 0.188949823
+    },
+    "phoenix 2021 ovalopen": {
+        "pitlaneEntryTrackPct": 0.568897,
+        "pitlaneExitTrackPct": 0.05115106
+    },
+    "phoenix 2021 oval": {
+        "pitlaneEntryTrackPct": 0.5684861,
+        "pitlaneExitTrackPct": 0.05123331
+    },
+    "pocono 2016": {
+        "pitlaneEntryTrackPct": 0.9479743,
+        "pitlaneExitTrackPct": 0.094055295
+    },
+    "southboston": {
+        "pitlaneEntryTrackPct": 0.8571212,
+        "pitlaneExitTrackPct": 0.180275321
+    },
+    "southernnational": {
+        "pitlaneEntryTrackPct": 0.840622067,
+        "pitlaneExitTrackPct": 0.172193274
+    },
+    "texas 2020 oval": {
+        "pitlaneEntryTrackPct": 0.886504233,
+        "pitlaneExitTrackPct": 0.111009821
+    },
+    "milwaukee": {
+        "pitlaneEntryTrackPct": 0.9245007,
+        "pitlaneExitTrackPct": 0.1173428
+    },
+    "thompson": {
+        "pitlaneEntryTrackPct": 0.787131369,
+        "pitlaneExitTrackPct": 0.128567755
+    },
+    "lakeland": {
+        "pitlaneEntryTrackPct": 0.840595245,
+        "pitlaneExitTrackPct": 0.15683268
+    },
+    "gateway 2025 oval": {
+        "pitlaneEntryTrackPct": 0.853140235,
+        "pitlaneExitTrackPct": 0.123204246
+    },
+    "michigan": {
+        "pitlaneEntryTrackPct": 0.917741358,
+        "pitlaneExitTrackPct": 0.08623154
+    },
+    "phoenix oval": {
+        "pitlaneEntryTrackPct": 0.91528064,
+        "pitlaneExitTrackPct": 0.215230584
+    },
+    "pocono oval": {
+        "pitlaneEntryTrackPct": 0.9622833,
+        "pitlaneExitTrackPct": 0.0914327353
+    },
+    "texas oval": {
+        "pitlaneEntryTrackPct": 0.911836565,
+        "pitlaneExitTrackPct": 0.101456232
+    },
+    "bristol dirt 2022": {
+        "pitlaneEntryTrackPct": 0.879457533,
+        "pitlaneExitTrackPct": 0.127655387
+    },
+    "eldora": {
+        "pitlaneEntryTrackPct": 0.8528987,
+        "pitlaneExitTrackPct": 0.1711524
+    },
+    "kern dirt": {
+        "pitlaneEntryTrackPct": 0.113542847,
+        "pitlaneExitTrackPct": 0.446840972
+    },
+    "knoxville": {
+        "pitlaneEntryTrackPct": 0.856222868,
+        "pitlaneExitTrackPct": 0.108345523
+    },
+    "lanier dirt": {
+        "pitlaneEntryTrackPct": 0.844784856,
+        "pitlaneExitTrackPct": 0.128179431
+    },
+    "lernerville": {
+        "pitlaneEntryTrackPct": 0.7656948,
+        "pitlaneExitTrackPct": 0.8729766
+    },
+    "limaland": {
+        "pitlaneEntryTrackPct": 0.805004656,
+        "pitlaneExitTrackPct": 0.141078636
+    },
+    "charlottedirt": {
+        "pitlaneEntryTrackPct": 0.49539566,
+        "pitlaneExitTrackPct": 0.9815532
+    },
+    "lakeland dirt": {
+        "pitlaneEntryTrackPct": 0.87296766,
+        "pitlaneExitTrackPct": 0.155961141
+    },
+    "volusia": {
+        "pitlaneEntryTrackPct": 0.930169463,
+        "pitlaneExitTrackPct": 0.167970866
+    },
+    "williamsgrove": {
+        "pitlaneEntryTrackPct": 0.755667746,
+        "pitlaneExitTrackPct": 0.07784072
+    },
+    "oran gp": {
+        "pitlaneEntryTrackPct": 0.9799432,
+        "pitlaneExitTrackPct": 0.136272
+    },
+    "oulton international": {
+        "pitlaneEntryTrackPct": 0.9922622,
+        "pitlaneExitTrackPct": 0.04203262
+    },
+    "oulton inthislop": {
+        "pitlaneEntryTrackPct": 0.992253065,
+        "pitlaneExitTrackPct": 0.0422847234
+    },
+    "phillipisland": {
+        "pitlaneEntryTrackPct": 0.9094952,
+        "pitlaneExitTrackPct": 0.995771766
+    },
+    "portland full": {
+        "pitlaneEntryTrackPct": 0.886818349,
+        "pitlaneExitTrackPct": 0.0245400053
+    },
+    "spielberg gp": {
+        "pitlaneEntryTrackPct": 0.9826412,
+        "pitlaneExitTrackPct": 0.0662584454
+    },
+    "roadamerica full": {
+        "pitlaneEntryTrackPct": 0.960026264,
+        "pitlaneExitTrackPct": 0.0515100323
+    },
+    "roadatlanta full": {
+        "pitlaneEntryTrackPct": 0.957391262,
+        "pitlaneExitTrackPct": 0.0884855241
+    },
+    "rudskogen": {
+        "pitlaneEntryTrackPct": 0.9619277,
+        "pitlaneExitTrackPct": 0.0880375355
+    },
+    "sandown": {
+        "pitlaneEntryTrackPct": 0.948601842,
+        "pitlaneExitTrackPct": 0.03586522
+    },
+    "sebring international": {
+        "pitlaneEntryTrackPct": 0.973123252,
+        "pitlaneExitTrackPct": 0.0484131947
+    },
+    "thebend international": {
+        "pitlaneEntryTrackPct": 0.9905043,
+        "pitlaneExitTrackPct": 0.06112452
+    },
+    "snetterton 300": {
+        "pitlaneEntryTrackPct": 0.956212163,
+        "pitlaneExitTrackPct": 0.00871253852
+    },
+    "sonoma 2025 nascarshort": {
+        "pitlaneEntryTrackPct": 0.87629056,
+        "pitlaneExitTrackPct": 0.03966276
+    },
+    "sonoma 2025 sportscaralt": {
+        "pitlaneEntryTrackPct": 0.9028495,
+        "pitlaneExitTrackPct": 0.0311056282
+    },
+    "summit summit raceway": {
+        "pitlaneEntryTrackPct": 0.879061341,
+        "pitlaneExitTrackPct": 0.9491593
+    },
+    "suzuka grandprix": {
+        "pitlaneEntryTrackPct": 0.9944709,
+        "pitlaneExitTrackPct": 0.06333633
+    },
+    "thruxton": {
+        "pitlaneEntryTrackPct": 0.9662634,
+        "pitlaneExitTrackPct": 0.02655837
+    },
+    "virginia 2022 full": {
+        "pitlaneEntryTrackPct": 0.930476546,
+        "pitlaneExitTrackPct": 0.997154236
+    },
+    "virginia 2022 north": {
+        "pitlaneEntryTrackPct": 0.8999449,
+        "pitlaneExitTrackPct": 0.995489061
+    },
+    "watkinsglen 2021 cupcircuit": {
+        "pitlaneEntryTrackPct": 0.9353349,
+        "pitlaneExitTrackPct": 0.05654952
+    },
+    "watkinsglen 2021 fullcourse": {
+        "pitlaneEntryTrackPct": 0.9533364,
+        "pitlaneExitTrackPct": 0.04076212
+    },
+    "watkinsglen 2021 classic": {
+        "pitlaneEntryTrackPct": 0.934980035,
+        "pitlaneExitTrackPct": 0.05659126
+    },
+    "willow international": {
+        "pitlaneEntryTrackPct": 0.9275833,
+        "pitlaneExitTrackPct": 0.0175527446
+    },
+    "winton national": {
+        "pitlaneEntryTrackPct": 0.9126555,
+        "pitlaneExitTrackPct": 0.008037292
+    },
+    "silverstone gp": {
+        "pitlaneEntryTrackPct": 0.9764502,
+        "pitlaneExitTrackPct": 0.0615559258
     }
 }
