@@ -548,5 +548,9 @@
     "silverstone gp": {
         "pitlaneEntryTrackPct": 0.9764502,
         "pitlaneExitTrackPct": 0.0615559258
+    },
+    "adelaide": {
+        "pitlaneEntryTrackPct": 0.927236736,
+        "pitlaneExitTrackPct": 0.0006244339
     }
 }
