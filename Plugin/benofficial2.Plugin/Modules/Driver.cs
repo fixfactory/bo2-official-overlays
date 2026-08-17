@@ -1020,7 +1020,7 @@ namespace benofficial2.Plugin
 
         private void UpdateDriverPitEntryExitHighFreq(ref GameData data, Driver driver)
         {
-            if (!driver.IsConnected || !driver.IsMovingForward)
+            if (!driver.IsConnected || !driver.IsMovingForward || driver.InPitBox)
                 return;
 
             if (driver.InPit && !driver.LastInPit)
