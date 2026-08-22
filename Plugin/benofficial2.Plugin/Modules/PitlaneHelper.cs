@@ -30,7 +30,7 @@ namespace benofficial2.Plugin
         public bool DistanceVisible { get; set; } = true;
         public bool DialsVisible { get; set; } = true;
         public bool SpeedVisible { get; set; } = true;
-        public int BackgroundOpacity { get; set; } = 0;
+        public int BackgroundOpacity { get; set; } = 60;
     }
 
     public class PitlaneHelperModule : PluginModuleBase
