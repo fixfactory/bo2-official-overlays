@@ -1,4 +1,9 @@
 {
+  "SettingsBuilder": {
+    "Settings": [],
+    "IsEditMode": false,
+    "Prefix": null
+  },
   "ScreenCount": 1.0,
   "InGameScreensIndexs": [
     0
@@ -12,7 +17,8 @@
   "MetadataVersion": 2.0,
   "EnableOnDashboardMessaging": true,
   "PitScreensIndexs": [],
-  "SimHubVersion": "9.11.17",
+  "PreferredTouchMode": 0,
+  "SimHubVersion": "9.12.1",
   "Category": null,
   "Title": null,
   "Description": null,
