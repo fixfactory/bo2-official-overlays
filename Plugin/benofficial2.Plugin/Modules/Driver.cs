@@ -499,6 +499,10 @@ namespace benofficial2.Plugin
                         // When we join a race session in progress, we cannot know when the driver exited the pit, so StintLap should stay 0.
                         driver.StintLap = currentLap;
                     }
+                    else if (_sessionModule.Qual)
+                    {
+                        driver.StintLap = currentLap;
+                    }
                 }
 
                 if (_sessionModule.Race)
@@ -996,7 +1000,7 @@ namespace benofficial2.Plugin
                 }
                 else
                 {
-                    driver.CurrentLapHighPrecisionRaw = -1.0;
+                    driver.CurrentLapHighPrecisionRaw = -1;
                 }
 
                 driver.IsMovingForward = driver.CurrentLapHighPrecisionRaw > -1 &&
