@@ -55,7 +55,7 @@
     },
     "Aston": 
     {
-        "tokens": ["aston", "martin", "vantage"]
+        "tokens": ["aston", "martin", "vantage", "valkyrie"]
     },
     "Cadillac": 
     {
@@ -124,6 +124,10 @@
     "Ram": 
     {
         "tokens": ["ram"]
+    },
+    "Caterham": 
+    {
+        "tokens": ["caterham"]
     }
   }
 }
