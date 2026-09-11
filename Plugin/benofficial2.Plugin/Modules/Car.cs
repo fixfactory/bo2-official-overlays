@@ -44,10 +44,25 @@ namespace benofficial2.Plugin
 
         private static readonly List<object[]> _brakeBiasPaths = new List<object[]>
         {
+            new object[] { "CarSetup", "Chassis", "BrakesDriveUnit", "BrakeSpec", "BrakePressureBias" },
+            new object[] { "CarSetup", "Chassis", "BrakesInCarMisc", "BrakePressureBias" },
+            new object[] { "CarSetup", "Chassis", "Front", "BrakePressureBias" },
             new object[] { "CarSetup", "Chassis", "Front", "BrakeBias" },
             new object[] { "CarSetup", "Chassis", "Front", "FrontBrakeBias" },
+            new object[] { "CarSetup", "Chassis", "General", "BrakePressureBias" },
+            new object[] { "CarSetup", "Chassis", "InCarAdjustments", "BrakePressureBias" },
+            new object[] { "CarSetup", "Chassis", "InCarDials", "BrakePressureBias" },
+            new object[] { "CarSetup", "InCarSystems", "Brakes", "BrakePressureBias" },
+            new object[] { "CarSetup", "Systems", "BrakeSpec", "BrakePressureBias" },
+            new object[] { "CarSetup", "VehicleSystems", "BrakeSystem", "BrakePressureBias" },
             new object[] { "CarSetup", "DriveBrake", "BrakeSystemConfig", "BaseBrakeBias" },
             new object[] { "CarSetup", "Suspension", "Front", "BrakeBias" }
+        };
+
+        private static readonly List<object[]> _brakeValvePaths = new List<object[]>
+        {
+            new object[] { "CarSetup", "Chassis", "Front", "RearBrakeProportioningValve" },
+            new object[] { "CarSetup", "Chassis", "Front", "RearBrakeValve" }
         };
 
         public Dictionary<int, string> TireCompounds = null;
@@ -84,12 +99,15 @@ namespace benofficial2.Plugin
         public bool HasWeightJacker { get; set; } = false;
         public bool HasTwoPartPeakBrakeBias { get; set; } = false;
         public bool HasABS { get; set; } = false;
+        public bool HasBrakeBias { get; set; } = false;
         public bool HasFineBrakeBias { get; set; } = false;
         public bool HasBrakeBiasMigration { get; set; } = false;
+        public bool HasBrakeValve { get; set; } = false;
         public bool HasDryTireCompounds { get; set; } = false;
         public bool HasRefueling { get; set; } = true;
         public double TotalBrakeBias { get; set; } = 0.0;
         public double TotalPeakBrakeBias { get; set; } = 0.0;
+        public double BrakeValve { get; set; } = 0.0;
         public override int UpdatePriority => 20;
         public override void Init(PluginManager pluginManager, benofficial2 plugin)
         {
@@ -129,12 +147,15 @@ namespace benofficial2.Plugin
             plugin.AttachDelegate(name: "Car.HasWeightJacker", valueProvider: () => HasWeightJacker);
             plugin.AttachDelegate(name: "Car.HasTwoPartPeakBrakeBias", valueProvider: () => HasTwoPartPeakBrakeBias);
             plugin.AttachDelegate(name: "Car.HasABS", valueProvider: () => HasABS);
+            plugin.AttachDelegate(name: "Car.HasBrakeBias", valueProvider: () => HasBrakeBias);
             plugin.AttachDelegate(name: "Car.HasFineBrakeBias", valueProvider: () => HasFineBrakeBias);
             plugin.AttachDelegate(name: "Car.HasBrakeBiasMigration", valueProvider: () => HasBrakeBiasMigration);
+            plugin.AttachDelegate(name: "Car.HasBrakeValve", valueProvider: () => HasBrakeValve);
             plugin.AttachDelegate(name: "Car.HasDryTireCompounds", valueProvider: () => HasDryTireCompounds);
             plugin.AttachDelegate(name: "Car.HasRefueling", valueProvider: () => HasRefueling);
             plugin.AttachDelegate(name: "Car.TotalBrakeBias", valueProvider: () => TotalBrakeBias);
             plugin.AttachDelegate(name: "Car.TotalPeakBrakeBias", valueProvider: () => TotalPeakBrakeBias);
+            plugin.AttachDelegate(name: "Car.BrakeValve", valueProvider: () => BrakeValve);
         }
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
@@ -186,17 +207,31 @@ namespace benofficial2.Plugin
             {
                 TotalBrakeBias = 0.0;
                 TotalPeakBrakeBias = 0.0;
+                BrakeValve = 0.0;
                 return;
             }
 
+            HasBrakeBias = TryGetSetupBrakeBias(ref data, out double setupBB);
+            HasBrakeValve = TryGetSetupBrakeValve(ref data, out double setupBrakeValve);
             bool hasTelemetryBB = RawDataHelper.TryGetTelemetryData<double>(ref data, out double telemetryBB, "dcBrakeBias");
             RawDataHelper.TryGetTelemetryData<double>(ref data, out double telemetryFineBB, "dcBrakeBiasFine");
             RawDataHelper.TryGetTelemetryData<double>(ref data, out double telemetryPeakBB, "dcPeakBrakeBias");
+            RawDataHelper.TryGetTelemetryData<double>(ref data, out double telemetryBrakeMisc, "dcBrakeMisc");
+            bool hasDynamicRamping = RawDataHelper.TryGetSessionData<string>(ref data, out string setupDynamicRamping, "CarSetup", "DriveBrake", "BrakeSystemConfig", "DynamicRamping");
+            bool hasBiasMigrationGain = RawDataHelper.TryGetSessionData<double>(ref data, out double setupBiasMigrationGain, "CarSetup", "Systems", "BrakeSpec", "BiasMigrationGain");
+            HasBrakeBiasMigration = hasDynamicRamping || hasBiasMigrationGain || HasTwoPartPeakBrakeBias;
 
             if (HasTwoPartBrakeBias || !hasTelemetryBB)
             {
-                TryGetSetupBrakeBias(ref data, out double setupBB);
+                // Two parts means the telemetry BB value is a delta added on top of the setup BB value.
                 TotalBrakeBias = Math.Round(telemetryBB, 2) + setupBB + telemetryFineBB;
+            }
+            else if (hasBiasMigrationGain)
+            {
+                // With migration gain, the gain (BrakeMisc) is a delta added to the telemetry BB value when the brake pedal is at 0%.
+                // At 100% brake pedal, no gain is applied.
+                // Tested with Ferrari 499P.
+                TotalBrakeBias = Math.Round(telemetryBB, 2) + telemetryFineBB + telemetryBrakeMisc;
             }
             else
             {
@@ -216,23 +251,32 @@ namespace benofficial2.Plugin
                 }
                 else
                 {
-                    TotalPeakBrakeBias = 0.0;
+                    TotalPeakBrakeBias = TotalBrakeBias;
                 }
+            }
+            else if (hasDynamicRamping)
+            {
+                // iRacing returns an integer where 1=0%, 2=1%, etc.
+                // Tested with the Mercedes W13, but could be different for other cars.
+                double deltaPeakBB = Math.Max(0.0, telemetryPeakBB - 1.0);
+                TotalPeakBrakeBias = TotalBrakeBias + deltaPeakBB;
+            }
+            else if (hasBiasMigrationGain)
+            {
+                // With migration gain, the gain (BrakeMisc) is a delta added to the telemetry BB value when the brake pedal is at 0%.
+                // At 100% brake pedal, no gain is applied.
+                // Tested with Ferrari 499P.
+                TotalPeakBrakeBias = Math.Round(telemetryBB, 2) + telemetryFineBB;
             }
             else
             {
-                if (telemetryPeakBB > 0.0)
-                {
-                    // iRacing returns an integer where 1=0%, 2=1%, etc.
-                    // Tested with the Mercedes W13, but could be different for other cars.
-                    double deltaPeakBB = telemetryPeakBB - 1.0; 
-                    TotalPeakBrakeBias = TotalBrakeBias + deltaPeakBB;
-                }
-                else
-                {
-                    TotalPeakBrakeBias = 0.0;
-                }
-            }            
+                TotalPeakBrakeBias = TotalBrakeBias;
+            }
+
+            if (HasBrakeValve)
+                BrakeValve = telemetryPeakBB;
+            else
+                BrakeValve = 0.0;
         }
 
         public bool TryGetSetupBrakeBias(ref GameData data, out double brakeBias)
@@ -243,6 +287,16 @@ namespace benofficial2.Plugin
                 return false;
 
             return TryParseBrakeBias(setupBB, out brakeBias);
+        }
+
+        public bool TryGetSetupBrakeValve(ref GameData data, out double brakeValve)
+        {
+            brakeValve = 0.0;
+
+            if (!RawDataHelper.TryGetFirstSessionData<string>(ref data, out string setupBV, _brakeValvePaths))
+                return false;
+
+            return double.TryParse(setupBV, NumberStyles.Float, CultureInfo.InvariantCulture, out brakeValve);
         }
 
         public bool TryParseBrakeBias(string brakeBiasString, out double brakeBias)
