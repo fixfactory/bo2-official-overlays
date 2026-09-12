@@ -79,7 +79,7 @@
     "#CCCCCC": 
     {
         "color": "#FF8533",
-        "text_color": "#FFFFFF"
+        "text_color": "#000000"
     }
   }
 }
