@@ -165,7 +165,12 @@
         "hasWeightJacker": true,
         "hasDryTireCompounds": true,
         "hasErs": true,
-        "hasLapDeployLimit": true
+        "hasLapDeployLimit": true,
+        "tireCompoundTypes": [
+            "Hard",
+            "Soft",
+            "Wet"
+        ]
     },
     "dallaradw12": {
         "hasPushToPass": true,
@@ -201,7 +206,12 @@
         "hasEntryDiff": true,
         "hasEntryDiffPreload": true,
         "hasTwoPartBrakeBias": true,
-        "hasTwoPartPeakBrakeBias": true
+        "hasTwoPartPeakBrakeBias": true,
+        "tireCompoundTypes": [
+            "Soft",
+            "Medium",
+            "Hard"
+        ]
     },
     "mercedesw12": {
         "hasDrsDetection": true,
@@ -212,7 +222,12 @@
         "hasExitDiff": true,
         "hasFineBrakeBias": true,
         "hasBrakeBiasMigration": true,
-        "hasDryTireCompounds": true
+        "hasDryTireCompounds": true,
+        "tireCompoundTypes": [
+            "Soft",
+            "Medium",
+            "Hard"
+        ]
     },
     "mercedesw13": {
         "hasDrsDetection": true,
@@ -223,7 +238,12 @@
         "hasExitDiff": true,
         "hasFineBrakeBias": true,
         "hasBrakeBiasMigration": true,
-        "hasDryTireCompounds": true
+        "hasDryTireCompounds": true,
+        "tireCompoundTypes": [
+            "Soft",
+            "Medium",
+            "Hard"
+        ]
     },
     "formularenault35": {
         "hasDrsCount": true,
@@ -250,7 +270,12 @@
         "hasARBModeP": true,
         "hasFrontARB": true,
         "hasRearARB": true,
-        "hasDryTireCompounds": true
+        "hasDryTireCompounds": true,
+        "tireCompoundTypes": [
+            "Hard",
+            "Medium",
+            "Soft"
+        ]
     },
     "ligierjsp320": {
         "isLMP3": true,
@@ -325,5 +350,10 @@
         "hasTC": true,
         "hasABS": true,
         "hasThrottleShaping": true
+    },
+    "caterham caterhamacademy": {
+        "tireCompoundTypes": [
+            "AllPurpose"
+        ]
     }
 }
