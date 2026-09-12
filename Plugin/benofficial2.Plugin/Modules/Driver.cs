@@ -888,7 +888,7 @@ namespace benofficial2.Plugin
                 driver.TireCompoundIdx = tireCompoundIdx;
 
                 if (prevTireCompoundIdx != driver.TireCompoundIdx)
-                    driver.TireCompound = _carModule.GetTireCompoundLetter(driver.TireCompoundIdx);
+                    driver.TireCompound = _carModule.GetTireCompoundLetter(driver);
 
                 if (carPath == "superformulasf23 toyota" || carPath == "superformulasf23 honda")
                 {

@@ -67,6 +67,7 @@ namespace benofficial2.Plugin
 
         public Dictionary<int, string> TireCompounds = null;
 
+        public int CarClassId { get; set; } = 0;
         public string Brand { get; set; } = string.Empty;
         public bool IsGT3 { get; set; } = false;
         public bool IsGT4 { get; set; } = false;
@@ -109,6 +110,7 @@ namespace benofficial2.Plugin
         public double TotalPeakBrakeBias { get; set; } = 0.0;
         public double BrakeValve { get; set; } = 0.0;
         public override int UpdatePriority => 20;
+
         public override void Init(PluginManager pluginManager, benofficial2 plugin)
         {
             _carInfo.LoadAsync();
@@ -160,12 +162,17 @@ namespace benofficial2.Plugin
 
         public override void DataUpdate(PluginManager pluginManager, benofficial2 plugin, ref GameData data)
         {
-            if (data.FrameTime - _lastUpdateTime < _updateInterval) return;
+            if (data.FrameTime - _lastUpdateTime < _updateInterval) 
+                return;
+
             _lastUpdateTime = data.FrameTime;
 
-            if (data.NewData.CarId != _lastCarId)
+            RawDataHelper.TryGetTelemetryData<int>(ref data, out int playerCarClass, "PlayerCarClass");
+
+            if (data.NewData.CarId != _lastCarId || CarClassId != playerCarClass)
             {
                 _lastCarId = data.NewData.CarId;
+                CarClassId = playerCarClass;
                 UpdateFromJson(ref data);
                 UpdateTireCompounds(ref data);
 
@@ -506,12 +513,32 @@ namespace benofficial2.Plugin
             return "#000000";
         }
 
-        public string GetTireCompoundLetter(int tireCompoundIdx)
+        public string GetTireCompoundLetter(Driver driver)
         {
+            // When the classId isn't the same as the player's, we can't reliably determine the compound because
+            // iRacing doesn't provide a TireCompounds list for other classes.
+            if (driver.CarClassId != CarClassId)
+            {
+                // Try to get the tire compound type from the CarInfo JSON.
+                JToken car = _carInfo?.Json[driver.CarId];
+                if (car != null && driver.TireCompoundIdx >= 0)
+                {
+                    string tireCompoundType = car["tireCompoundTypes"]?[driver.TireCompoundIdx]?.Value<string>();
+                    if (!string.IsNullOrEmpty(tireCompoundType))
+                        return tireCompoundType[0].ToString();
+                }
+
+                // Fallback to the most typical compounds.
+                if (driver.TireCompoundIdx == 0)
+                    return "H";
+                else
+                    return "W";
+            }
+
             if (TireCompounds == null)
                 return string.Empty;
 
-            if (!TireCompounds.TryGetValue(tireCompoundIdx, out string tireCompoundName))
+            if (!TireCompounds.TryGetValue(driver.TireCompoundIdx, out string tireCompoundName))
                 return string.Empty;
 
             if (tireCompoundName == null || tireCompoundName.Length == 0)
