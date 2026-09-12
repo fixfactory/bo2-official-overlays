@@ -32,6 +32,10 @@
     "SBRS": 
     {
         "name": "SB F2000"
+    },
+    "SR8": 
+    {
+        "name": "Radical SR8"
     }
   },
   "car_class_colors": 
