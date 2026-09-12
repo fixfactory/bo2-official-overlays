@@ -65,6 +65,21 @@
     {
         "color": "#FF81BE",
         "text_color": "#000000"
+    },
+    "#009999": 
+    {
+        "color": "#5CD633",
+        "text_color": "#000000"
+    },
+    "#D35400": 
+    {
+        "color": "#7C00FE",
+        "text_color": "#FFFFFF"
+    },
+    "#CCCCCC": 
+    {
+        "color": "#FF8533",
+        "text_color": "#FFFFFF"
     }
   }
 }
