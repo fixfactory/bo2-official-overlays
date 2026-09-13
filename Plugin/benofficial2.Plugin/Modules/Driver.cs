@@ -253,6 +253,7 @@ namespace benofficial2.Plugin
         private DateTime _lastUpdateTimeHighFreq = DateTime.MinValue;
         private TimeSpan _updateIntervalHighFreq = TimeSpan.FromMilliseconds(100);
         private TimeSpan _minTimeInPit = TimeSpan.FromMilliseconds(2500);
+        private int _lastPlayerCarClassId = -1;
 
         private SessionModule _sessionModule = null;
         private CarModule _carModule = null;
@@ -887,7 +888,7 @@ namespace benofficial2.Plugin
                 driver.LapsCompleted = lapCompleted;
                 driver.TireCompoundIdx = tireCompoundIdx;
 
-                if (prevTireCompoundIdx != driver.TireCompoundIdx)
+                if (prevTireCompoundIdx != driver.TireCompoundIdx || _lastPlayerCarClassId != _carModule.CarClassId)
                     driver.TireCompound = _carModule.GetTireCompoundLetter(driver);
 
                 if (carPath == "superformulasf23 toyota" || carPath == "superformulasf23 honda")
@@ -958,6 +959,8 @@ namespace benofficial2.Plugin
                     }
                 }
             }
+
+            _lastPlayerCarClassId = _carModule.CarClassId;
         }
 
         private void UpdateDriversHighFreq(ref GameData data)

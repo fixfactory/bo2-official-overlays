@@ -168,11 +168,11 @@ namespace benofficial2.Plugin
             _lastUpdateTime = data.FrameTime;
 
             RawDataHelper.TryGetTelemetryData<int>(ref data, out int playerCarClass, "PlayerCarClass");
+            CarClassId = playerCarClass;
 
-            if (data.NewData.CarId != _lastCarId || CarClassId != playerCarClass)
+            if (data.NewData.CarId != _lastCarId)
             {
                 _lastCarId = data.NewData.CarId;
-                CarClassId = playerCarClass;
                 UpdateFromJson(ref data);
                 UpdateTireCompounds(ref data);
 
@@ -515,13 +515,16 @@ namespace benofficial2.Plugin
 
         public string GetTireCompoundLetter(Driver driver)
         {
+            if (driver.TireCompoundIdx < 0)
+                return string.Empty;
+
             // When the classId isn't the same as the player's, we can't reliably determine the compound because
             // iRacing doesn't provide a TireCompounds list for other classes.
             if (driver.CarClassId != CarClassId)
             {
                 // Try to get the tire compound type from the CarInfo JSON.
                 JToken car = _carInfo?.Json[driver.CarId];
-                if (car != null && driver.TireCompoundIdx >= 0)
+                if (car != null)
                 {
                     string tireCompoundType = car["tireCompoundTypes"]?[driver.TireCompoundIdx]?.Value<string>();
                     if (!string.IsNullOrEmpty(tireCompoundType))
