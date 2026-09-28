@@ -187,7 +187,9 @@ namespace benofficial2.Plugin
             RawDataHelper.TryGetTelemetryData<double>(ref data, out double fuelLevel, "FuelLevel");
             FuelLevel = fuelLevel * ConvertFromLiters;
 
-            if (data.FrameTime - _lastUpdateTime < _updateInterval) return;
+            if (data.FrameTime - _lastUpdateTime < _updateInterval) 
+                return;
+
             _lastUpdateTime = data.FrameTime;
 
             RawDataHelper.TryGetTelemetryData<bool>(ref data, out bool isGarageVisible, "IsGarageVisible");
@@ -826,9 +828,6 @@ namespace benofficial2.Plugin
 
         private void UpdateAutoFuel(ref GameData data)
         {
-            if (!Settings.AutoFuelEnabled)
-                return;
-
             Driver playerDriver = _driverModule.GetPlayerDriver();
             if (playerDriver == null)
                 return;
@@ -838,19 +837,30 @@ namespace benofficial2.Plugin
 
             if (enteringPitLane || startedTowing)
             {
-                int amountLiters = (int)Math.Ceiling(RefuelNeeded / ConvertFromLiters);
-                if (amountLiters > 0)
+                SimHub.Logging.Current.Info($"AutoFuel: Entering pit lane.");
+
+                if (Settings.AutoFuelEnabled)
                 {
-                    SendAddFuel(amountLiters);
-                }
-                else
-                {
-                    // Don't send a clear fuel command when total laps is unknown so that we get the default fuel level.
-                    if (EstimatedTotalLaps > 0)
+                    int amountLiters = (int)Math.Ceiling(RefuelNeeded / ConvertFromLiters);
+                    if (amountLiters > 0)
                     {
-                        SendClearFuel();
-                    }                    
+                        SendAddFuel(amountLiters);
+                        SimHub.Logging.Current.Info($"AutoFuel: Adding {amountLiters} liters of fuel.");
+                    }
+                    else
+                    {
+                        // Don't send a clear fuel command when total laps is unknown so that we get the default fuel level.
+                        if (EstimatedTotalLaps > 0)
+                        {
+                            SendClearFuel();
+                            SimHub.Logging.Current.Info($"AutoFuel: Clearing fuel.");
+                        }
+                    }
                 }
+
+                LogSettings();
+                LogFuelCalculations();
+                LogSessionInfo(ref data);
             }
 
             _lastIsInPitLane = data.NewData.IsInPitLane > 0;
@@ -888,6 +898,56 @@ namespace benofficial2.Plugin
             bool invalidate = caution || onPitRoad || paceLap || stopped || blackFlag;
 
             _consumptionTracker.Update(lapDistPct, fuelLevel, invalidate, incidentCount);
+        }
+
+        private void LogSettings()
+        {
+            SimHub.Logging.Current.Info($"FuelCalc Settings: EnablePreRaceWarning={Settings.EnablePreRaceWarning}, " +
+                $"AutoFuelEnabled={Settings.AutoFuelEnabled}, " +
+                $"FuelReserveLiters={Settings.FuelReserveLiters.Value:F2}, " +
+                $"ExtraConsumption={Settings.ExtraConsumption.Value:F2}, " +
+                $"ExtraRaceLaps={Settings.ExtraRaceLaps.Value:F2}, " +
+                $"ExtraRaceLapsOval={Settings.ExtraRaceLapsOval.Value:F2}, " +
+                $"ExtraFuelPerStopLiters={Settings.ExtraFuelPerStopLiters.Value:F2}, " +
+                $"ExtraDistance={Settings.ExtraDistance.Value:F2}, " +
+                $"EvenFuelStints={Settings.EvenFuelStints}, " +
+                $"ConsumptionPercentile={Settings.ConsumptionPercentile}, " +
+                $"ConsumptionRecentLapCount={Settings.ConsumptionRecentLapCount}");
+        }
+
+        private void LogFuelCalculations()
+        {
+            SimHub.Logging.Current.Info($"FuelCalc Calculations: FuelLevel={FuelLevel:F2}, " +
+                $"MaxFuelAllowed={MaxFuelAllowed:F2}, " +
+                $"CurrentLapHighPrecision={_driverModule.HighlightedDriver.CurrentLapHighPrecision:F2}, " +
+                $"ConsumptionLastLap={ConsumptionLastLap:F2}, " +
+                $"ConsumptionPerLapAvg={ConsumptionPerLapAvg:F2}, " +
+                $"ConsumptionPerLapRecent={ConsumptionPerLapRecent:F2}, " +
+                $"ConsumptionPerLapSafe={ConsumptionPerLapSafe:F2}, " +
+                $"EstimatedTotalLaps={EstimatedTotalLaps}, " +
+                $"RemainingLaps={RemainingLaps:F2}, " +
+                $"PitLap={PitLap}, " +
+                $"PitWindowLap={PitWindowLap}, " +
+                $"PitStopsNeeded={PitStopsNeeded}, " +
+                $"RefuelNeeded={RefuelNeeded:F2}, " +
+                $"PitIndicatorOn={PitIndicatorOn}, " +
+                $"PitWindowIndicatorOn={PitWindowIndicatorOn}, " +
+                $"ExtraFuelAtFinish={ExtraFuelAtFinish:F2}, " +
+                $"TrackerValidLapCount={_consumptionTracker.GetValidLapCount()}, " +
+                $"TrackerMinConsumption={TrackerMinConsumption:F2}, " +
+                $"TrackerMedianConsumption={TrackerMedianConsumption:F2}, " +
+                $"TrackerMaxConsumption={TrackerMaxConsumption:F2}, " +
+                $"TrackerRecentConsumption={TrackerRecentConsumption:F2}, " +
+                $"ConsumptionTargetForExtraLap={ConsumptionTargetForExtraLap:F2}");
+        }
+
+        private void LogSessionInfo(ref GameData data)
+        {
+            SimHub.Logging.Current.Info($"Session Info: " +
+                $"TrackId={data.NewData.TrackId}, " +
+                $"CarId={data.NewData.CarId}, " +
+                $"Race={_sessionModule.Race}, " +
+                $"Oval={_sessionModule.Oval}");
         }
     }
 }
