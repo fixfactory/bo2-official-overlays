@@ -123,6 +123,7 @@ namespace benofficial2.Plugin
         public bool IsConnected { get; set; } = false;
         public bool IsMovingForward { get; set; } = false;
         public bool IsPaceCar { get; set; } = false;
+        public bool IsSpectator { get; set; } = false;
         public int Lap { get; set; } = 0;
         public int EnterPitLapUnconfirmed { get; set; } = -1;
         public int EnterPitLap { get; set; } = -1;
@@ -816,6 +817,7 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetValue<string>(drivers, out string teamName, i, "TeamName");
                 RawDataHelper.TryGetValue<int>(drivers, out int carIsPaceCar, i, "CarIsPaceCar");
                 RawDataHelper.TryGetValue<double>(drivers, out double carClassEstLapTime, i, "CarClassEstLapTime");
+                RawDataHelper.TryGetValue<int>(drivers, out int isSpectator, i, "IsSpectator");
 
                 RawDataHelper.TryGetTelemetryData<float>(ref data, out float lastLapTime, "CarIdxLastLapTime", carIdx);
                 RawDataHelper.TryGetTelemetryData<float>(ref data, out float bestLapTime, "CarIdxBestLapTime", carIdx);
@@ -868,6 +870,7 @@ namespace benofficial2.Plugin
 
                 driver.IsPlayer = carIdx == playerCarIdx;
                 driver.IsPaceCar = carIsPaceCar == 1;
+                driver.IsSpectator = isSpectator == 1;
                 driver.CarClassId = carClassId;
                 driver.CarClassName = carClassShortName;
                 driver.CarClassColor = _carModule.GetCarClassColor(ConvertColorString(carClassColor));
@@ -986,7 +989,11 @@ namespace benofficial2.Plugin
                 RawDataHelper.TryGetTelemetryData<int>(ref data, out int trackSurface, "CarIdxTrackSurface", driver.CarIdx);
 
                 driver.EstTime = estTime;
-                driver.Lap = lap;
+
+                // The SDK does not update the lap for spectators.
+                if (!driver.IsSpectator)
+                    driver.Lap = lap;
+
                 driver.TrackPositionPercent = lapDistPct;
                 driver.InPit = onPitRoad;
                 driver.IsConnected = trackSurface > (int)TrackLoc.NotInWorld;
@@ -999,6 +1006,12 @@ namespace benofficial2.Plugin
 
                 if (driver.Lap > -1 && driver.TrackPositionPercent > -Constants.LapEpsilon)
                 {
+                    // Manually increment the lap for spectators when they cross the start/finish line, since iRacing doesn't update the lap for spectators.
+                    if (driver.IsSpectator &&
+                        driver.LastCurrentLapHighPrecisionRaw > -1 &&
+                        driver.Lap - 1 + driver.TrackPositionPercent - driver.LastCurrentLapHighPrecisionRaw < -0.5)
+                        driver.Lap++;
+
                     driver.CurrentLapHighPrecisionRaw = driver.Lap - 1 + driver.TrackPositionPercent;
                 }
                 else
