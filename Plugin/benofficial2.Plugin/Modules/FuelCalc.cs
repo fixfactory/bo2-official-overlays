@@ -391,6 +391,9 @@ namespace benofficial2.Plugin
             // Even though the property is called "LitersPerLap", consumption will be in gallons when SimHub is set to gallons.
             ConsumptionLastLap = fuelLastLapSimHub * ConvertFromSimHubUnits;
 
+            if (ConsumptionLastLap <= Constants.FuelEpsilon)
+                ConsumptionLastLap = _consumptionTracker.GetPreviousLapConsumption() * ConvertFromLiters;
+
             TrackerMinConsumption = _consumptionTracker.GetConsumption(0) * ConvertFromLiters;
             TrackerMedianConsumption = _consumptionTracker.GetConsumption(Settings.ConsumptionPercentile) * ConvertFromLiters;
             TrackerMaxConsumption = _consumptionTracker.GetConsumption(100) * ConvertFromLiters;

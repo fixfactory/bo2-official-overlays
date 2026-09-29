@@ -35,6 +35,7 @@ namespace benofficial2.Plugin
         private double _lastLapPosition = -1.0;
 
         private bool _previousLapValid = false;
+        private double _previousLapConsumption = 0.0;
 
         private readonly List<double> _allConsumptions = new List<double>();
         private double[] _sortedCache = null;
@@ -79,6 +80,7 @@ namespace benofficial2.Plugin
                 _lapFuelStart = fuelLevel;
                 _wasInvalidated = false;
                 _lapIncidentCount = incidentCount;
+                _previousLapConsumption = lapFuelConsumed;
             }
 
             // Update flags during current lap
@@ -140,6 +142,8 @@ namespace benofficial2.Plugin
 
         public bool IsPreviousLapValid() => _previousLapValid;
 
+        public double GetPreviousLapConsumption() => _previousLapConsumption;
+
         public void Reset()
         {
             _lapPositionStart = -1.0;
@@ -149,6 +153,7 @@ namespace benofficial2.Plugin
             _lapIncidentCount = 0;
             _lapFuelStart = -1.0;
             _allConsumptions.Clear();
+            _previousLapConsumption = 0.0;
             _sortedCache = null;
         }
     }
