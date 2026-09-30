@@ -1007,10 +1007,14 @@ namespace benofficial2.Plugin
                 if (driver.Lap > -1 && driver.TrackPositionPercent > -Constants.LapEpsilon)
                 {
                     // Manually increment the lap for spectators when they cross the start/finish line, since iRacing doesn't update the lap for spectators.
-                    if (driver.IsSpectator &&
-                        driver.LastCurrentLapHighPrecisionRaw > -1 &&
-                        driver.Lap - 1 + driver.TrackPositionPercent - driver.LastCurrentLapHighPrecisionRaw < -0.5)
-                        driver.Lap++;
+                    if (driver.IsSpectator && driver.LastCurrentLapHighPrecisionRaw > -1)
+                    {
+                        if (driver.Lap - 1 + driver.TrackPositionPercent - driver.LastCurrentLapHighPrecisionRaw < -0.5)
+                            driver.Lap++;
+
+                        if (_sessionModule.RaceStarted && driver.Lap == 0 && driver.TrackPositionPercent < 0.5)
+                            driver.Lap++;
+                    }
 
                     driver.CurrentLapHighPrecisionRaw = driver.Lap - 1 + driver.TrackPositionPercent;
                 }
