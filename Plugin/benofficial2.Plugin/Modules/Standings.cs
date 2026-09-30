@@ -693,7 +693,8 @@ namespace benofficial2.Plugin
                     {
                         // Only consider drivers that have an official qual position.
                         // In heat races, this ignores drivers not in the current heat.
-                        scored = driver.QualPositionInClass > 0;
+                        // Always show the player in spectator mode.
+                        scored = driver.QualPositionInClass > 0 || (driver.IsPlayer && driver.IsSpectator);
                     }
                 }
                 else
