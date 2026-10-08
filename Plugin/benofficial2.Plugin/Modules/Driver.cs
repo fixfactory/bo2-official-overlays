@@ -1342,20 +1342,13 @@ namespace benofficial2.Plugin
 
         public Driver GetHighlightedDriver(bool fallbackToPlayer = true)
         {
-            int highlightedCarIdx = -1;
             if (HighlightedDriver.CarIdx >= 0)
-            {
-                highlightedCarIdx = HighlightedDriver.CarIdx;
-            }
-            else
-            {
-                if (!fallbackToPlayer)
-                    return null;
+                return GetDriver(HighlightedDriver.CarIdx);
 
-                highlightedCarIdx = PlayerDriver.CarIdx;
-            }
+            if (!fallbackToPlayer)
+                return null;
 
-            return GetDriver(highlightedCarIdx);
+            return GetDriver(PlayerDriver.CarIdx);
         }
 
         public static string ConvertColorString(string input)

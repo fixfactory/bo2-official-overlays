@@ -121,6 +121,7 @@ namespace benofficial2.Plugin
         public int DriverCount { get; set; } = 0;
         public TimeSpan BestLapTime { get; set; } = TimeSpan.Zero;
         public TimeSpan BestQualLapTime { get; set; } = TimeSpan.Zero;
+        public TimeSpan BestEstLapTime { get; set; } = TimeSpan.Zero;
         public TimeSpan LeaderLastLapTime { get; set; } = TimeSpan.Zero;
         public TimeSpan LeaderAvgLapTime { get; set; } = TimeSpan.Zero;
         public int EstimatedTotalLaps { get; set; } = 0;
@@ -374,6 +375,7 @@ namespace benofficial2.Plugin
                     carClass.DriverCount = leaderboard.Drivers.Count;
                     carClass.BestLapTime = FindBestLapTime(leaderboard.Drivers);
                     carClass.BestQualLapTime = FindBestQualLapTime(leaderboard.Drivers);
+                    carClass.BestEstLapTime = FindBestEstLapTime(leaderboard.Drivers);
 
                     if (leaderboard.Drivers.Count > 0)
                     {
@@ -583,6 +585,7 @@ namespace benofficial2.Plugin
             carClass.DriverCount = 0;
             carClass.BestLapTime = TimeSpan.Zero;
             carClass.BestQualLapTime = TimeSpan.Zero;
+            carClass.BestEstLapTime = TimeSpan.Zero;
             carClass.LeaderLastLapTime = TimeSpan.Zero;
             carClass.LeaderAvgLapTime = TimeSpan.Zero;
             carClass.EstimatedTotalLaps = 0;
@@ -1040,6 +1043,19 @@ namespace benofficial2.Plugin
             return bestQualLapTime < TimeSpan.MaxValue ? bestQualLapTime : TimeSpan.Zero;
         }
 
+        public TimeSpan FindBestEstLapTime(List<Driver> drivers)
+        {
+            double bestEstLapTime = double.MaxValue;
+            foreach (Driver driver in drivers)
+            {
+                if (driver.CarClassEstLapTime > Constants.SecondsEpsilon && driver.CarClassEstLapTime < bestEstLapTime)
+                {
+                    bestEstLapTime = driver.CarClassEstLapTime;
+                }
+            }
+            return bestEstLapTime < double.MaxValue ? TimeSpan.FromSeconds(bestEstLapTime) : TimeSpan.Zero;
+        }
+
         public int CalculateSof(List<Driver> drivers)
         {
             if (drivers.Count <= 0) 
@@ -1111,9 +1127,12 @@ namespace benofficial2.Plugin
                 if (avgLapTime <= TimeSpan.Zero)
                     avgLapTime = carClass.BestQualLapTime;
 
-                carClass.EstimatedTotalLaps = EstimateTotalLaps(leaderCurrentLapHighPrecision, 
-                    _sessionModule.SessionLapsTotal, 
-                    sessionTimeRemain, 
+                if (avgLapTime <= TimeSpan.Zero)
+                    avgLapTime = carClass.BestEstLapTime;
+
+                carClass.EstimatedTotalLaps = EstimateTotalLaps(leaderCurrentLapHighPrecision,
+                    _sessionModule.SessionLapsTotal,
+                    sessionTimeRemain,
                     avgLapTime.TotalSeconds * lapTimeSafePct,
                     out extraLap);
 
@@ -1143,15 +1162,51 @@ namespace benofficial2.Plugin
 
                     carClass.EstimatedTotalLapsLogged = true;
                 }
-
-                return;
             }
+            else
+            {
+                TimeSpan avgLapTime = TimeSpan.Zero;
+                double currentLapHighPrecision = 0;
 
-            carClass.EstimatedTotalLaps = EstimateTotalLaps(_driverModule.PlayerDriver.CurrentLapHighPrecision, 
-                _sessionModule.SessionLapsTotal,
-                data.NewData.SessionTimeLeft.TotalSeconds, 
-                _driverModule.PlayerDriver.BestLapTime.TotalSeconds * lapTimeSafePct,
-                out extraLap);
+                // When the highlighted driver is in the class, use their information to estimate the total laps.
+                Driver highlightedDriver = _driverModule.GetHighlightedDriver(true);
+                if (highlightedDriver != null)
+                {
+                    for (int driverIdx = 0; driverIdx < drivers.Count; driverIdx++)
+                    {
+                        Driver driver = drivers[driverIdx];
+                        if (driver.CarIdx == highlightedDriver.CarIdx)
+                        {
+                            currentLapHighPrecision = driver.CurrentLapHighPrecision;
+                            avgLapTime = driver.AvgLapTime.GetAverageLapTime();
+                            if (avgLapTime <= TimeSpan.Zero)
+                                avgLapTime = driver.BestLapTime;
+
+                            if (avgLapTime <= TimeSpan.Zero)
+                                avgLapTime = TimeSpan.FromSeconds(driver.CarClassEstLapTime);
+
+                            carClass.EstimatedTotalLaps = EstimateTotalLaps(currentLapHighPrecision,
+                                _sessionModule.SessionLapsTotal,
+                                data.NewData.SessionTimeLeft.TotalSeconds,
+                                avgLapTime.TotalSeconds,
+                                out extraLap);
+
+                            return;
+                        }
+                    }
+                }
+
+                // Fallback to the maximum possible total laps.
+                avgLapTime = carClass.BestLapTime;
+                if (avgLapTime <= TimeSpan.Zero)
+                    avgLapTime = carClass.BestEstLapTime;
+                             
+                carClass.EstimatedTotalLaps = EstimateTotalLaps(currentLapHighPrecision,
+                    _sessionModule.SessionLapsTotal,
+                    _sessionModule.SessionTimeTotal.TotalSeconds,
+                    avgLapTime.TotalSeconds,
+                    out extraLap);
+            }
         }
 
         static public int EstimateTotalLaps(double currentLapHighPrecision, int sessionTotalLaps, double sessionTimeRemain, double avgLapTime, out bool extraLap)
