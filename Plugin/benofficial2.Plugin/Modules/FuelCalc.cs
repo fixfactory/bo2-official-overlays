@@ -252,13 +252,13 @@ namespace benofficial2.Plugin
             double fastestTime = 0;
             for (int sessionIdx = 0; sessionIdx < sessionCount; sessionIdx++)
             {
-                RawDataHelper.TryGetSessionData<List<object>>(ref data, out List<object> positions, "SessionInfo", "Sessions", sessionIdx, "ResultsPositions");
+                RawDataHelper.TryGetValue<List<object>>(sessions, out List<object> positions, sessionIdx, "ResultsPositions");
                 if (positions == null)
                     continue;
 
                 for (int posIdx = 0; posIdx < positions.Count; posIdx++)
                 {
-                    RawDataHelper.TryGetSessionData<int>(ref data, out int carIdx, "SessionInfo", "Sessions", sessionIdx, "ResultsPositions", posIdx, "CarIdx");
+                    RawDataHelper.TryGetValue<int>(positions, out int carIdx, posIdx, "CarIdx");
                     Driver driver = _driverModule.GetDriver(carIdx);
                     if (driver == null)
                         continue;
@@ -268,8 +268,8 @@ namespace benofficial2.Plugin
                     // Must be in same class as player
                     if (playerClassId == null || playerClassId == classId)
                     {
-                        RawDataHelper.TryGetSessionData<float>(ref data, out float timeSecs, "SessionInfo", "Sessions", sessionIdx, "ResultsPositions", posIdx, "FastestTime");
-                        if (timeSecs > 0 && (timeSecs < fastestTime || fastestTime == 0))
+                        RawDataHelper.TryGetValue<float>(positions, out float timeSecs, posIdx, "FastestTime");
+                        if (timeSecs > Constants.SecondsEpsilon && (timeSecs < fastestTime || fastestTime == 0))
                         {
                             fastestTime = timeSecs;
                         }
@@ -280,7 +280,13 @@ namespace benofficial2.Plugin
             if (fastestTime > 0)
             {
                 BestLapTime = TimeSpan.FromSeconds(fastestTime);
+                return;
             }
+
+            // Fallback to the estimated lap time when no fastest time is available.
+            RawDataHelper.TryGetSessionData<float>(ref data, out float estLapTime, "DriverInfo", "DriverCarEstLapTime");
+            if (estLapTime > Constants.SecondsEpsilon)
+                BestLapTime = TimeSpan.FromSeconds(estLapTime);
         }
 
         private void UpdateSetupFuelLevel(ref GameData data)
