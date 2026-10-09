@@ -236,14 +236,9 @@ namespace benofficial2.Plugin
 
         private void UpdateBestLapTime(ref GameData data)
         {
-            RawDataHelper.TryGetSessionData<List<object>>(ref data, out List<object> drivers, "DriverInfo", "Drivers");
-            int driverCount = drivers != null ? drivers.Count : 0;
-
-            RawDataHelper.TryGetSessionData<int>(ref data, out int playerCarIdx, "DriverInfo", "DriverCarIdx");
-            if (playerCarIdx < 0 || playerCarIdx >= driverCount)
-                return;
-
-            RawDataHelper.TryGetSessionData<string>(ref data, out string playerClassId, "DriverInfo", "Drivers", playerCarIdx, "CarClassID");
+            Driver playerDriver = _driverModule.GetPlayerDriver();
+            if (playerDriver == null)
+                return;            
 
             // Try to find the fastest time of any session
             RawDataHelper.TryGetSessionData<List<object>>(ref data, out List<object> sessions, "SessionInfo", "Sessions");
@@ -263,16 +258,12 @@ namespace benofficial2.Plugin
                     if (driver == null)
                         continue;
 
-                    RawDataHelper.TryGetSessionData<string>(ref data, out string classId, "DriverInfo", "Drivers", driver.DriverInfoIdx, "CarClassID");
-
                     // Must be in same class as player
-                    if (playerClassId == null || playerClassId == classId)
+                    if (playerDriver.CarClassId <= 0 || playerDriver.CarClassId == driver.CarClassId)
                     {
                         RawDataHelper.TryGetValue<float>(positions, out float timeSecs, posIdx, "FastestTime");
                         if (timeSecs > Constants.SecondsEpsilon && (timeSecs < fastestTime || fastestTime == 0))
-                        {
                             fastestTime = timeSecs;
-                        }
                     }
                 }
             }
